@@ -6,7 +6,7 @@ An AI-powered golf course anthem generation system. Custom songs are created for
 
 ## Architecture
 
-- **Database:** Airtable (11 tables — see `docs/24_8_anthem_final_build_schema.md`)
+- **Database:** Airtable (11 tables — see `24_8_anthem_final_build_schema.md`)
 - **Automation:** n8n workflows at `https://homericng.app.n8n.cloud`
 - **Research:** Perplexity API (course research)
 - **Scripts:** OpenAI/ChatGPT API (lyric generation)
@@ -39,9 +39,9 @@ An AI-powered golf course anthem generation system. Custom songs are created for
 ## Key Files
 
 - `ANTHEM_PROJECT_PLAN.md` — Full setup plan and integration guide
-- `docs/24_8_Anthem_PRD.md` — Product requirements
-- `docs/24_8_Anthem_Handoff_Guide.md` — Implementation checklist
-- `docs/24_8_anthem_final_build_schema.md` — Complete Airtable schema
+- `24_8_Anthem_PRD.md` — Product requirements
+- `24_8_Anthem_Handoff_Guide.md` — Implementation checklist
+- `24_8_anthem_final_build_schema.md` — Complete Airtable schema
 - `skills/` — Agent skills (research, script, anthem generation)
 - `commands/` — Slash commands for Claude Code
 - `scripts/ralph/` — Ralph autonomous agent loop
