@@ -82,39 +82,50 @@ Overall: [2-3 sentence description of the sound]
 - api_call_timestamp: now
 ```
 
-### Step 2: Call Suno API
+### Step 2: Call Suno API (via KIE.ai)
 
-Send to Suno:
-- **Lyrics**: from SCRIPTS.final_approved_script
-- **Style**: from SUNO_PARAMETERS.style_prompt
-- **Duration**: from SUNO_PARAMETERS.duration_seconds
-- **Vocal type**: from SUNO_PARAMETERS.vocal_type
-- **Additional variables**: from SUNO_PARAMETERS.variables
+**API:** `POST https://api.kie.ai/api/v1/generate`
+**Auth:** `Authorization: Bearer {SUNO_API_KEY}` (KIE.ai API key)
+**Code:** Use `src/suno.ts` — `generateMusic()` function
 
-Capture the `suno_task_id` from the response.
+Send request with:
+- `prompt`: from SCRIPTS.final_approved_script (used as exact lyrics)
+- `customMode`: `true` (so prompt = exact lyrics, not auto-generated)
+- `instrumental`: `false` (we want vocals)
+- `style`: from SUNO_PARAMETERS.style_prompt (genre + mood + instrumentation)
+- `title`: Track title (max 80 chars)
+- `model`: `"V5"` (latest, best quality) or `"V4_5PLUS"` (up to 8 min)
+- `callBackUrl`: Your webhook URL to receive completion notifications
+- `vocalGender`: `"m"` or `"f"` from SUNO_PARAMETERS.vocal_type (suggestion only)
+- `negativeTags`: Styles to exclude (e.g., "Rap, Heavy Metal")
 
-Update SUNO_GENERATIONS:
-- `suno_task_id`: [from response]
+The API returns a `taskId`. Update SUNO_GENERATIONS:
+- `suno_task_id`: [taskId from response]
 - `status`: "Generating"
 
 Update ANTHEM_REQUEST: status -> "Suno Generating"
 
 ### Step 3: Poll for Completion
 
+**API:** `GET https://api.kie.ai/api/v1/generate/record-info?taskId={taskId}`
+**Code:** Use `src/suno.ts` — `pollUntilComplete()` function
+
 ```
 Loop:
-  1. Wait 30-60 seconds
-  2. Check Suno API status for task_id
+  1. Wait 30 seconds (increases to max 60s with backoff)
+  2. GET record-info with taskId
   3. Update polling_attempts (+1) and last_polled_at
-  4. If status = "complete":
+  4. If status = "SUCCESS":
+     - response.sunoData[] contains the generated tracks
+     - Each track has: audioUrl, imageUrl, duration, title, tags
      - Save suno_response_data (full JSON)
-     - Save audio_url
-     - Save cover_image_url
+     - Save audio_url = sunoData[0].audioUrl
+     - Save cover_image_url = sunoData[0].imageUrl
      - Set status = "Complete"
      - Set completion_date = now
      - Break loop
-  5. If status = "failed":
-     - Save error_message
+  5. If status = "FAILED":
+     - Save errorMessage and errorCode
      - Set status = "Failed"
      - Break loop
   6. If polling_attempts > 30:
@@ -123,16 +134,26 @@ Loop:
      - Break loop
 ```
 
+**Alternative:** If callBackUrl is configured, the API sends a POST to your webhook
+with `callbackType: "complete"` when done. The callback `data.data[]` array contains
+the same track objects with `audio_url` fields.
+
 ### If Generation Fails:
 
 1. Document the error in `error_message` and `api_notes`
 2. Check memory.md for similar failures and known fixes
-3. Common fixes:
-   - Simplify the style_prompt (too complex = failure)
-   - Shorten lyrics (Suno has limits)
-   - Change vocal_type if specific type is failing
-   - Reduce duration
-4. Create a new SUNO_GENERATIONS record for the retry (don't overwrite the failed one)
+3. Common KIE.ai error codes:
+   - `401`: Invalid API key — check SUNO_API_KEY
+   - `402`: Insufficient credits — top up at kie.ai
+   - `422`: Validation error — check prompt length (max 500 chars for non-custom)
+   - `429`: Rate limited — wait and retry
+   - `455`: Suno service unavailable — wait and retry later
+4. Common fixes:
+   - Simplify the style description (too complex = failure)
+   - Shorten lyrics if over Suno's limits
+   - Change vocalGender if specific type is failing
+   - Try a different model (V4_5PLUS instead of V5, or vice versa)
+5. Create a new SUNO_GENERATIONS record for the retry (don't overwrite the failed one)
 
 ---
 
