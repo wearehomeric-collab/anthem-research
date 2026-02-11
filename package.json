@@ -1,0 +1,27 @@
+{
+  "name": "24-8-anthem",
+  "version": "1.0.0",
+  "description": "AI-powered golf course anthem generation system",
+  "type": "module",
+  "scripts": {
+    "test-connection": "tsx src/test-connection.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "golf",
+    "anthem",
+    "ai",
+    "music-generation"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "airtable": "^0.12.2",
+    "dotenv": "^17.2.4",
+    "openai": "^6.21.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.3",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
