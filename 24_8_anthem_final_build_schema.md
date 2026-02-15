@@ -1,3 +1,5 @@
+> **SUPERSEDED** — This was the original 11-table schema. The current schema (12 tables, renamed tables, new fields) is documented in `24_8_Anthem_PRD.md` v2.0. Kept for reference only.
+
 # 24/8 Anthem Airtable - FINAL BUILD SCHEMA
 ## Ready to implement (February 2026)
 

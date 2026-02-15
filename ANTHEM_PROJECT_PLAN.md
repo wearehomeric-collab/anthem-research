@@ -1,3 +1,5 @@
+> **SUPERSEDED** — Schema restructure complete. See `24_8_Anthem_PRD.md` v2.0 and `24_8_Anthem_Handoff_Guide.md` v2.0 for current state. Kept for reference only.
+
 # 24/8 Anthem Project - Comprehensive Setup & Integration Plan
 
 **Generated:** February 6, 2026

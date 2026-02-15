@@ -12,19 +12,19 @@ const base = new Airtable({
   apiKey: process.env.AIRTABLE_PAT,
 }).base(process.env.AIRTABLE_BASE_ID);
 
-// Table references matching the 11-table schema
+// Table references by ID (stable across renames)
 export const tables = {
-  strategyTypes: base("STRATEGY_TYPES"),
-  courses: base("COURSES"),
-  teeBoxes: base("TEE_BOXES"),
-  holes: base("HOLES"),
-  userProfiles: base("USER_PROFILES"),
-  anthemRequests: base("ANTHEM_REQUESTS"),
-  researchOutput: base("RESEARCH_OUTPUT"),
-  scripts: base("SCRIPTS"),
-  sunoParameters: base("SUNO_PARAMETERS"),
-  sunoGenerations: base("SUNO_GENERATIONS"),
-  tracks: base("TRACKS"),
+  strategyTypes: base("tblWMQ46ow4hnEQBf"),
+  courses: base("tblUmMx0zgCP35j7N"),
+  teeBoxes: base("tblYekq8SiNHnBMbk"),
+  userProfiles: base("tbl4D4uPdzGdenax7"),
+  anthemRequests: base("tblCS344T2dnzpusU"),
+  researchOutput: base("tblvAxDrSQMSTSdyL"),
+  scripts: base("tblX7FhAhbmDHOhOD"),
+  anthemParameters: base("tblN5ffNIaSJE7yws"), // renamed from SUNO_PARAMETERS → ANTHEM_PARAMETERS
+  anthemGenerations: base("tbluijCk5bySJoyZE"), // renamed from SUNO_GENERATIONS → ANTHEM_GENERATIONS
+  tracks: base("tblWyEOHAaGMp5Sh3"),
+  aiLab: base("tblyPCnOer7C7TZeC"),
 };
 
 export default base;

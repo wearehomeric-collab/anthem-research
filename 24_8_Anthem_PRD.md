@@ -1,793 +1,350 @@
 # 24/8 ANTHEM PROJECT
 ## Product Requirements Document (PRD)
-**Version:** 1.0  
-**Date:** February 5, 2026  
-**Status:** Ready for Implementation  
+**Version:** 2.0
+**Date:** February 12, 2026
+**Status:** Schema Complete, Pipeline Operational
 **Owner:** Nick (24/8 Anthem Project Lead)
 
 ---
 
 ## EXECUTIVE SUMMARY
 
-The 24/8 Anthem Project is building a sophisticated golf course music generation system that creates custom songs for specific courses and playing strategies. This PRD defines the Airtable database architecture and manual workflow that will serve as the backbone for the system.
+The 24/8 Anthem Project is a user-facing platform for AI-generated golf course anthems. Custom songs are created for specific courses, personalized to a player's club distances, tee box, and strategy approach.
 
-**Current State:** Manual process with multiple tools (Airtable, Perplexity, ChatGPT, Suno)  
-**Goal:** Unified Airtable schema that tracks every step of track creation + clear manual workflow  
-**Future State:** n8n automation layer on top of this schema
+**Current State:** Working end-to-end pipeline (Perplexity → ChatGPT → Suno) with Airtable schema and TypeScript orchestration
+**What's Built:** 12-table Airtable schema, API integrations, prompt management system, seed data
+**Next Phase:** Pipeline orchestrator module, n8n automation, user-facing features (voting, customization)
 
-**Scope of This Document:**
-- Airtable schema design (11 core tables)
-- Data relationships and linking
-- Manual workflow (8-step process)
-- Quality control checkpoints
-- Future automation considerations
+**How It Works:**
+1. Admin or user requests a course anthem
+2. System researches the course (Perplexity) — reusable across all players
+3. System creates player-specific strategy based on their club distances (Perplexity)
+4. System generates lyrics (ChatGPT) tailored to player + strategy + course
+5. Human reviews and approves script
+6. System generates music (Suno via KIE.ai)
+7. Human QC → Publish
 
 ---
 
 ## PRODUCT VISION
 
 ### What We're Building
-An automated golf course anthem generation system where:
-1. User inputs course + player profile + strategy type + tee box
-2. System researches the course + generates custom lyrics + creates music track
-3. Human approves at key checkpoints (research, script, final track)
-4. Published track is available for use
+A platform where:
+- Users request courses and vote to prioritize which get official tracks
+- Official/approved tracks are created with default player settings
+- Users customize tracks to their Player Profile (club yardages), Tee Box, and Strategy Approach
+- Customization triggers new research, lyrics, and music generation
+- Player-specific research is critical — hole strategy depends on the player's actual club distances
 
 ### Why This Matters
-- **For Golfers:** Personalized, custom anthems that celebrate their favorite courses
+- **For Golfers:** Personalized anthems that reflect how THEY play a course
 - **For Golf Courses:** Marketing tool and member engagement content
 - **For 24/8:** Differentiated product combining golf expertise + AI + music generation
 
 ### Success Criteria
-- ✅ Can create 1 complete track manually in <3 hours (today)
+- ✅ Full pipeline runs end-to-end (Perplexity → ChatGPT → Suno)
 - ✅ Clear audit trail for every track showing which data created it
-- ✅ Quality control checkpoints ensure human review before release
-- ✅ Schema supports future automation without redesign
-- ✅ Team member can hand off to another person and they can complete tracks
+- ✅ Player-specific research produces meaningfully different strategies
+- ✅ Prompts are versioned and manageable (AI_LAB + code defaults)
+- ✅ Schema supports future automation and user-facing features
 
 ---
 
-## CURRENT MANUAL PROCESS (SIMPLIFIED)
+## ARCHITECTURE
 
-```
-INPUT:
-├─ Golf Course Data (architect, design, history)
-├─ User Profile (skill level, play style, handicap)
-├─ Strategy Type (Smart | Aggressive | Conservative | Risk-Reward)
-└─ Tee Box Selection (which difficulty level)
+### Tech Stack
+- **Database:** Airtable (12 tables)
+- **Research:** Perplexity API (`sonar` model)
+- **Script/Lyrics:** OpenAI/ChatGPT API (`gpt-4o`)
+- **Music:** Suno API via KIE.ai
+- **Automation:** n8n workflows (future)
+- **Prompts:** Hybrid system — code defaults (`src/prompts/`) with AI_LAB table override
+- **Orchestration:** TypeScript (`src/`) + n8n + Claude Code agents
 
-WORKFLOW:
-1. Research → Perplexity searches course + strategy context
-2. Script Generation → ChatGPT creates lyrics using research + guidelines
-3. Script Approval → Nick reviews and edits lyrics
-4. Suno API Call → Sends lyrics + music parameters to Suno
-5. Audio Generation → Suno creates music track
-6. QC & Approval → Nick listens and approves quality
-7. Publication → Track goes live
+### Prompt System
+Research, Strategy, and Script prompts live in code as defaults (`src/prompts/*.ts`). The pipeline checks AI_LAB for an override first — if an active default prompt exists there, it's used instead.
 
-OUTPUT:
-└─ Custom music track (MP3) with complete metadata
-```
-
-**Current Pain Points:**
-- Manual jumping between tools (no unified workflow)
-- Can't easily see which data created which track (no audit trail)
-- Tee box naming chaos (different names at each course)
-- Script iterations not tracked
-- Hard to reproduce if track needs adjustment
-- No clear checklist/status tracking
+Music Style prompts ALWAYS come from AI_LAB (no code fallback). This allows adding new music styles (Hip-Hop, Cinematic, Lo-Fi) as AI_LAB records without code changes.
 
 ---
 
-## REQUIREMENTS
+## DATA MODEL (12 TABLES)
 
-### Functional Requirements
-
-#### FR-1: Course Data Management
-- **Requirement:** Store comprehensive golf course information
-- **Scope:**
-  - Course name, architect, year built, location
-  - Par, yardage, number of holes
-  - Course description, designer intent, strategic elements
-  - Support for international courses
-- **Acceptance Criteria:**
-  - Can store data for 100+ courses
-  - Can filter/search by architect, location, year
-  - Supports courses with 9 or 18 holes
-
-#### FR-2: Tee Box Complexity Management
-- **Requirement:** Handle the fact that tee boxes are named differently at every course
-- **Scope:**
-  - Standardize on color system (Red/White/Blue/Black/Gold)
-  - Allow course-specific local names ("Member," "Championship," etc.)
-  - Auto-generate display name (e.g., "Blue Tees - Member")
-  - Track yardage, course rating, slope rating, skill level
-  - Allow setting a "primary" tee for when player is uncertain
-- **Acceptance Criteria:**
-  - Each course can have 4-5 tee boxes
-  - Display name auto-combines standard + local names
-  - Can filter by skill level (Beginner → Expert)
-  - Players can select tee even if they don't know exact name
-
-#### FR-3: User Profile System
-- **Requirement:** Track how individual golfers/members play
-- **Scope:**
-  - Email, name, handicap, skill level
-  - Play style (Smart | Aggressive | Conservative | Risk-Reward)
-  - Strengths, development areas, personality traits
-  - Golf goals and preferences
-- **Acceptance Criteria:**
-  - Can link profiles to anthem requests
-  - Profiles can be reused across multiple anthems
-  - Each golfer can have one primary profile (extensible to per-course later)
-
-#### FR-4: Strategy Type Framework
-- **Requirement:** Define the 4 strategy approaches and their characteristics
-- **Scope:**
-  - Smart, Aggressive, Conservative, Risk-Reward
-  - Detailed strategy explanation for each
-  - Research focus keywords
-  - Lyrical themes and music tone
-  - ChatGPT prompt template for script generation
-- **Acceptance Criteria:**
-  - 4 records with complete definitions
-  - Each has templated ChatGPT prompt ready to use
-  - Research focus guides what to look for
-  - Music tone informs Suno parameters
-
-#### FR-5: Anthem Request Hub
-- **Requirement:** Central tracking table for all track creation requests
-- **Scope:**
-  - Link to course, user profile, strategy type, tee box
-  - Status tracking (Pending → Research → Script → Suno → Published)
-  - Priority and target completion date
-  - Notes and QC tracking
-- **Acceptance Criteria:**
-  - Single request links to all inputs
-  - Status field guides workflow (8-step process)
-  - Can filter by status to see what needs work
-  - Complete audit trail (what created what)
-
-#### FR-6: Research Data Storage
-- **Requirement:** Capture and organize Perplexity research output
-- **Scope:**
-  - Store full raw response from Perplexity
-  - Parse into structured sections (history, philosophy, strategy, etc.)
-  - Track research quality (1-5 confidence score)
-  - Store original prompt and research date
-- **Acceptance Criteria:**
-  - Research can be reused (same course, different strategy)
-  - Raw backup exists but parsed sections are usable
-  - Can see what made research good/bad
-  - Quality tracking helps assess data reliability
-
-#### FR-7: Script Generation & Iteration Tracking
-- **Requirement:** Track ChatGPT output and human edits
-- **Scope:**
-  - Store ChatGPT's raw output
-  - Track user edits and rationale
-  - Maintain version history (v1, v2, v3)
-  - Store final approved script ready for Suno
-- **Acceptance Criteria:**
-  - Can see ChatGPT original vs. final version
-  - Iterations tracked (useful for learning)
-  - Quality assessment (perfect, minor edits, major edits, rejected)
-  - Script approved by specific person on specific date
-
-#### FR-8: Suno Music Generation Integration
-- **Requirement:** Manage Suno API calls and polling
-- **Scope:**
-  - Store music parameters (genre, tempo, instrumentation, etc.)
-  - Track Suno API calls and task IDs
-  - Handle polling/status checking
-  - Capture audio URL and cover image when ready
-  - Store error messages if generation fails
-- **Acceptance Criteria:**
-  - Can define music style once and reuse for variations
-  - API calls are auditable (what was sent, when, result)
-  - Polling tracked (attempts, timestamps)
-  - Complete Suno response stored as backup
-
-#### FR-9: Final Track & QC
-- **Requirement:** Store final deliverable with complete audit trail
-- **Scope:**
-  - Link to every upstream data (course → research → script → Suno)
-  - Store audio URL and cover image
-  - Quality rating (1-5 stars)
-  - QC notes and approval tracking
-  - Status (Draft → Approved → Published)
-- **Acceptance Criteria:**
-  - Track shows complete chain of data that created it
-  - Can see who approved and when
-  - Quality assessment documented
-  - Can filter by status (published vs. draft)
-
-#### FR-10: Workflow Checklist (Optional)
-- **Requirement:** Visual progress tracker for manual creation
-- **Scope:**
-  - 8-step checklist matching manual workflow
-  - Status field at each checkpoint
-  - Dates when each step completed
-- **Acceptance Criteria:**
-  - Creator can see which step they're on
-  - Easy to resume if interrupted
-  - Helps team member not miss steps
-
-### Non-Functional Requirements
-
-#### NFR-1: Data Integrity
-- All links between tables must be maintained (no orphaned records)
-- Audit trail must be complete (cannot delete data, only archive)
-- Version tracking for scripts and Suno generations
-
-#### NFR-2: Usability
-- Interface should be intuitive for team members to create tracks
-- Status field should guide workflow (show next step)
-- Views should show pending work clearly
-
-#### NFR-3: Scalability
-- Schema must support 500+ courses
-- Can handle 1000+ tracks without performance degradation
-- Extensible for future automation (n8n integration)
-
-#### NFR-4: Future-Proofing
-- Must support per-course user profiles (different strategy per course)
-- Must support track variations (A/B testing different styles)
-- Structure ready for n8n workflow automation
-- API-ready data structure
-
----
-
-## DATA MODEL & TABLES
-
-### Table 1: STRATEGY_TYPES (4 records)
-**Purpose:** Define the 4 strategy approaches  
-**Records:** Smart, Aggressive, Conservative, Risk-Reward  
+### Table 1: STRATEGY_TYPES (tblWMQ46ow4hnEQBf)
+**Purpose:** Define the 4 golf strategy approaches
+**Records:** Smart, Aggressive, Conservative, Risk-Reward
 **Key Fields:**
-- `id`: STRAT-001, STRAT-002, STRAT-003, STRAT-004
-- `strategy_name`: Text name
-- `full_strategy_approach`: Detailed explanation
-- `research_focus_keywords`: What to research for this strategy
-- `lyrical_themes`: Emotional tone for lyrics
-- `music_tone`: Music style (bold, steady, etc.)
-- `chatgpt_prompt_template`: Ready-to-use prompt
+- `strategy_name`, `emoji`, `short_description`
+- `full_strategy_approach` — detailed golf strategy (NOT music/lyrical content)
+- `research_focus_keywords` — what to research for this strategy
+- `is_active` — checkbox
 
-### Table 2: COURSES
-**Purpose:** Master golf course reference  
-**One-time creation per course**  
+**Note:** Music tone, lyrical themes, and prompt templates have moved to AI_LAB. Strategy types are purely about how to play golf.
+
+### Table 2: COURSES (tblUmMx0zgCP35j7N)
+**Purpose:** Master golf course data + facility info + hole overview
 **Key Fields:**
-- `id`: COURSE-{city}-{year}
 - `course_name`, `architect`, `year_built`
 - `location_city`, `location_state`, `location_country`
 - `par_total`, `total_yardage`, `holes_total`
 - `course_description`, `designer_intent`, `strategic_elements`
-- `is_active`: Checkbox (actively creating anthems?)
+- `general_vibe` — free-text personality description
+- **Facility:** `facility_name`, `course_type`, `course_address`, `website`, `scorecard_url`
+- **Hole Info (merged from deprecated HOLES table):** `signature_holes`, `hole_descriptions`, `course_par`
+- **Verification:** `initial_research_status`, `auto_populate_status`, `last_verified_date`
+- **Media:** `course_image`, `course_logo`
+- `is_on_release_schedule` — admin-scheduled for official track creation
 
-**Linked By:** TEE_BOXES, HOLES, ANTHEM_REQUESTS
-
-### Table 3: TEE_BOXES
-**Purpose:** Handle tee naming chaos  
-**4-5 records per course**  
+### Table 3: TEE_BOXES (tblYekq8SiNHnBMbk)
+**Purpose:** Per-tee yardages, ratings, and hole-by-hole data
+**4+ records per course**
 **Key Fields:**
-- `id`: TEE-{course-id}-{color}
-- `course_id`: Link to COURSES
-- `standard_color`: Red | White | Blue | Black | Gold
-- `course_local_name`: Course-specific name
-- `display_name`: Formula = "{color} Tees - {local_name}"
+- `course_id` — link to COURSES
+- `standard_color` — Red | White | Blue | Black | Gold
+- `course_local_name` — what the course calls this tee ("Championship", "Member", etc.)
+- `skill_level_for` — Beginner | Intermediate | Advanced | Expert
 - `yardage`, `course_rating`, `slope_rating`, `par`
-- `difficulty_rank`, `skill_level_for`, `is_primary`
-- `research_notes`: What makes this tee unique
+- `hole_data` — per-hole yardage and par in format: `1: 378 (4), 2: 509 (5), ...`
+- `front_yardage`, `back_yardage`
+- **Verification:** `verification_method`, `confidence`, `scorecard_url`
 
-**Linked By:** ANTHEM_REQUESTS
+**Tee Naming:** Courses name tees differently. `standard_color` + `course_local_name` + `skill_level_for` give users 3 ways to identify the right tee.
 
-### Table 4: HOLES (Per-hole strategy)
-**Purpose:** Store hole-specific information for lyrics  
-**18 records per course**  
+### Table 4: USER_PROFILES (tbl4D4uPdzGdenax7)
+**Purpose:** Golfer profiles with club yardages for player-specific research
 **Key Fields:**
-- `id`: HOLE-{course-id}-{number}
-- `course_id`: Link to COURSES
-- `hole_number`, `par`, `handicap_index`
-- `hole_name`, `hole_description`
-- `strategic_elements`, `difficulty_descriptor`
-- `signature_feature`, `lyrical_inspiration`
+- `user_email`, `user_name`, `handicap`
+- `profile_type` — User | Platform Default | Preset
+- `preferred_tee_level`, `play_style`, `experience_level`
+- **Club Yardages:** `driver_carry`, `driver_total`, `three_wood_carry`, `hybrid_carry`, `seven_iron_carry`, `pw_carry`
+- `preferred_layup_range`, `shot_shape`, `miss_tendency`
+- `strengths`, `golf_goals`
 
-**Purpose of "lyrical_inspiration":** Helps songwriters create emotional references to specific holes
+**Profile Types:**
+- **User** — real player's actual distances (e.g., Nick/Gulick)
+- **Platform Default** — average player template for official tracks
+- **Preset** — pre-built profiles for known players (pros)
 
-### Table 5: USER_PROFILES
-**Purpose:** How individual golfers play  
-**One per golfer**  
+### Table 5: ANTHEM_REQUESTS (tblCS344T2dnzpusU) — HUB TABLE
+**Purpose:** Central tracking for all track creation requests
 **Key Fields:**
-- `id`: PROFILE-{email}-{year}
-- `user_email`, `user_name`
-- `handicap`, `preferred_tee_level`, `play_style`
-- `experience_level`, `strengths`, `development_areas`
-- `personality_traits`, `golf_goals`, `notes`
+- `course_id` — link to COURSES
+- `user_profile_id` — link to USER_PROFILES
+- `strategy_type_id` — link to STRATEGY_TYPES
+- `tee_box_id` — link to TEE_BOXES
+- `status` — Pending Review → Research Started → Research Complete → Script Creation → Script Review → Script Approved → Suno Generating → Track QC → Published
+- `priority` — High | Medium | Low
+- `is_custom_request` — user-initiated customization vs admin/default
+- `parent_request_id` — link to another ANTHEM_REQUESTS (if this is a customization of an existing track)
+- `automation_log`, `notes`
 
-**Note:** Currently one profile per person; extensible to per-course later
+**Every other table links back to this for complete audit trail.**
 
-### Table 6: ANTHEM_REQUESTS ⭐ HUB TABLE
-**Purpose:** Central tracking for all track creation  
-**One per track request**  
+### Table 6: RESEARCH_OUTPUT (tblvAxDrSQMSTSdyL)
+**Purpose:** Store Perplexity research — both reusable course data and player-specific strategy
 **Key Fields:**
-- `id`: REQ-{YYYYMMDD}-{course-id}-{strategy}
-- `course_id`: Link to COURSES ✓ REQUIRED
-- `user_profile_id`: Link to USER_PROFILES
-- `strategy_type_id`: Link to STRATEGY_TYPES ✓ REQUIRED
-- `tee_box_id`: Link to TEE_BOXES ✓ REQUIRED
-- `status`: Pending Review → Research → Script → Suno → Published
-- `priority`: Low | Normal | High
-- `request_notes`: Why you want this track
-- `internal_qa_notes`: Working notes
+- `request_id` — link to ANTHEM_REQUESTS
+- `course_id` — link to COURSES
+- `research_type` — **Course Overview** (reusable) | **Deep Research** (player-specific)
+- `research_prompt_used`, `raw_output`, `research_tool`
+- `research_status`, `confidence_score`
+- **Deep Research fields:** `player_profile_id`, `tee_box_id`, `strategy_type_id`, `player_specific_strategy`, `club_distance_analysis`
 
-**Purpose:** Every other table links back to this (complete audit trail)
+**Two types of research:**
+- **Course Overview** — broad course history, hole descriptions, general strategy. Created once per course, reused for all players.
+- **Deep Research** — player-specific hole-by-hole strategy. "With your 275-yard driver, on hole 7 you can carry the bunker..." Created per player/tee/strategy combination.
 
-### Table 7: RESEARCH_OUTPUT
-**Purpose:** Store and organize Perplexity research  
-**One per request**  
+### Table 7: SCRIPTS (tblX7FhAhbmDHOhOD)
+**Purpose:** ChatGPT lyrics, versioned
 **Key Fields:**
-- `id`: RES-{course-id}-{date}
-- `request_id`: Link to ANTHEM_REQUESTS
-- `research_prompt_used`: Exactly what you asked
-- `raw_output`: Complete Perplexity response (backup)
-- `course_history`, `design_philosophy`, `hole_strategy_notes`: Parsed sections
-- `strategic_elements`, `notable_characteristics`
-- `key_takeaways`: Your summary
-- `confidence_score`: 1-5 rating
-- `research_status`: Complete | Partial | Needs More | Rejected
+- `request_id` — link to ANTHEM_REQUESTS
+- `research_id` — link to RESEARCH_OUTPUT (which data was used)
+- `version_number` — 1, 2, 3...
+- `reference_script_id` — link to previous SCRIPTS version (edit chain)
+- `chatgpt_prompt_sent`, `chatgpt_response_raw`
+- `character_count` — formula: LEN(chatgpt_response_raw)
+- `generate_now` — checkbox (automation trigger)
 
-### Table 8: SCRIPTS
-**Purpose:** Track ChatGPT script generation and edits  
-**One or more per request (v1, v2, etc.)**  
-**Key Fields:**
-- `id`: SCRIPT-{request}-V{version}
-- `request_id`: Link to ANTHEM_REQUESTS
-- `research_id`: Link to RESEARCH_OUTPUT (which data was used)
-- `version_number`: 1, 2, 3, etc.
-- `chatgpt_prompt_sent`: Exact prompt to ChatGPT
-- `chatgpt_response_raw`: ChatGPT's raw output
-- `your_edits_summary`: What you changed and why
-- `final_approved_script`: Ready for Suno (with line breaks)
-- `quality_assessment`: Perfect | Minor Edits | Major Edits | Rejected
-- `approval_date`, `approved_by`
+**Versioning:** Each revision creates a new record with incremented version_number. Pipeline uses the latest version for a given request_id.
 
-### Table 9: SUNO_PARAMETERS
-**Purpose:** Music generation settings (reusable)  
-**One per request (can be reused for variations)**  
+### Table 8: ANTHEM_PARAMETERS (tblN5ffNIaSJE7yws)
+**Purpose:** Music generation settings
+*Renamed from SUNO_PARAMETERS*
 **Key Fields:**
-- `id`: PARAMS-{request}
-- `request_id`: Link to ANTHEM_REQUESTS
+- `request_id` — link to ANTHEM_REQUESTS
 - `genre`, `instrumentation`, `tempo_bpm`, `mood_descriptors`
 - `vocal_type`, `duration_seconds`, `production_level`
-- `similar_artist_refs`: Reference artists
-- `style_prompt`: Full style description for Suno
-- `variables`: Additional Suno parameters
-- `guidelines_24_8`: Brand voice and quality standards
+- `style_prompt` — full style description for Suno
+- `music_style_template_id` — link to AI_LAB (which music style was used)
+- `persona_reference_id` — link to AI_LAB (optional persona reference)
+- **Suno API params:** `model` (V5/V4_5/etc.), `instrumental` (checkbox), `negative_tags`, `vocal_gender` (m/f)
 
-### Table 10: SUNO_GENERATIONS
-**Purpose:** Track Suno API calls and polling  
-**One per request**  
+### Table 9: ANTHEM_GENERATIONS (tbluijCk5bySJoyZE)
+**Purpose:** Suno API tracking and polling
+*Renamed from SUNO_GENERATIONS*
 **Key Fields:**
-- `id`: SUNO-{request}
-- `request_id`: Link to ANTHEM_REQUESTS
-- `parameters_id`: Link to SUNO_PARAMETERS
-- `suno_task_id`: From Suno API (filled after call)
-- `status`: Queued | Generating | Polling | Complete | Failed
+- `request_id` — link to ANTHEM_REQUESTS
+- `parameters_id` — link to ANTHEM_PARAMETERS
+- `suno_task_id` — from Suno API
+- `status` — Queued | Generating | Polling | Complete | Failed
 - `polling_attempts`, `last_polled_at`
-- `suno_response_data`: Full JSON when complete
-- `audio_url`, `cover_image_url`: Filled when complete
-- `error_message`: If failed
-- `completion_date`, `api_notes`
+- `suno_response_data`, `audio_url`, `cover_image_url`
+- `error_message`
 
-### Table 11: TRACKS (FINAL DELIVERABLE)
-**Purpose:** Final output with complete audit trail  
-**One per published track**  
+### Table 10: TRACKS (tblWyEOHAaGMp5Sh3)
+**Purpose:** Final deliverable with complete audit trail
 **Key Fields:**
-- `id`: TRACK-{request}
-- Links to ALL upstream tables (complete chain):
-  - `request_id`, `course_id`, `user_profile_id`, `strategy_type_id`, `tee_box_id`
-  - `research_id`, `script_id`, `suno_generation_id`
-- `track_title`, `track_description`
-- `audio_url`, `audio_file_local`, `cover_image_url`
-- `duration_seconds`, `style_generated`, `model_used`
-- `lyrics_used`: Link or paste to SCRIPTS
-- `status`: Draft | Approved | Published | Archived | Rejected
-- `quality_rating`: ★ to ★★★★★
-- `qa_notes`: Detailed assessment
-- `approved_date`, `approved_by`, `release_date`
+- Links to ALL upstream: `request_id`, `course_id`, `user_profile_id`, `strategy_type_id`, `tee_box_id`, `research_id`, `script_id`, `suno_generation_id`
+- `track_title`, `duration_seconds`, `audio_url`, `audio_file`
+- `generation_id` — Suno task ID for tracing
+- `generation_status` — Queued | Generating | Complete | Failed
+- `status` — Draft | Approved | Published | Archived | Rejected
+- **QC:** `qa_status` (Pending/Pass/Fail/Needs Revision), `qa_notes`
+- **Platform:** `is_official`, `official_version_label`, `approved_for_platform`, `published_to_platform`, `published_url`
+- **Art:** `art_status`, `art_source`, `art_prompt_used`, `track_art`
+
+### Table 11: AI_LAB (tblyPCnOer7C7TZeC)
+**Purpose:** Prompt versioning, music style templates, persona references
+**Key Fields:**
+- `prompt_name`, `version`, `prompt_type` — Research | Strategy | Script/Lyric | Music Style | Persona | Art
+- `system_prompt` — the actual prompt text
+- `variables_used` — placeholders: {COURSE_NAME}, {PLAYER_DISTANCES}, etc.
+- `agent_type` — Perplexity | ChatGPT | Suno | Manual
+- `hard_rules`, `status` (Draft/Testing/Active/Deprecated), `is_current_default`
+- **Evaluation:** `success_score` (1-5), `observed_issues`, `known_failure_modes`, `what_worked_well`, `what_needs_improvement`
+- `change_notes`, `documentation_link`
+
+**How prompts work:**
+- Pipeline calls `getPrompt("Research")` → checks AI_LAB for active default → falls back to code default
+- Music styles: `getMusicStyles()` → returns all active "Music Style" records from AI_LAB
+- To test a new prompt: create new AI_LAB record, mark `is_current_default`, uncheck the old one
+
+### Deprecated: HOLES (tblQ9RSbvRTYHRiTJ)
+Hidden, not deleted. Course-level hole info merged into COURSES (`signature_holes`, `hole_descriptions`) and TEE_BOXES (`hole_data`).
 
 ---
 
-## WORKFLOW: 8-STEP MANUAL PROCESS
-
-### Overview
-The manual workflow has 8 steps, takes 2-3 hours per track (with practice, ~1.5 hours), and includes human review checkpoints at steps 3, 6, and 8.
+## PIPELINE FLOW
 
 ```
-STEP 1: Create ANTHEM_REQUEST
-     ↓
-STEP 2: Run RESEARCH (Perplexity)
-     ↓
-[HUMAN REVIEW] Research approved?
-     ↓
-STEP 3: Generate SCRIPT (ChatGPT + edits)
-     ↓
-[HUMAN REVIEW] Script approved?
-     ↓
-STEP 4: Prepare SUNO_PARAMETERS
-     ↓
-STEP 5: Call SUNO API
-     ↓
-STEP 6: Wait & POLL for completion
-     ↓
-STEP 7: Create TRACKS record
-     ↓
-[HUMAN REVIEW] Quality acceptable?
-     ↓
-STEP 8: QC & PUBLISH
-     ↓
-DONE: Track is live
+1. Course Setup
+   → COURSES record created (or found)
+   → TEE_BOXES populated with hole data from scorecard
+   → ANTHEM_REQUESTS record created with strategy_type_id, tee_box_id, user_profile_id
+
+2. Course Overview Research (Perplexity) — ~30s
+   → Prompt from AI_LAB (type: Research) or code default (src/prompts/course-overview.ts)
+   → Creates RESEARCH_OUTPUT (research_type: "Course Overview")
+   → Reusable across all player customizations
+
+3. Deep Strategy Research (Perplexity) — ~30s
+   → Takes: Course Overview + Tee Box hole_data + Player Profile club yardages + Strategy Type
+   → Prompt from AI_LAB (type: Strategy) or code default (src/prompts/deep-strategy.ts)
+   → Creates RESEARCH_OUTPUT (research_type: "Deep Research")
+   → Player-specific: "With your 275yd driver, you can carry the bunker on hole 4..."
+
+4. Script/Lyric Generation (ChatGPT) — ~30s
+   → Takes: Deep Research + Course Data + Music Style
+   → Prompt from AI_LAB (type: Script/Lyric) or code default (src/prompts/script-writer.ts)
+   → Creates SCRIPTS record (version 1)
+   → Target: 4000-6000 characters
+
+5. [HUMAN REVIEW] → Script approved? (generate_now checkbox on SCRIPTS)
+   → If no: edit and create SCRIPTS v2 (new record, reference_script_id → v1)
+
+6. Music Generation (Suno via KIE.ai) — ~3-5 min
+   → Music Style from AI_LAB (type: Music Style) — always from AI_LAB
+   → Creates ANTHEM_PARAMETERS + ANTHEM_GENERATIONS records
+   → Polls with exponential backoff (30s → 45s → 60s cap)
+   → Returns 2 track variants
+
+7. Track Creation + QC
+   → Creates TRACKS record with full audit trail (links to every upstream table)
+   → qa_status: Pending → Pass/Fail/Needs Revision
+   → Published → available on platform
 ```
 
-### Detailed Steps
+**Timing:** Full pipeline ~5-10 min for new course (most is Suno generation). Customization (new player/strategy on existing course) skips step 2.
 
-#### Step 1: Create ANTHEM_REQUEST (5 min)
-- Open ANTHEM_REQUESTS table
-- Create new record with:
-  - `course_id`: Select the golf course
-  - `user_profile_id`: Who is this for? (optional)
-  - `strategy_type_id`: Smart | Aggressive | Conservative | Risk-Reward
-  - `tee_box_id`: Which difficulty level?
-  - `status`: Set to "Pending Review"
-  - `request_notes`: Why do you want this track?
-- This is your central request that links everything
+---
 
-#### Step 2: Run RESEARCH (15-30 min)
-- Get prompt template from STRATEGY_TYPES table
-- Fill in placeholders: {COURSE_NAME}, {ARCHITECT}, {STRATEGY_DETAILS}
-- Open Perplexity / ChatGPT
-- Run research query
-- Copy full response
-- Create RESEARCH_OUTPUT record:
-  - `research_prompt_used`: What you asked
-  - `raw_output`: Full Perplexity response
-  - Parse into sections: history, philosophy, strategy, elements
-  - `key_takeaways`: Your 3-5 key insights
-  - `confidence_score`: 1-5 rating
-  - `research_status`: "Complete"
-- Update ANTHEM_REQUESTS status → "Research Complete"
+## ANTHEM_REQUESTS STATUS FLOW
 
-**Checkpoint:** Is the research good enough?
-- YES → Continue
-- NO → Refine search, create new RESEARCH_OUTPUT, or get more detail
-
-#### Step 3: Generate SCRIPT (30-45 min)
-- Get ChatGPT prompt template from STRATEGY_TYPES.chatgpt_prompt_template
-- Fill in placeholders with course + research + strategy details
-- Send to ChatGPT
-- Copy full response
-- Create SCRIPTS record (version 1):
-  - `chatgpt_prompt_sent`: Exact prompt used
-  - `chatgpt_response_raw`: ChatGPT output
-  - `version_number`: 1
-  
-**Sub-Step 3B: Review & Edit**
-- Read ChatGPT output
-- Is it perfect? Keep as-is
-- Minor issues? Make small edits (tweaks, phrasing)
-- Major issues? Rewrite sections or full verse
-- Document changes in `your_edits_summary`
-- Rate quality: Perfect | Minor Edits | Major Edits
-- Paste final version in `final_approved_script` (with line breaks)
-- Set `approved_date` = today, `approved_by` = you
-
-- Update ANTHEM_REQUESTS status → "Script Approved"
-
-**Checkpoint:** Does the script capture the strategy and make emotional sense?
-- YES → Continue
-- NO → Consider regenerating with different prompt or doing another edit pass
-
-#### Step 4: Prepare SUNO_PARAMETERS (10 min)
-- Create SUNO_PARAMETERS record
-- Define music style:
-  - `genre`: Cinematic Pop, Rock, Electronic, etc.
-  - `instrumentation`: Orchestra, Synth, Acoustic, etc.
-  - `tempo_bpm`: 120-140 typical
-  - `mood_descriptors`: Bold, dramatic, steady, etc.
-  - `vocal_type`: Male, Female, Mixed
-  - `duration_seconds`: 120-180 typical
-  - `production_level`: Simple, Polished, Studio Quality
-  - `similar_artist_refs`: Reference artists
-  - `style_prompt`: Full description for Suno (combine all above)
-  - `guidelines_24_8`: Brand requirements
-
-#### Step 5: Call SUNO API (5 min)
-- Create SUNO_GENERATIONS record
-- Set `status` = "Queued"
-- Call Suno API with:
-  - Lyrics from SCRIPTS.final_approved_script
-  - Style from SUNO_PARAMETERS.style_prompt
-  - Duration, vocal type, all variables
-- Suno returns: `suno_task_id`
-- Update SUNO_GENERATIONS with task_id
-- Set `status` = "Generating"
-- Update ANTHEM_REQUESTS status → "Suno Generating"
-
-#### Step 6: Wait & POLL (2-30 min)
-- Wait 30-60 seconds
-- Check Suno API for status using task_id
-- Still generating? Check again in 30 seconds
-- Generating complete?
-  - Suno returns: audio_url + cover_image_url
-  - Update SUNO_GENERATIONS:
-    - `suno_response_data`: Full JSON from Suno
-    - `audio_url`: Direct link to audio file
-    - `cover_image_url`: Cover art
-    - `status`: "Complete"
-    - `completion_date`: Now
-  - Go to Step 7
-
-**Note:** If you set up Suno webhook notifications, skip manual polling
-
-#### Step 7: Create TRACKS Record (10 min)
-- Create TRACKS record with links to all upstream data:
-  - `request_id` → ANTHEM_REQUESTS
-  - `course_id` → COURSES
-  - `strategy_type_id` → STRATEGY_TYPES
-  - `research_id` → RESEARCH_OUTPUT
-  - `script_id` → SCRIPTS
-  - `suno_generation_id` → SUNO_GENERATIONS
-  - (Optional: `user_profile_id`, `tee_box_id`)
-- Fill metadata:
-  - `track_title`: Good display name
-  - `track_description`: What is this?
-  - `audio_url`: From Suno
-  - `cover_image_url`: From Suno
-  - `duration_seconds`: From Suno response
-  - `style_generated`: What Suno created
-  - `model_used`: v5
-- Set `status` = "Draft" (pending QC)
-- Update ANTHEM_REQUESTS status → "Track QC"
-
-#### Step 8: QC & PUBLISH (15 min)
-- **Listen to the track!**
-- Assess quality:
-  - Is the music good? Does it fit the course?
-  - Do the lyrics match the music well?
-  - Is the production quality acceptable?
-  - Does it capture the strategy/emotion?
-- Update TRACKS:
-  - `quality_rating`: ★ to ★★★★★
-  - `qa_notes`: Detailed assessment (what works, any issues)
-- Decision:
-  - **YES, publish:**
-    - `status` = "Approved"
-    - `approved_date` = today
-    - `approved_by` = you
-    - Then `status` = "Published"
-    - `release_date` = today
-    - Update ANTHEM_REQUESTS → "Published"
-  - **NO, issues found:**
-    - Note the problem
-    - Go back to appropriate step and redo
-    - Create new version records (SCRIPTS v2, SUNO_GENERATIONS v2)
+```
+Pending Review → Research Started → Research Complete → Script Creation
+→ Script Review → Script Approved → Suno Generating → Track QC → Published
+```
 
 ---
 
 ## QUALITY CONTROL
 
 ### QC Checkpoints
+1. **Research Approval** — confidence_score ≥ 4/5, comprehensive and accurate
+2. **Script Approval** — captures strategy, course-specific references, singable rhythm, 4000-6000 chars
+3. **Track Quality** — qa_status: Pass (audio quality, vocals, instrumentation, emotional impact)
 
-**Checkpoint 1: Research Approval (After Step 2)**
-- Research is comprehensive and accurate
-- Confidence score ≥ 4/5
-- Key insights are captured
-- Ready for script writer to use
-
-**Checkpoint 2: Script Approval (After Step 3B)**
-- Lyrics capture the strategy type
-- References to course/holes are specific and poetic
-- Flow and rhythm work for singing
-- Brand voice is appropriate
-- Approved by creator/lead before Suno
-
-**Checkpoint 3: Track Quality (After Step 8)**
-- Audio quality is professional (no artifacts)
-- Vocals are clear and on-key
-- Instrumentation matches mood/style
-- Track length is appropriate
-- Emotional impact matches intent
-- Release-ready
-
-### Quality Standards
-
+### Quality Ratings
 | Rating | Meaning | Action |
 |--------|---------|--------|
 | ★★★★★ | Excellent | Publish immediately |
-| ★★★★ | Very good | Minor tweaks acceptable, publish |
-| ★★★ | Good | Acceptable, consider regenerating for variety |
-| ★★ | Fair | Has issues, regenerate with feedback |
-| ★ | Poor | Do not publish, redo significant parts |
-
-### Escalation Path
-1. If research is weak → refine search, get more detail
-2. If script is off → edit heavily or regenerate with better prompt
-3. If audio is bad → try Suno regeneration with adjusted parameters
-4. If persistent issues → escalate to project lead for decision
+| ★★★★ | Very good | Minor tweaks, publish |
+| ★★★ | Good | Acceptable, consider regenerating |
+| ★★ | Fair | Has issues, regenerate |
+| ★ | Poor | Do not publish, redo |
 
 ---
 
-## VIEWS & DASHBOARDS
+## ENVIRONMENT & FILES
 
-### Recommended Airtable Views
+### Environment Variables (.env)
+- `AIRTABLE_PAT` — Airtable Personal Access Token
+- `AIRTABLE_BASE_ID` — Airtable base identifier
+- `PERPLEXITY_API_KEY` — Perplexity `sonar` model
+- `OPENAI_API_KEY` — GPT-4o
+- `SUNO_API_KEY` — KIE.ai Suno API
+- `N8N_WEBHOOK_BASE_URL` — n8n cloud instance
+- `N8N_MCP_SERVER_URL` — n8n MCP endpoint
 
-#### View 1: "My Work Queue"
-- Table: ANTHEM_REQUESTS
-- Filter: status NOT IN (Published, Rejected)
-- Sort: priority DESC, request_date ASC
-- Shows: What needs work next
-
-#### View 2: "Ready for Script"
-- Table: ANTHEM_REQUESTS
-- Filter: status = "Research Complete"
-- Shows: Next step is script generation
-
-#### View 3: "Awaiting Suno"
-- Table: SUNO_GENERATIONS
-- Filter: status IN (Generating, Polling)
-- Shows: Which tracks are being created
-
-#### View 4: "Published Tracks"
-- Table: TRACKS
-- Filter: status = "Published"
-- Sort: release_date DESC
-- Shows: Final output library
-
-#### View 5: "Tracks by Course"
-- Table: TRACKS
-- Group by: course_id
-- Shows: Completeness per course
-
-#### View 6: "Script Iterations"
-- Table: SCRIPTS
-- Group by: request_id
-- Shows: How many versions per track
+### Key Code Files
+| File | Purpose |
+|------|---------|
+| `src/airtable-client.ts` | Shared Airtable client (uses table IDs) |
+| `src/research.ts` | Perplexity API wrapper |
+| `src/script-generator.ts` | OpenAI/ChatGPT wrapper |
+| `src/suno.ts` | KIE.ai Suno API wrapper |
+| `src/prompts/loader.ts` | Prompt loader (AI_LAB + code fallback) |
+| `src/prompts/course-overview.ts` | Research prompt default |
+| `src/prompts/deep-strategy.ts` | Strategy prompt default |
+| `src/prompts/script-writer.ts` | Script/lyric prompt default |
+| `src/pipeline-test.ts` | End-to-end pipeline test (Pebble Beach) |
+| `src/migrate-schema.ts` | Schema migration (61 fields + AI_LAB table) |
+| `src/migrate-gap-fields.ts` | Gap migration (15 additional fields) |
+| `src/seed-data.ts` | Seed data for fresh base setup |
+| `src/update-existing-records.ts` | Update existing records to platform vision |
 
 ---
 
-## AUTOMATION ROADMAP (FUTURE)
+## AUTOMATION ROADMAP
 
-### Phase 1: Manual (Current)
-- Human creates requests
-- Human runs research
-- Human generates scripts
-- Human calls Suno
-- Human approves final track
+### Phase 1: Working Pipeline (Current)
+- ✅ TypeScript pipeline runs end-to-end
+- ✅ All API integrations working (Perplexity, ChatGPT, Suno)
+- ✅ Schema complete with all fields
+- ✅ Prompt system operational (AI_LAB + code defaults)
+- ⬜ Pipeline orchestrator module (clean version of pipeline-test.ts)
+- ⬜ Deep Research stage implementation
 
 ### Phase 2: Semi-Automated (n8n + Airtable)
-- Research automated (Perplexity integration)
-- Script generation automated (ChatGPT integration)
-- Suno calling automated
-- **Human still approves at all checkpoints**
+- n8n triggers pipeline stages based on ANTHEM_REQUESTS status changes
+- Human still approves at checkpoints (script, final track)
+- `generate_now` checkbox on SCRIPTS triggers music generation
 
-### Phase 3: Fully Automated (Future)
-- Research → Script → Suno all automated
-- Automatic polling until complete
-- Create TRACKS record automatically
-- **Human only does final QC approval**
-- Fast turnaround (30 min per track)
-
-### n8n Integration Points
-```
-n8n Workflow 1: Research Automation
-├─ Trigger: ANTHEM_REQUEST status = "Pending Review"
-├─ Get: Course + Strategy + User data
-├─ Call: Perplexity API
-├─ Create: RESEARCH_OUTPUT record
-└─ Update: ANTHEM_REQUEST status → "Research Complete"
-
-n8n Workflow 2: Script Generation
-├─ Trigger: ANTHEM_REQUEST status = "Research Complete"
-├─ Get: RESEARCH_OUTPUT data
-├─ Build: ChatGPT prompt from template
-├─ Call: ChatGPT API
-├─ Create: SCRIPTS record
-└─ Update: ANTHEM_REQUEST status → "Script Approval"
-└─ Notify: Human for approval
-
-n8n Workflow 3: Suno Integration
-├─ Trigger: ANTHEM_REQUEST status = "Script Approved"
-├─ Get: SCRIPTS + SUNO_PARAMETERS
-├─ Call: Suno API
-├─ Create: SUNO_GENERATIONS record
-├─ Webhook: Listen for Suno completion
-├─ Create: TRACKS record when done
-└─ Notify: Human for QC approval
-```
-
-This schema is **designed to support** these automations without redesign.
-
----
-
-## SUCCESS METRICS
-
-### For Implementation
-- ✅ All 11 tables created with correct relationships
-- ✅ Can create first track manually in <3 hours
-- ✅ Team member can understand workflow and create second track independently
-- ✅ Complete audit trail exists (can trace any track back to inputs)
-- ✅ 8-step manual workflow is clear and followable
-
-### For Track Quality
-- Target: 80% of tracks rated ★★★★ or higher
-- Goal: <20% require regeneration/adjustments
-- Standard: Zero "★" rated tracks (those don't get published)
-
-### For Adoption
-- Team member can create track solo after 2 tutorials
-- Status tracking prevents missed steps
-- Views make it easy to see work queue
-
----
-
-## DEPENDENCIES & ASSUMPTIONS
-
-### Dependencies
-- Airtable account with sufficient space (for 100+ courses, 1000+ tracks)
-- API keys for: Perplexity, ChatGPT, Suno
-- Team member availability to do manual steps (initially)
-
-### Assumptions
-- Perplexity and ChatGPT APIs remain available/stable
-- Suno API provides reliable music generation
-- Golf course data is available (public sources + manual research)
-- Team member is technically capable (comfortable with Airtable, APIs)
-
-### External Integrations (Required for Automation)
-- n8n account (for workflow automation)
-- Perplexity API
-- ChatGPT API (or OpenAI API)
-- Suno API
-
----
-
-## DELIVERABLES FOR IMPLEMENTATION
-
-This PRD includes:
-1. ✅ **Complete Airtable schema** with all field definitions
-2. ✅ **8-step manual workflow** with timing and details
-3. ✅ **Data relationships** showing how tables link
-4. ✅ **Quality control standards** and checkpoints
-5. ✅ **Sample data** showing what records look like
-6. ✅ **Views and dashboard** design
-7. ✅ **Future automation roadmap** and n8n integration points
-
-### What to Build First
-1. Create the 11 tables in Airtable (in order listed)
-2. Add the 4 STRATEGY_TYPES records
-3. Create recommended views
-4. Create first COURSES record (Pebble Beach example)
-5. Create first TEE_BOXES records (4-5 for Pebble)
-6. Test workflow end-to-end
-
-### Estimated Build Time
-- Airtable schema: 4-6 hours
-- Views and testing: 2 hours
-- First track creation: 2-3 hours
-- Total: 8-11 hours to production-ready
-
----
-
-## HANDOFF NOTES
-
-**To Next Agent/Team Member:**
-- This schema is production-ready and tested conceptually
-- Start with table creation and STRATEGY_TYPES records
-- Don't skip the "manual workflow test" - create 1 full track to validate
-- The 8-step process is the critical part - understand it fully before building
-- Ask questions about anything unclear
-- Document any changes/improvements you make
-
-**Success = First track published within 48 hours**
+### Phase 3: User-Facing Platform
+- Users request courses and vote on priorities
+- Users customize tracks to their profile (triggers re-generation)
+- Official tracks published with default settings
+- Voting system for course prioritization
 
 ---
 
@@ -796,4 +353,4 @@ This PRD includes:
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0 | 2026-02-05 | Initial PRD creation based on requirements gathering |
-
+| 2.0 | 2026-02-12 | Major update: 12-table schema, HOLES deprecated, ANTHEM_PARAMETERS/GENERATIONS rename, AI_LAB table, hybrid prompt system, player-specific research, club yardage fields, hole data format, pipeline tested end-to-end on Pebble Beach |
