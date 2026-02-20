@@ -4,54 +4,63 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Data Brutalism + Royal Blue Theme */
-  --background: #05080F;
-  --foreground: #F8FAFC;
-  --card: #0C1220;
-  --card-foreground: #F8FAFC;
-  --popover: #0C1220;
-  --popover-foreground: #F8FAFC;
-  --primary: #1E3A8A;
-  --primary-foreground: #FFFFFF;
-  --secondary: #162033;
-  --secondary-foreground: #E2E8F0;
-  --muted: #1A2744;
-  --muted-foreground: #94A3B8;
-  --accent: #3B82F6;
-  --accent-foreground: #FFFFFF;
-  --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
-  --border: #1E3A5F;
-  --input: #1E3A5F;
-  --ring: #3B82F6;
+  /* 24/8 Anthem Brand Colors */
+  --black: #000000;
+  --charcoal: #1a1a1a;
+  --charcoal-light: #2d2d2d;
+  --charcoal-lighter: #3d3d3d;
   
-  /* Chart colors - brainwave themed */
-  --chart-delta: #6366F1;
-  --chart-theta: #8B5CF6;
-  --chart-alpha: #3B82F6;
-  --chart-beta: #06B6D4;
-  --chart-gamma: #F59E0B;
+  --cream-light: #faf8f3;
+  --cream: #f5f5dc;
+  --cream-dark: #e8dcc4;
   
-  /* Additional accent colors */
-  --electric: #00F0FF;
-  --royal: #1E3A8A;
-  --gold: #F59E0B;
-  --coral: #F97316;
+  --orange: #ff6b35;
+  --orange-dark: #d2691e;
+  --terra-cotta: #e07a5f;
   
-  --radius: 0.25rem;
+  /* Semantic tokens (preserving existing values which take precedence) */
+  --background: var(--black);
+  --foreground: var(--cream-light);
+  --card: var(--charcoal);
+  --card-foreground: var(--cream-light);
+  --popover: var(--charcoal);
+  --popover-foreground: var(--cream-light);
+  --primary: var(--orange);
+  --primary-foreground: var(--black);
+  --secondary: var(--charcoal-light);
+  --secondary-foreground: var(--cream-light);
+  --muted: var(--charcoal-light);
+  --muted-foreground: var(--cream-dark);
+  --accent: var(--terra-cotta);
+  --accent-foreground: var(--cream-light);
+  --border: var(--charcoal-light);
+  --input: var(--charcoal-light);
+  --ring: var(--orange);
+  
+  /* New shadcn/ui semantic tokens */
+  --destructive: oklch(0.577 0.245 27.325); /* Default from shadcn/ui */
+  --destructive-foreground: oklch(0.577 0.245 27.325); /* Default from shadcn/ui */
+  --sidebar: oklch(0.985 0 0); /* Default from shadcn/ui */
+  --sidebar-foreground: oklch(0.145 0 0); /* Default from shadcn/ui */
+  --sidebar-primary: oklch(0.205 0 0); /* Default from shadcn/ui */
+  --sidebar-primary-foreground: oklch(0.985 0 0); /* Default from shadcn/ui */
+  --sidebar-accent: oklch(0.97 0 0); /* Default from shadcn/ui */
+  --sidebar-accent-foreground: oklch(0.205 0 0); /* Default from shadcn/ui */
+  --sidebar-border: oklch(0.922 0 0); /* Default from shadcn/ui */
+  --sidebar-ring: oklch(0.708 0 0); /* Default from shadcn/ui */
 
-  /* Shadcn default additional variables */
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* Chart colors for visualizations (preserving existing values) */
+  --chart-1: var(--orange);
+  --chart-2: var(--terra-cotta);
+  --chart-3: var(--orange-dark);
+  --chart-4: var(--cream-dark);
+  --chart-5: var(--cream);
+  
+  --radius: 0.75rem; /* Preserving existing radius */
 }
 
 .dark {
+  /* Shadcn/ui dark mode variables */
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.145 0 0);
@@ -71,7 +80,7 @@
   --border: oklch(0.269 0 0);
   --input: oklch(0.269 0 0);
   --ring: oklch(0.439 0 0);
-  --chart-1: oklch(0.488 0.243 264.376); /* These chart colors will be overridden by the theme map if used */
+  --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
@@ -87,8 +96,22 @@
 }
 
 @theme inline {
-  --font-sans: 'Space Grotesk', 'Geist', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Geist Mono', monospace;
+  --font-sans: var(--font-space-grotesk), 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), 'JetBrains Mono', monospace;
+  
+  /* Custom colors */
+  --color-black: var(--black);
+  --color-charcoal: var(--charcoal);
+  --color-charcoal-light: var(--charcoal-light);
+  --color-charcoal-lighter: var(--charcoal-lighter);
+  --color-cream-light: var(--cream-light);
+  --color-cream: var(--cream);
+  --color-cream-dark: var(--cream-dark);
+  --color-orange: var(--orange);
+  --color-orange-dark: var(--orange-dark);
+  --color-terra-cotta: var(--terra-cotta);
+  
+  /* Semantic mappings (preserving existing, adding new) */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -103,20 +126,23 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive: var(--destructive); /* New */
+  --color-destructive-foreground: var(--destructive-foreground); /* New */
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-delta); /* Mapped to existing chart colors */
-  --color-chart-2: var(--chart-theta);
-  --color-chart-3: var(--chart-alpha);
-  --color-chart-4: var(--chart-beta);
-  --color-chart-5: var(--chart-gamma);
-  --radius-sm: calc(var(--radius) - 4px); /* Updated radius calculations */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  
+  --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  
+  /* New sidebar related tokens */
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -129,99 +155,93 @@
 
 @layer base {
   * {
+    /* Merged: apply both existing border-color and shadcn's outline-ring/50 */
     border-color: var(--border);
-    outline-color: var(--ring);
+    outline-color: color-mix(in srgb, var(--ring) 50%, transparent);
   }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
   body {
+    /* Merged: apply existing background-color and color, also add shadcn's @apply */
     background-color: var(--background);
     color: var(--foreground);
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Custom scrollbar for dark theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--charcoal);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--charcoal-light);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--charcoal-lighter);
   }
 }
 
-/* Data Brutalism Typography */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+/* Utility classes for consistent styling */
+.text-balance {
+  text-wrap: balance;
 }
 
-/* Scrollytelling section transitions */
-.section-fade-in {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+.section-padding {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 }
 
-.section-fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
+@media (min-width: 768px) {
+  .section-padding {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
 }
 
-/* Custom scrollbar for data brutalism */
-::-webkit-scrollbar {
-  width: 8px;
+@media (min-width: 1024px) {
+  .section-padding {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
 }
 
-::-webkit-scrollbar-track {
-  background: var(--background);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--primary);
-  border-radius: 0;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
-}
-
-/* Callout box styles */
-.callout-box {
-  border-left: 4px solid var(--accent);
-  background: var(--secondary);
-  padding: 1.5rem;
-  margin: 2rem 0;
-}
-
-/* Grid pattern overlay */
-.grid-pattern {
-  background-image: 
-    linear-gradient(rgba(30, 58, 138, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(30, 58, 138, 0.1) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-
-/* Metric highlight */
-.metric-highlight {
-  font-family: var(--font-mono);
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--accent);
-  line-height: 1;
-}
-
-/* Interactive element hover state */
-.interactive-element {
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.interactive-element:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
-}
-
-/* Slow pulse animation for gamma wave emphasis */
-@keyframes pulse-slow {
+/* Animation utilities */
+@keyframes pulse-glow {
   0%, 100% {
     opacity: 1;
+    filter: drop-shadow(0 0 8px var(--orange));
   }
   50% {
-    opacity: 0.7;
+    opacity: 0.8;
+    filter: drop-shadow(0 0 16px var(--orange));
   }
 }
 
-.animate-pulse-slow {
-  animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
 }

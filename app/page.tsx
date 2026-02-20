@@ -1,549 +1,406 @@
-import { Section } from "@/components/scrollytelling/Section"
-import { Callout, MetricDisplay, PrincipleBox } from "@/components/scrollytelling/Callout"
-import { TableOfContents } from "@/components/scrollytelling/TableOfContents"
-import { Footer } from "@/components/scrollytelling/Footer"
-import { HeroWaveformVisualization } from "@/components/HeroWaveformVisualization"
-import { TempoRatioVisualizer } from "@/components/visualizations/TempoRatioVisualizer"
-import { BpmTempoComparisonSlider } from "@/components/scrollytelling/BpmTempoComparisonSlider"
-import { BrainwaveFrequencyChart } from "@/components/interactive/BrainwaveFrequencyChart"
-import { NeuralEntrainmentAnimator } from "@/components/scrollytelling/NeuralEntrainmentAnimator"
-import { InteractiveDopaminePathway } from "@/components/visualizations/InteractiveDopaminePathway"
-import { SpatialAudioWaveform } from "@/components/scrollytelling/SpatialAudioWaveform"
-import { ScienceToMythSpectrum } from "@/components/scrollytelling/ScienceToMythSpectrum"
+import { SectionWrapper } from "@/components/scrollytelling/section-wrapper"
+import { SectionHeader } from "@/components/scrollytelling/section-header"
+import { PrincipleBox } from "@/components/scrollytelling/principle-box"
+import { CalloutBox } from "@/components/scrollytelling/callout-box"
+import { MetricCard } from "@/components/scrollytelling/metric-card"
+import { Footer } from "@/components/scrollytelling/footer"
+import { HeroWaveformVisualization } from "@/components/scrollytelling/hero-waveform-visualization"
+import { TempoRatioVisualizer } from "@/components/tempo-ratio-visualizer"
+import { BpmTempoComparisonSlider } from "@/components/interactive/bpm-tempo-comparison-slider"
+import { BrainwaveFrequencyChart } from "@/components/visualizations/brainwave-frequency-chart"
+import { NeuralEntrainmentAnimator } from "@/components/scrollytelling/neural-entrainment-animator"
+import { InteractiveDopaminePathway } from "@/components/scrollytelling/interactive-dopamine-pathway"
+import { SpatialAudioWaveform } from "@/components/scrollytelling/spatial-audio-waveform"
+import { ScienceToMythSpectrum } from "@/components/scrollytelling/science-to-myth-spectrum"
 
-const tocItems = [
-  { id: "tempo-truth", number: "01", label: "Tempo as Truth: The 3:1 Ratio & 112 BPM Advantage" },
-  { id: "brainwave-symphony", number: "02", label: "Brainwave Symphony: Entraining Focus & Peak Performance" },
-  { id: "dopamine-drive", number: "03", label: "Dopamine Drive: Fueling Flow & Confidence" },
-  { id: "audio-alchemy", number: "04", label: "Audio Alchemy: Spatial Cues & Cognitive Anchors" },
-  { id: "beyond-belief", number: "05", label: "Beyond Belief: The Science of Engineered Performance" },
-]
-
-export default function Page() {
+export default function NeuroGolfReport() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-black">
       {/* Hero Section */}
-      <Section variant="royal" fullHeight className="relative overflow-hidden">
-        {/* Grid pattern overlay */}
-        <div 
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
-            `,
-            backgroundSize: '60px 60px',
-          }}
-        />
-        
-        <div className="relative z-10 flex flex-col justify-center min-h-[calc(100vh-8rem)]">
+      <section className="relative overflow-hidden bg-gradient-to-b from-black via-black to-charcoal">
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
           {/* Eyebrow */}
-          <div className="font-mono text-sm text-[#94A3B8] uppercase tracking-[0.3em] mb-6">
+          <p className="mb-6 text-center font-mono text-xs uppercase tracking-[0.2em] text-cream-dark">
             Neuro-Golf Performance Audio
-          </div>
-          
-          {/* Main headline */}
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 max-w-4xl text-balance">
-            The 24/8 Anthem: Your Brain Doesn&apos;t Negotiate
-          </h1>
-          
-          {/* Subhead */}
-          <p className="text-lg md:text-xl text-[#E2E8F0] max-w-2xl mb-8 leading-relaxed">
-            This isn&apos;t workout music. This isn&apos;t a motivational podcast. This is{" "}
-            <span className="text-[#3B82F6] font-semibold">neuro-golf performance audio</span>—engineered 
-            to hijack your motor timing, entrain your brainwaves, and install professional-level 
-            tempo into your swing mechanics.
           </p>
-          
-          {/* Key metrics row */}
-          <div className="flex flex-wrap gap-8 mb-12">
-            <div className="border-l-2 border-[#3B82F6] pl-4">
-              <div className="font-mono text-3xl md:text-4xl font-bold text-white">24</div>
-              <div className="text-sm text-[#94A3B8]">Frames Backswing</div>
+
+          {/* Main Headline */}
+          <h1 className="text-balance text-center font-sans text-4xl font-bold text-cream-light sm:text-5xl lg:text-6xl xl:text-7xl">
+            The 24/8 Anthem:{" "}
+            <span className="text-orange">Your Brain Doesn&apos;t Negotiate</span>
+          </h1>
+
+          {/* Subhead */}
+          <p className="mx-auto mt-6 max-w-3xl text-center text-lg leading-relaxed text-cream-dark sm:text-xl">
+            This isn&apos;t workout music. This isn&apos;t a motivational podcast. This is{" "}
+            <strong className="text-orange">neuro-golf performance audio</strong>—engineered
+            to hijack your motor timing, entrain your brainwaves, and install
+            professional-level tempo into your swing mechanics.
+          </p>
+
+          {/* Key Metrics Grid */}
+          <div className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-4">
+            <div className="rounded-xl border-l-4 border-orange bg-charcoal p-5 sm:p-6">
+              <div className="font-sans text-4xl font-bold text-orange sm:text-5xl">24</div>
+              <div className="mt-1 font-mono text-xs text-cream-dark sm:text-sm">Frames Backswing</div>
             </div>
-            <div className="border-l-2 border-[#F59E0B] pl-4">
-              <div className="font-mono text-3xl md:text-4xl font-bold text-white">8</div>
-              <div className="text-sm text-[#94A3B8]">Frames Downswing</div>
+            <div className="rounded-xl border-l-4 border-orange bg-charcoal p-5 sm:p-6">
+              <div className="font-sans text-4xl font-bold text-orange sm:text-5xl">8</div>
+              <div className="mt-1 font-mono text-xs text-cream-dark sm:text-sm">Frames Downswing</div>
             </div>
-            <div className="border-l-2 border-[#00F0FF] pl-4">
-              <div className="font-mono text-3xl md:text-4xl font-bold text-white">3:1</div>
-              <div className="text-sm text-[#94A3B8]">Pro Tempo Ratio</div>
+            <div className="rounded-xl border-l-4 border-orange-dark bg-charcoal p-5 sm:p-6">
+              <div className="font-sans text-4xl font-bold text-orange-dark sm:text-5xl">3:1</div>
+              <div className="mt-1 font-mono text-xs text-cream-dark sm:text-sm">Pro Tempo Ratio</div>
             </div>
-            <div className="border-l-2 border-[#10B981] pl-4">
-              <div className="font-mono text-3xl md:text-4xl font-bold text-white">112</div>
-              <div className="text-sm text-[#94A3B8]">BPM Precision</div>
+            <div className="rounded-xl border-l-4 border-terra-cotta bg-charcoal p-5 sm:p-6">
+              <div className="font-sans text-4xl font-bold text-terra-cotta sm:text-5xl">112</div>
+              <div className="mt-1 font-mono text-xs text-cream-dark sm:text-sm">BPM Precision</div>
             </div>
           </div>
-          
-          {/* Hero waveform visualization */}
-          <HeroWaveformVisualization />
+
+          {/* Hero Waveform Visualization */}
+          <div className="mt-12">
+            <HeroWaveformVisualization />
+          </div>
         </div>
-      </Section>
+      </section>
 
       {/* Executive Summary / Table of Contents */}
-      <Section variant="dark">
-        <div className="grid md:grid-cols-2 gap-12">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
-              The Science of Swing
-            </h2>
-            <p className="text-[#E2E8F0] mb-4 leading-relaxed">
-              The name tells you everything: <strong className="text-white">24 frames backswing, 
-              8 frames downswing</strong>. A 3:1 ratio locked at 112 BPM. The exact temporal 
-              structure your basal ganglia craves for automated, repeatable movement.
-            </p>
-            <p className="text-[#94A3B8] leading-relaxed">
-              This report breaks down the neuroscience, biomechanics, and audio engineering 
-              that makes 24/8 Anthems a new category: performance audio that doesn&apos;t 
-              motivate—it <em>entrains</em>.
-            </p>
-          </div>
-          <div>
-            <div className="font-mono text-xs text-[#3B82F6] uppercase tracking-wider mb-4">
-              Navigate the System
-            </div>
-            <TableOfContents items={tocItems} />
-          </div>
-        </div>
-      </Section>
+      <SectionWrapper background="charcoal">
+        <SectionHeader
+          title="The Science of Swing"
+          subtitle="The name tells you everything: 24 frames backswing, 8 frames downswing. A 3:1 ratio locked at 112 BPM. The exact temporal structure your basal ganglia craves for automated, repeatable movement."
+        />
+
+        <p className="mb-8 max-w-3xl text-lg leading-relaxed text-cream-dark">
+          This report breaks down the neuroscience, biomechanics, and audio engineering
+          that makes 24/8 Anthems a new category: performance audio that doesn&apos;t
+          motivate—it <em className="text-cream-light">entrains</em>.
+        </p>
+
+        {/* Table of Contents */}
+        <nav className="grid gap-3" aria-label="Table of Contents">
+          <a
+            href="#section-1"
+            className="group flex items-center gap-4 rounded-xl border-l-4 border-orange bg-charcoal-light p-5 transition-all hover:bg-charcoal-lighter hover:translate-x-1 cursor-pointer"
+          >
+            <span className="font-mono text-sm font-bold text-orange">01</span>
+            <span className="font-sans text-base text-cream-light group-hover:text-cream sm:text-lg">
+              Tempo as Truth: The 3:1 Ratio & 112 BPM Advantage
+            </span>
+          </a>
+          <a
+            href="#section-2"
+            className="group flex items-center gap-4 rounded-xl border-l-4 border-orange bg-charcoal-light p-5 transition-all hover:bg-charcoal-lighter hover:translate-x-1 cursor-pointer"
+          >
+            <span className="font-mono text-sm font-bold text-orange">02</span>
+            <span className="font-sans text-base text-cream-light group-hover:text-cream sm:text-lg">
+              Brainwave Symphony: Entraining Focus & Peak Performance
+            </span>
+          </a>
+          <a
+            href="#section-3"
+            className="group flex items-center gap-4 rounded-xl border-l-4 border-orange-dark bg-charcoal-light p-5 transition-all hover:bg-charcoal-lighter hover:translate-x-1 cursor-pointer"
+          >
+            <span className="font-mono text-sm font-bold text-orange-dark">03</span>
+            <span className="font-sans text-base text-cream-light group-hover:text-cream sm:text-lg">
+              Dopamine Drive: Fueling Flow & Confidence
+            </span>
+          </a>
+          <a
+            href="#section-4"
+            className="group flex items-center gap-4 rounded-xl border-l-4 border-terra-cotta bg-charcoal-light p-5 transition-all hover:bg-charcoal-lighter hover:translate-x-1 cursor-pointer"
+          >
+            <span className="font-mono text-sm font-bold text-terra-cotta">04</span>
+            <span className="font-sans text-base text-cream-light group-hover:text-cream sm:text-lg">
+              Audio Alchemy: Spatial Cues & Cognitive Anchors
+            </span>
+          </a>
+          <a
+            href="#section-5"
+            className="group flex items-center gap-4 rounded-xl border-l-4 border-orange bg-charcoal-light p-5 transition-all hover:bg-charcoal-lighter hover:translate-x-1 cursor-pointer"
+          >
+            <span className="font-mono text-sm font-bold text-orange">05</span>
+            <span className="font-sans text-base text-cream-light group-hover:text-cream sm:text-lg">
+              Beyond Belief: The Science of Engineered Performance
+            </span>
+          </a>
+        </nav>
+      </SectionWrapper>
 
       {/* Section 1: Tempo as Truth */}
-      <Section id="tempo-truth" variant="default">
-        <div className="mb-8">
-          <div className="font-mono text-sm text-[#3B82F6] uppercase tracking-wider mb-2">
-            Section 01
-          </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 text-balance">
-            Tempo as Truth: The 3:1 Ratio & 112 BPM Advantage
-          </h2>
+      <div id="section-1" className="scroll-mt-16" />
+      <SectionWrapper background="black">
+        <SectionHeader
+          sectionNumber="01"
+          eyebrow="Motor Control"
+          title="Tempo as Truth: The 3:1 Ratio & 112 BPM Advantage"
+          accentColor="orange"
+        />
+
+        <div className="prose prose-lg max-w-none">
+          <h3 className="font-sans text-2xl font-bold text-cream-light">
+            The 3:1 Ratio: Non-Negotiable Motor Control
+          </h3>
+          <p className="mt-4 text-cream-dark leading-relaxed">
+            Elite golfers swing with approximately a 3:1 backswing:downswing timing ratio.
+            Tour professionals operate at 60–75 BPM, while amateurs often fall below 40 BPM.
+            This isn&apos;t preference—it&apos;s biomechanics.
+          </p>
         </div>
-        
-        <div className="grid lg:grid-cols-5 gap-12">
-          <div className="lg:col-span-3 space-y-6">
-            <h3 className="text-xl md:text-2xl font-bold text-white">
-              The 3:1 Ratio: Non-Negotiable Motor Control
-            </h3>
-            <p className="text-[#E2E8F0] leading-relaxed">
-              Every elite golfer—from Nick Price to Ernie Els to Jordan Spieth—swings with a 
-              backswing-to-downswing ratio around <strong className="text-[#3B82F6]">3:1</strong>. 
-              Not because they&apos;re &quot;natural athletes.&quot; Because the human motor system—specifically 
-              your basal ganglia and cerebellum—automates rhythm better when timing ratios are consistent.
-            </p>
-            <p className="text-[#E2E8F0] leading-relaxed">
-              Tour pros swing between <strong className="text-white">60-75 BPM</strong> (start to impact). 
-              Most amateurs? Under 40 BPM. They&apos;re thinking, not swinging. They&apos;re 
-              micromanaging mechanics instead of automating motor programs.
-            </p>
-            
-            <PrincipleBox title="TEMPO AS TRUTH">
-              Your cerebellum doesn&apos;t care about your feelings. It cares about timing.
-            </PrincipleBox>
-            
-            {/* 3:1 Ratio Visualization */}
-            <TempoRatioVisualizer />
-          </div>
-          
-          <div className="lg:col-span-2 space-y-6">
-            <MetricDisplay
-              value="3:1"
-              label="Pro Tempo Ratio"
-              description="The universal backswing-to-downswing timing found in elite golfers"
-              sentiment="good"
-            />
-            <MetricDisplay
-              value="60-75"
-              label="Tour Pro BPM"
-              description="Typical professional golf swing tempo range (start to impact)"
-              sentiment="neutral"
-            />
-            <MetricDisplay
-              value="<40"
-              label="Amateur BPM"
-              description="Where most amateur swings land—too slow, too conscious"
-              sentiment="warning"
-            />
-          </div>
+
+        <PrincipleBox
+          title="Tempo as Truth"
+          quote="Your cerebellum doesn't care about your feelings. It cares about timing."
+          variant="highlight"
+        />
+
+        <TempoRatioVisualizer />
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-3">
+          <MetricCard value="3:1" label="Pro Tempo Ratio" status="good" />
+          <MetricCard value="60–75" label="Tour Pro BPM" status="neutral" />
+          <MetricCard value="<40" label="Amateur BPM" status="warning" />
         </div>
-        
-        <div className="mt-16">
-          <h3 className="text-xl md:text-2xl font-bold text-white mb-6">
+
+        <div className="mt-12">
+          <h3 className="font-sans text-2xl font-bold text-cream-light">
             112 BPM: The Math Behind the Tempo
           </h3>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <p className="text-[#E2E8F0] leading-relaxed">
-                Here&apos;s where it gets precise. <strong className="text-[#F59E0B]">112 BPM at 4 beats 
-                per measure = 448 micro-ticks</strong>. That&apos;s the granular timing resolution your 
-                brain uses for motor control—millisecond-level temporal precision that separates 
-                &quot;good contact&quot; from &quot;flushed iron.&quot;
-              </p>
-              <p className="text-[#E2E8F0] leading-relaxed">
-                The 24/8 structure embeds the 3:1 ratio <em>within</em> 112 BPM, creating a 
-                perceptual scaffold. Your cerebellum syncs to the beat. Your basal ganglia 
-                automate the pattern. Your prefrontal cortex gets out of the way.
-              </p>
-              
-              <PrincipleBox title="FRAMES, NOT SECONDS">
-                Quantized movement. Math meets muscle.
-              </PrincipleBox>
-            </div>
-            <div>
-              {/* BPM Comparison Visualization */}
-              <BpmTempoComparisonSlider />
-            </div>
-          </div>
-        </div>
-        
-        <Callout variant="insight" className="mt-12">
-          <p className="text-lg text-white font-medium">
-            <span className="text-[#00F0FF]">BRAIN-MUSCLE INTERFACE:</span> Not metaphor. Mechanism. 
-            The 24/8 Anthem doesn&apos;t <em>motivate</em> you to swing better. It entrains your brain 
-            to the timing signature of elite performance.
+          <p className="mt-4 text-cream-dark leading-relaxed">
+            112 BPM at 4 beats per measure equals 448 micro-ticks of granular timing
+            resolution. This precision creates a scaffold for your motor system to lock onto.
           </p>
-        </Callout>
-      </Section>
+        </div>
+
+        <PrincipleBox
+          title="Frames, Not Seconds"
+          quote="Quantized movement. Math meets muscle."
+        />
+
+        <div className="mt-8">
+          <BpmTempoComparisonSlider />
+        </div>
+
+        <CalloutBox type="insight" title="Brain-Muscle Interface">
+          Not metaphor. Mechanism. The 24/8 Anthem doesn&apos;t motivate you to swing better.
+          It entrains your brain to the timing signature of elite performance.
+        </CalloutBox>
+      </SectionWrapper>
 
       {/* Section 2: Brainwave Symphony */}
-      <Section id="brainwave-symphony" variant="dark">
-        <div className="mb-8">
-          <div className="font-mono text-sm text-[#3B82F6] uppercase tracking-wider mb-2">
-            Section 02
-          </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 text-balance">
-            Brainwave Symphony: Entraining Focus & Peak Performance
-          </h2>
+      <div id="section-2" className="scroll-mt-16" />
+      <SectionWrapper background="charcoal">
+        <SectionHeader
+          sectionNumber="02"
+          eyebrow="Neural Science"
+          title="Brainwave Symphony: Entraining Focus & Peak Performance"
+          accentColor="orange"
+        />
+
+        <div className="prose prose-lg max-w-none">
+          <h3 className="font-sans text-2xl font-bold text-cream-light">
+            Your Brain is an Orchestra. We&apos;re Conducting.
+          </h3>
+          <p className="mt-4 text-cream-dark leading-relaxed">
+            Your brain oscillates at multiple frequencies simultaneously—Delta (0.5–4 Hz) for
+            deep sleep, Theta (4–8 Hz) for creativity, Alpha (8–12 Hz) for relaxation,
+            Beta (12–30 Hz) for active thinking, and Gamma (30–100 Hz) for peak cognitive binding.
+          </p>
         </div>
-        
-        <div className="space-y-12">
-          <div className="grid lg:grid-cols-2 gap-12">
-            <div className="space-y-6">
-              <h3 className="text-xl md:text-2xl font-bold text-white">
-                Your Brain is an Orchestra. We&apos;re Conducting.
-              </h3>
-              <p className="text-[#E2E8F0] leading-relaxed">
-                Here&apos;s the thing about your brain during a golf swing: it&apos;s oscillating at 
-                multiple frequencies simultaneously, like a neural symphony where every section 
-                needs to hit its cue.
-              </p>
-              <ul className="space-y-3 text-[#E2E8F0]">
-                <li className="flex items-start gap-3">
-                  <span className="w-2 h-2 mt-2 bg-[#6366F1] shrink-0" />
-                  <span><strong className="text-white">Delta (0.5-4 Hz)</strong> — Deep states</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="w-2 h-2 mt-2 bg-[#8B5CF6] shrink-0" />
-                  <span><strong className="text-white">Theta (4-8 Hz)</strong> — Flow and memory consolidation</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="w-2 h-2 mt-2 bg-[#3B82F6] shrink-0" />
-                  <span><strong className="text-white">Alpha (8-13 Hz)</strong> — Relaxed focus</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="w-2 h-2 mt-2 bg-[#06B6D4] shrink-0" />
-                  <span><strong className="text-white">Beta (13-30 Hz)</strong> — Active thinking</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="w-2 h-2 mt-2 bg-[#F59E0B] shrink-0" />
-                  <span><strong className="text-white">Gamma (30-100+ Hz)</strong> — Cognitive binding & peak performance</span>
-                </li>
-              </ul>
-              <p className="text-[#E2E8F0] leading-relaxed">
-                The 24/8 system doesn&apos;t ask your brain politely. It <em>entrains</em> it.
-              </p>
-            </div>
-            <div className="h-96">
-              {/* Brainwave Spectrum Visualization */}
-              <BrainwaveFrequencyChart />
-            </div>
-          </div>
-          
-          <div className="grid lg:grid-cols-2 gap-12">
-            <div>
-              {/* Neural Entrainment Animator - Interactive brainwave synchronization visualization */}
-              <NeuralEntrainmentAnimator />
-            </div>
-            <div className="space-y-6">
-              <h3 className="text-xl md:text-2xl font-bold text-white">
-                Entrainment: Neural Lockstep
-              </h3>
-              <p className="text-[#E2E8F0] leading-relaxed">
-                When you expose the brain to rhythmic auditory stimulation at specific frequencies, 
-                something remarkable happens: neurons synchronize their firing patterns to match 
-                the external rhythm. This is <strong className="text-[#3B82F6]">brainwave entrainment</strong>—your 
-                neural networks literally locking into the tempo of the sound.
-              </p>
-              <p className="text-[#E2E8F0] leading-relaxed">
-                Research shows brainwaves synchronize with external stimuli between 10-40 Hz, 
-                with delta responses peaking at 2 Hz and augmented phase synchronization throughout 
-                the beta/gamma range (13-44 Hz). The 24/8 Anthem&apos;s 112 BPM framework operates 
-                precisely in this sweet spot.
-              </p>
-              
-              <Callout variant="principle">
-                <p className="text-white font-semibold text-lg">
-                  40Hz Gamma: The Focus Frequency
-                </p>
-                <p className="text-[#E2E8F0] mt-2">
-                  Gamma oscillations at 40 Hz are associated with heightened attention, 
-                  perceptual binding, and peak cognitive performance.
-                </p>
-              </Callout>
-            </div>
-          </div>
+
+        <BrainwaveFrequencyChart />
+
+        <NeuralEntrainmentAnimator className="mt-6" />
+
+        <div className="mt-12">
+          <h3 className="font-sans text-2xl font-bold text-cream-light">
+            Entrainment: Neural Lockstep
+          </h3>
+          <p className="mt-4 text-cream-dark leading-relaxed">
+            External rhythmic cues can synchronize neural firing. Research shows synchronization
+            between 10–40 Hz produces the strongest effects. The 24/8 Anthem operates in this
+            sweet spot, driving your neurons into lockstep with elite timing patterns.
+          </p>
         </div>
-      </Section>
+
+        <CalloutBox type="principle" title="40Hz Gamma: The Focus Frequency">
+          Heightened attention, perceptual binding, peak cognitive performance.
+          This is the frequency of flow states and elite athletic focus.
+        </CalloutBox>
+      </SectionWrapper>
 
       {/* Section 3: Dopamine Drive */}
-      <Section id="dopamine-drive" variant="gradient">
-        <div className="mb-8">
-          <div className="font-mono text-sm text-[#00F0FF] uppercase tracking-wider mb-2">
-            Section 03
-          </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 text-balance">
-            Dopamine Drive: Fueling Flow & Confidence
-          </h2>
+      <div id="section-3" className="scroll-mt-16" />
+      <SectionWrapper background="black">
+        <SectionHeader
+          sectionNumber="03"
+          eyebrow="Neurochemistry"
+          title="Dopamine Drive: Fueling Flow & Confidence"
+          accentColor="orange-dark"
+        />
+
+        <p className="max-w-3xl text-lg text-cream-dark leading-relaxed">
+          Anticipation is key. Predictable rhythmic structure at 112 BPM drives mesolimbic
+          dopamine release. The research is clear: predictability matters more than pleasure.
+          Your brain rewards what it can predict—and then execute.
+        </p>
+
+        <div className="mt-8">
+          <InteractiveDopaminePathway />
         </div>
-        
-        <div className="grid lg:grid-cols-3 gap-8 mb-12">
-          <div className="lg:col-span-2 space-y-6">
-            <p className="text-xl text-[#E2E8F0] leading-relaxed">
-              Here&apos;s what separates champions from chumps: <strong className="text-white">anticipation</strong>. 
-              Not hope. Not motivation. Actual neurochemical anticipation—the brain&apos;s reward prediction 
-              system lighting up <em>before</em> you even swing.
-            </p>
-            <p className="text-[#E2E8F0] leading-relaxed">
-              The 24/8 Anthem hacks this system deliberately. Predictable rhythmic structure at 112 BPM 
-              creates a dopamine drip that your mesolimbic pathway can&apos;t resist. Music triggers dopamine 
-              release—this isn&apos;t metaphor, it&apos;s measurable neurochemistry. But here&apos;s the engineering 
-              twist: <em>predictability</em> matters more than pleasure.
-            </p>
-            
-            {/* Interactive Dopamine Pathway Visualization */}
-            <InteractiveDopaminePathway />
-          </div>
-          <div>
-            <MetricDisplay
-              value="+48%"
-              label="Positive Affect"
-              description="Increased positive affect with music during physical activity"
-              sentiment="good"
-            />
-            <Callout variant="metric" className="mt-6">
-              <div className="font-mono text-sm text-[#F59E0B] uppercase tracking-wider mb-2">
-                Flow State Marker
-              </div>
-              <p className="text-[#E2E8F0]">
-                Flow state associated with upper alpha & beta power in frontal brain regions
-              </p>
-            </Callout>
-          </div>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          <MetricCard value="+48%" label="Positive Affect Increase" status="good" />
+          <MetricCard value="α/β ↑" label="Flow State Marker (Upper Alpha & Beta Power)" status="neutral" />
         </div>
-        
-        <div className="space-y-6">
-          <h3 className="text-xl md:text-2xl font-bold text-white">
+
+        <div className="mt-12">
+          <h3 className="font-sans text-2xl font-bold text-cream-light">
             The Flow Equation
           </h3>
-          <p className="text-[#E2E8F0] leading-relaxed">
-            Flow state isn&apos;t mystical. It&apos;s a specific neural configuration: reduced prefrontal 
-            cortex interference + heightened striatal automation + synchronized gamma oscillations. 
-            The 24/8 system engineers this by:
-          </p>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-[#0C1220] border border-[#1E3A5F] p-6">
-              <div className="text-[#3B82F6] font-bold mb-2">Rhythmic Predictability</div>
-              <p className="text-[#94A3B8] text-sm">
-                → anticipatory dopamine → reduced cognitive load
-              </p>
-            </div>
-            <div className="bg-[#0C1220] border border-[#1E3A5F] p-6">
-              <div className="text-[#F59E0B] font-bold mb-2">Spatial Audio Cues</div>
-              <p className="text-[#94A3B8] text-sm">
-                → enhanced movement mapping → smoother motor execution
-              </p>
-            </div>
-            <div className="bg-[#0C1220] border border-[#1E3A5F] p-6">
-              <div className="text-[#00F0FF] font-bold mb-2">Lyrical Cognitive Anchors</div>
-              <p className="text-[#94A3B8] text-sm">
-                → procedural memory reinforcement → automatic sequencing
-              </p>
-            </div>
+          <div className="mt-6 grid gap-4 sm:grid-cols-3">
+            {[
+              {
+                title: "Rhythmic Predictability",
+                description: "Consistent tempo scaffolds motor timing, reducing cognitive load.",
+              },
+              {
+                title: "Spatial Audio Cues",
+                description: "Stereo positioning forces spatial awareness integration.",
+              },
+              {
+                title: "Lyrical Cognitive Anchors",
+                description: "Procedural memory hooks that encode swing mechanics.",
+              },
+            ].map((tile) => (
+              <div
+                key={tile.title}
+                className="rounded-xl border border-charcoal-light bg-charcoal p-6 transition-all hover:border-orange-dark/50 cursor-default"
+              >
+                <h4 className="font-sans text-lg font-bold text-orange-dark">{tile.title}</h4>
+                <p className="mt-2 text-sm text-cream-dark leading-relaxed">{tile.description}</p>
+              </div>
+            ))}
           </div>
         </div>
-      </Section>
+      </SectionWrapper>
 
       {/* Section 4: Audio Alchemy */}
-      <Section id="audio-alchemy" variant="default">
-        <div className="mb-8">
-          <div className="font-mono text-sm text-[#3B82F6] uppercase tracking-wider mb-2">
-            Section 04
-          </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 text-balance">
-            Audio Alchemy: Spatial Cues & Cognitive Anchors
-          </h2>
-        </div>
-        
-        <div className="grid lg:grid-cols-2 gap-12">
-          <div className="space-y-6">
-            <h3 className="text-xl md:text-2xl font-bold text-white">
-              Beyond Sound Design
-            </h3>
-            <p className="text-[#E2E8F0] leading-relaxed">
-              Call-and-response patterns aren&apos;t decoration—they&apos;re <strong className="text-[#3B82F6]">motor 
-              sequencing reinforcement</strong>. Left ear cue → right hemisphere processing → body maps 
-              movement. The spatial design forces your brain to track position, timing, sequence.
-            </p>
-            <p className="text-[#E2E8F0] leading-relaxed">
-              The lyrics work as procedural memory hooks. &quot;Frames not seconds&quot; becomes a neural 
-              shorthand your cerebellum recognizes faster than conscious thought. Repetition with 
-              variation keeps it fresh—avoiding habituation while deepening the groove.
-            </p>
-            
-            <PrincipleBox title="ENGINEERED FLOW">
-              The system doesn&apos;t motivate flow—it manufactures the conditions where flow becomes inevitable.
-            </PrincipleBox>
-          </div>
-          <div>
-            {/* Audio Waveform Visualization */}
-            <SpatialAudioWaveform />
-          </div>
-        </div>
-        
-        <Callout variant="insight" className="mt-12">
-          <p className="text-lg text-white font-medium">
-            <span className="text-[#00F0FF]">NEURO-GOLF MECHANICS WITH SWAGGER:</span> Math meets muscle. 
-            Your swing doesn&apos;t feel faster—it feels <em>inevitable</em>.
-          </p>
-        </Callout>
-      </Section>
+      <div id="section-4" className="scroll-mt-16" />
+      <SectionWrapper background="charcoal">
+        <SectionHeader
+          sectionNumber="04"
+          eyebrow="Sound Engineering"
+          title="Audio Alchemy: Spatial Cues & Cognitive Anchors"
+          accentColor="terra-cotta"
+        />
+
+        <h3 className="font-sans text-2xl font-bold text-cream-light">
+          Beyond Sound Design
+        </h3>
+        <p className="mt-4 max-w-3xl text-cream-dark leading-relaxed">
+          Call-and-response patterns function as motor sequencing reinforcement. Spatial audio
+          design forces your brain to track position, timing, and sequence. Lyrics serve as
+          procedural memory hooks—verbal anchors that encode movement patterns into long-term storage.
+        </p>
+
+        <PrincipleBox
+          title="Engineered Flow"
+          quote="The system doesn't motivate flow—it manufactures the conditions where flow becomes inevitable."
+          variant="highlight"
+        />
+
+        <SpatialAudioWaveform />
+
+        <CalloutBox type="insight" title="Neuro-Golf Mechanics With Swagger">
+          Math meets muscle. Your swing doesn&apos;t feel faster—it feels inevitable.
+        </CalloutBox>
+      </SectionWrapper>
 
       {/* Section 5: Beyond Belief */}
-      <Section id="beyond-belief" variant="dark">
-        <div className="mb-8">
-          <div className="font-mono text-sm text-[#F59E0B] uppercase tracking-wider mb-2">
-            Section 05
+      <div id="section-5" className="scroll-mt-16" />
+      <SectionWrapper background="black">
+        <SectionHeader
+          sectionNumber="05"
+          eyebrow="Evidence & Engineering"
+          title="Beyond Belief: The Science of Engineered Performance"
+          accentColor="orange"
+        />
+
+        <p className="max-w-3xl text-lg text-cream-dark leading-relaxed">
+          The 24/8 system sits on a spectrum between rigorous neuroscience and engineering theater.
+          Both produce measurable results. The question isn&apos;t which is &ldquo;real&rdquo;—it&apos;s how they synergize.
+        </p>
+
+        <div className="mt-8 grid gap-6 lg:grid-cols-2">
+          <div className="rounded-xl border border-orange/30 bg-charcoal p-6">
+            <h4 className="mb-4 font-mono text-sm font-bold uppercase tracking-wider text-orange">
+              Where the Science is Bulletproof
+            </h4>
+            <ul className="space-y-3">
+              {["Motor timing consistency (cerebellar entrainment)", "Brainwave entrainment (auditory-driven synchronization)", "Dopamine-anticipation link (predictive reward circuits)", "3:1 ratio (biomechanical optimum)"].map((item) => (
+                <li key={item} className="flex items-start gap-3 text-cream-dark">
+                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-orange" />
+                  {item}
+                </li>
+              ))}
+            </ul>
           </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 text-balance">
-            Beyond Belief: The Science of Engineered Performance
-          </h2>
+          <div className="rounded-xl border border-terra-cotta/30 bg-charcoal p-6">
+            <h4 className="mb-4 font-mono text-sm font-bold uppercase tracking-wider text-terra-cotta">
+              Where Engineering Becomes Art
+            </h4>
+            <ul className="space-y-3">
+              {["448 micro-ticks (poetic precision)", "Call-and-response anchors (ritual reinforcement)", 'The "Anthem" framing (belief amplification)'].map((item) => (
+                <li key={item} className="flex items-start gap-3 text-cream-dark">
+                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-terra-cotta" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        
-        <div className="space-y-12">
-          <p className="text-xl text-[#E2E8F0] leading-relaxed max-w-3xl">
-            Let&apos;s get real about what&apos;s happening here. The 24/8 system sits on a spectrum—part 
-            rigorous neuroscience, part brilliant engineering theater. And here&apos;s the twist: 
-            <strong className="text-white"> both sides produce measurable results</strong>.
+
+        <ScienceToMythSpectrum />
+
+        <div className="mt-12">
+          <h3 className="font-sans text-2xl font-bold text-cream-light">
+            The Power of Engineered Belief
+          </h3>
+          <p className="mt-4 max-w-3xl text-cream-dark leading-relaxed">
+            Placebo effects produce real physiological changes. Rituals reduce anxiety and
+            increase confidence. This isn&apos;t weakness—it&apos;s how brains work.
           </p>
-          
-          <div className="grid lg:grid-cols-2 gap-12">
-            <div className="space-y-6">
-              <h3 className="text-xl md:text-2xl font-bold text-white">
-                Where the Science is Bulletproof
-              </h3>
-              <ul className="space-y-4 text-[#E2E8F0]">
-                <li className="flex items-start gap-3">
-                  <span className="w-2 h-2 mt-2 bg-[#10B981] shrink-0" />
-                  <span><strong className="text-white">Motor timing consistency</strong> — Neuroscience 101. The basal ganglia and cerebellum automate rhythmic movements with predictable temporal structure.</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="w-2 h-2 mt-2 bg-[#10B981] shrink-0" />
-                  <span><strong className="text-white">Brainwave entrainment</strong> — Documented extensively. External rhythmic cues synchronize neural oscillations.</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="w-2 h-2 mt-2 bg-[#10B981] shrink-0" />
-                  <span><strong className="text-white">Dopamine-anticipation link</strong> — Basic neurobiology. Predictable reward triggers dopamine release.</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="w-2 h-2 mt-2 bg-[#10B981] shrink-0" />
-                  <span><strong className="text-white">The 3:1 ratio</strong> — Measurable biomechanical fact in professional golf.</span>
-                </li>
-              </ul>
-            </div>
-            <div className="space-y-6">
-              <h3 className="text-xl md:text-2xl font-bold text-white">
-                Where Engineering Becomes Art
-              </h3>
-              <ul className="space-y-4 text-[#E2E8F0]">
-                <li className="flex items-start gap-3">
-                  <span className="w-2 h-2 mt-2 bg-[#F59E0B] shrink-0" />
-                  <span><strong className="text-white">448 micro-ticks</strong> — Precision marketing meeting microtiming perception research. A branded frame, not a neurological constant.</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="w-2 h-2 mt-2 bg-[#F59E0B] shrink-0" />
-                  <span><strong className="text-white">Call-and-response anchors</strong> — Smart audio engineering informed by music cognition research—packaged as proprietary tech.</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="w-2 h-2 mt-2 bg-[#F59E0B] shrink-0" />
-                  <span><strong className="text-white">The &quot;Anthem&quot; framing</strong> — Pure identity mythology. And it works precisely because myths create belonging.</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-          
-          {/* Science-to-Myth Spectrum */}
-          <div id="science-myth-spectrum">
-            <ScienceToMythSpectrum />
-          </div>
-          
-          <div className="grid lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-6">
-              <h3 className="text-xl md:text-2xl font-bold text-white">
-                The Power of Engineered Belief
-              </h3>
-              <p className="text-[#E2E8F0] leading-relaxed">
-                Here&apos;s what the research actually shows: <strong className="text-white">Placebo effects 
-                produce real physiological changes.</strong> Expectation modulates dopamine, reduces 
-                perceived exertion, and enhances performance.
-              </p>
-              <p className="text-[#E2E8F0] leading-relaxed">
-                Athletes who engage in superstitious rituals—even knowing they&apos;re &quot;just rituals&quot;—show 
-                reduced anxiety and increased confidence. Body posture alone affects hormonal states 
-                and self-perception.
-              </p>
-              <p className="text-[#E2E8F0] leading-relaxed">
-                <strong className="text-white">Translation:</strong> The ritual of pressing play on your 
-                &quot;neuro-engineered anthem&quot; triggers genuine neurobiological responses—whether or not 
-                every claim is peer-reviewed.
-              </p>
-            </div>
-            <div className="space-y-4">
-              <MetricDisplay
-                value="Moderate"
-                label="Placebo Effect"
-                description="Placebo interventions showed measurable perceptual recovery benefits"
-                sentiment="good"
-              />
-              <MetricDisplay
-                value="Physical + Mental"
-                label="Ritual Impact"
-                description="Superstitious rituals impact both confidence and anxiety in athletes"
-                sentiment="neutral"
-              />
-            </div>
-          </div>
-          
-          {/* Final revelation box */}
-          <div className="bg-gradient-to-r from-[#1E3A8A]/40 to-[#8B5CF6]/20 border border-[#3B82F6] p-8 mt-8">
-            <div className="font-mono text-sm text-[#3B82F6] uppercase tracking-wider mb-4">
-              The 24/8 Revelation
-            </div>
-            <p className="text-lg text-white leading-relaxed">
-              It works because the foundational science is real (motor timing, brainwave entrainment, 
-              dopamine-flow mechanics) <strong>AND</strong> the engineered belief system amplifies those 
-              effects through ritual, identity, and expectation. You&apos;re not being tricked. You&apos;re 
-              being <em className="text-[#00F0FF]">optimized</em>—with science as the engine and story as the fuel.
-            </p>
-          </div>
-          
-          <div className="text-center pt-8">
-            <p className="text-2xl md:text-3xl font-bold text-white mb-4">
-              Welcome to neuro-golf performance audio.
-            </p>
-            <p className="text-[#94A3B8]">
-              Where it works because the science is real AND the story makes you believe.
-            </p>
-          </div>
         </div>
-      </Section>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          <MetricCard value="Moderate" label="Placebo Effect Size" status="good" />
+          <MetricCard value="Physical + Mental" label="Ritual Impact" status="neutral" />
+        </div>
+
+        {/* The 24/8 Revelation Box */}
+        <div className="mt-12 rounded-2xl border-2 border-orange bg-gradient-to-br from-orange/10 via-transparent to-terra-cotta/10 p-8">
+          <h4 className="mb-4 font-mono text-sm font-bold uppercase tracking-[0.2em] text-orange">
+            The 24/8 Revelation
+          </h4>
+          <p className="text-xl font-bold text-cream-light leading-relaxed">
+            It works because the foundational science is real <span className="text-orange">AND</span>{" "}
+            engineered belief amplifies those effects.
+          </p>
+        </div>
+
+        {/* Closing Lines */}
+        <div className="mt-16 border-t border-charcoal-light pt-12 text-center">
+          <p className="font-sans text-2xl font-bold text-cream-light sm:text-3xl">
+            Welcome to neuro-golf performance audio.
+          </p>
+          <p className="mt-4 text-lg text-cream-dark">
+            Where it works because the science is real{" "}
+            <span className="text-orange">AND</span> the story makes you believe.
+          </p>
+        </div>
+      </SectionWrapper>
 
       <Footer />
     </main>
