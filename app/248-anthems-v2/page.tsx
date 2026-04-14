@@ -8,7 +8,7 @@ import { WaitlistForm } from "@/components/WaitlistForm"
 
 export default function Page() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen overflow-x-hidden">
       {/* 01 — HERO */}
       <Section variant="royal" fullHeight className="relative overflow-hidden">
         <div
@@ -22,31 +22,31 @@ export default function Page() {
           }}
         />
         <div className="relative z-10 flex flex-col justify-center min-h-[calc(100vh-8rem)]">
-          <div className="font-mono text-xs md:text-sm text-[#94A3B8] uppercase tracking-[0.4em] mb-8">
+          <div className="font-mono text-[0.65rem] sm:text-xs md:text-sm text-[#94A3B8] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-8">
             24/8 Anthems · Neuro-Golf Performance Audio
           </div>
 
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 max-w-5xl text-balance leading-[1.05]">
+          <h1 className="text-[2.5rem] leading-[1.05] sm:text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 max-w-5xl text-balance break-words">
             Play Your Course.
             <br />
             <span className="text-[#3B82F6]">Own Your Tempo.</span>
           </h1>
 
-          <p className="text-xl md:text-2xl text-[#E2E8F0] max-w-2xl mb-12 leading-relaxed">
+          <p className="text-lg sm:text-xl md:text-2xl text-[#E2E8F0] max-w-2xl mb-12 leading-relaxed">
             Custom anthems. Your clubs. Your strategy. Locked to the tempo pros swing at.
           </p>
 
           <div className="flex flex-wrap gap-4 mb-16">
             <a
               href="#waitlist"
-              className="inline-flex items-center gap-3 bg-[#3B82F6] hover:bg-[#2563EB] text-white font-bold uppercase tracking-[0.15em] px-8 py-5 text-sm md:text-base transition-colors duration-200"
+              className="inline-flex items-center gap-3 bg-[#3B82F6] hover:bg-[#2563EB] text-white font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] px-6 sm:px-8 py-4 sm:py-5 text-xs sm:text-sm md:text-base transition-colors duration-200"
             >
               Commission Your Anthem
               <span className="font-mono">→</span>
             </a>
             <a
               href="#listen"
-              className="inline-flex items-center gap-3 border border-[#1E3A5F] hover:border-[#3B82F6] text-[#E2E8F0] hover:text-white font-bold uppercase tracking-[0.15em] px-8 py-5 text-sm md:text-base transition-colors duration-200"
+              className="inline-flex items-center gap-3 border border-[#1E3A5F] hover:border-[#3B82F6] text-[#E2E8F0] hover:text-white font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] px-6 sm:px-8 py-4 sm:py-5 text-xs sm:text-sm md:text-base transition-colors duration-200"
             >
               <span className="font-mono">▶</span>
               Listen to Augusta
@@ -62,19 +62,18 @@ export default function Page() {
       {/* 02 — LISTEN */}
       <Section id="listen" variant="dark">
         <div className="max-w-3xl mb-10">
-          <div className="font-mono text-xs text-[#3B82F6] uppercase tracking-[0.4em] mb-4">
-            Listen · The Masters 2026
+          <div className="font-mono text-xs text-[#3B82F6] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-4">
+            Listen · First Release
           </div>
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 text-balance leading-[1.05]">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-6 text-balance leading-[1.05]">
             Augusta, Engineered.
           </h2>
           <p className="text-lg md:text-xl text-[#E2E8F0] leading-relaxed">
-            Every track below was built for a specific hole. Real research. Real yardages.
-            Locked at 112 BPM.
+            One course. One anthem. Real research. Real yardages. Locked at 112 BPM.
           </p>
         </div>
 
-        <div className="bg-[#0C1220] border border-[#1E3A5F] p-4 md:p-6">
+        <div className="bg-[#0C1220] border border-[#1E3A5F] p-4 md:p-6 overflow-x-auto">
           <Script src="https://elfsightcdn.com/platform.js" strategy="afterInteractive" />
           <div
             className="elfsight-app-6a38b85d-2e93-4765-8a0c-80415ee7b970"
@@ -84,7 +83,7 @@ export default function Page() {
 
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
           <p className="text-sm text-[#94A3B8] font-mono uppercase tracking-wider">
-            Player by Elfsight · Tap any track to start
+            Press play to hear the Augusta anthem
           </p>
           <a
             href="#waitlist"
@@ -131,7 +130,7 @@ export default function Page() {
             </div>
           </div>
         </div>
-        <p className="mt-10 text-center font-mono text-xs text-[#64748B] uppercase tracking-[0.3em]">
+        <p className="mt-10 text-center font-mono text-[0.65rem] sm:text-xs text-[#64748B] uppercase tracking-[0.2em] sm:tracking-[0.3em] break-words">
           Built for courses like Augusta · Pebble Beach · St Andrews · Bethpage Black
         </p>
       </Section>
@@ -139,10 +138,10 @@ export default function Page() {
       {/* 04 — PRODUCT · YOUR COURSE. YOUR STRATEGY. YOUR ANTHEM. */}
       <Section id="product" variant="dark">
         <div className="max-w-4xl mb-12">
-          <div className="font-mono text-xs text-[#F59E0B] uppercase tracking-[0.4em] mb-4">
+          <div className="font-mono text-xs text-[#F59E0B] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-4">
             The Product
           </div>
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 text-balance leading-[1.05]">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-6 text-balance leading-[1.05]">
             One Course.
             <br />
             One Player.
@@ -157,11 +156,11 @@ export default function Page() {
 
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           <div>
-            <h3 className="font-mono text-xs text-[#3B82F6] uppercase tracking-[0.3em] mb-4">
-              Sample Lyric · Hole 10, Augusta
+            <h3 className="font-mono text-xs text-[#3B82F6] uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-4">
+              Sample Verse · Augusta National
             </h3>
-            <div className="bg-gradient-to-br from-[#0C1220] to-[#05080F] border border-[#1E3A5F] p-8 md:p-10">
-              <p className="text-2xl md:text-3xl text-white font-semibold leading-[1.4] mb-6">
+            <div className="bg-gradient-to-br from-[#0C1220] to-[#05080F] border border-[#1E3A5F] p-6 sm:p-8 md:p-10">
+              <p className="text-xl sm:text-2xl md:text-3xl text-white font-semibold leading-[1.4] mb-6">
                 &ldquo;Seven-iron to the back pin.
                 <br />
                 One sixty-five to carry the bunker.
@@ -217,10 +216,10 @@ export default function Page() {
       {/* 05 — HOW IT WORKS */}
       <Section variant="default">
         <div className="max-w-3xl mb-12">
-          <div className="font-mono text-xs text-[#00F0FF] uppercase tracking-[0.4em] mb-4">
+          <div className="font-mono text-xs text-[#00F0FF] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-4">
             How It Works
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 text-balance leading-[1.05]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 text-balance leading-[1.05]">
             Four Steps. Zero Guesswork.
           </h2>
         </div>
@@ -268,10 +267,10 @@ export default function Page() {
       {/* 06 — SCIENCE (CONDENSED) */}
       <Section id="science" variant="dark">
         <div className="max-w-4xl mb-12">
-          <div className="font-mono text-xs text-[#F59E0B] uppercase tracking-[0.4em] mb-4">
+          <div className="font-mono text-xs text-[#F59E0B] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-4">
             The Science of Swagger
           </div>
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 text-balance leading-[0.95]">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-8 text-balance leading-[1.0]">
             Your Brain
             <br />
             Doesn&apos;t Negotiate.
@@ -286,7 +285,7 @@ export default function Page() {
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-12">
           <div className="space-y-6">
             <div className="flex gap-6">
-              <div className="font-mono text-5xl font-bold text-[#3B82F6] leading-none shrink-0 w-16">
+              <div className="font-mono text-5xl font-bold text-[#3B82F6] leading-none shrink-0 w-20">
                 3:1
               </div>
               <div>
@@ -298,7 +297,7 @@ export default function Page() {
               </div>
             </div>
             <div className="flex gap-6">
-              <div className="font-mono text-5xl font-bold text-[#F59E0B] leading-none shrink-0 w-16">
+              <div className="font-mono text-5xl font-bold text-[#F59E0B] leading-none shrink-0 w-20">
                 112
               </div>
               <div>
@@ -310,7 +309,7 @@ export default function Page() {
               </div>
             </div>
             <div className="flex gap-6">
-              <div className="font-mono text-5xl font-bold text-[#00F0FF] leading-none shrink-0 w-16">
+              <div className="font-mono text-5xl font-bold text-[#00F0FF] leading-none shrink-0 w-20">
                 40
               </div>
               <div>
@@ -348,10 +347,10 @@ export default function Page() {
       {/* 07 — WAITLIST */}
       <Section id="waitlist" variant="gradient">
         <div className="max-w-3xl mx-auto">
-          <div className="font-mono text-xs text-[#00F0FF] uppercase tracking-[0.4em] mb-4 text-center">
+          <div className="font-mono text-xs text-[#00F0FF] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-4 text-center">
             Limited Slots · Masters Season
           </div>
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 text-balance text-center leading-[1.05]">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-6 text-balance text-center leading-[1.05]">
             Get On The List.
           </h2>
           <p className="text-lg md:text-xl text-[#E2E8F0] leading-relaxed mb-10 text-center max-w-2xl mx-auto">
@@ -370,10 +369,10 @@ export default function Page() {
       {/* 08 — USE CASES */}
       <Section variant="default">
         <div className="max-w-3xl mb-12">
-          <div className="font-mono text-xs text-[#3B82F6] uppercase tracking-[0.4em] mb-4">
+          <div className="font-mono text-xs text-[#3B82F6] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-4">
             Moments
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 text-balance leading-[1.05]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 text-balance leading-[1.05]">
             Press Play When It Matters.
           </h2>
         </div>
@@ -421,20 +420,20 @@ export default function Page() {
       {/* 09 — FINAL CTA */}
       <Section variant="gradient" className="text-center">
         <div className="max-w-4xl mx-auto py-8 md:py-16">
-          <div className="font-mono text-xs text-[#00F0FF] uppercase tracking-[0.4em] mb-6">
+          <div className="font-mono text-xs text-[#00F0FF] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-6">
             Your Round · Your Tempo · Your Anthem
           </div>
-          <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 text-balance leading-[0.95]">
+          <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 text-balance leading-[1.0] break-words">
             Ready When
             <br />
             You Tee Off.
           </h2>
-          <p className="text-xl md:text-2xl text-[#E2E8F0] leading-relaxed mb-12 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl md:text-2xl text-[#E2E8F0] leading-relaxed mb-12 max-w-2xl mx-auto">
             Engineered for your round. Written for your bag. Locked to your tempo.
           </p>
           <a
             href="#waitlist"
-            className="inline-flex items-center gap-3 bg-[#3B82F6] hover:bg-[#2563EB] text-white font-bold uppercase tracking-[0.15em] px-12 py-6 text-base md:text-lg transition-colors duration-200"
+            className="inline-flex items-center gap-3 bg-[#3B82F6] hover:bg-[#2563EB] text-white font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] px-8 sm:px-12 py-5 sm:py-6 text-sm sm:text-base md:text-lg transition-colors duration-200"
           >
             Get My Anthem
             <span className="font-mono">→</span>
