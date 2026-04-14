@@ -6,30 +6,45 @@ import { NextResponse } from "next/server"
  * Posts to Airtable when AIRTABLE_PAT + AIRTABLE_BASE_ID are configured on the
  * server. Falls back to console logging only (dev mode) when they aren't.
  *
- * Required Airtable table schema (create this once in the base, see README or
+ * Required Airtable table schema (create this once in the base, see
  * .env.example):
  *
  *   Table name: "Waitlist"  (override via AIRTABLE_WAITLIST_TABLE env var)
  *   Fields:
- *     - "Email"     Single line text  (required)
- *     - "Source"    Single line text  (optional — we send "248-anthems-v2")
- *     - "Created"   Created time      (optional — auto-populated by Airtable)
+ *     - "Name"     Single line text  (required)
+ *     - "Email"    Single line text  (required)
+ *     - "Phone"    Single line text  (required)
+ *     - "Source"   Single line text  (optional — we send "248-anthems-v2")
+ *     - "Created"  Created time      (optional — auto-populated by Airtable)
  *
  * Extra fields on the table are fine; we only write the ones listed above.
  * Missing/renamed required fields will cause the Airtable write to 422, which
  * we propagate as a 500 to the caller so signups aren't silently dropped.
  */
 export async function POST(request: Request) {
+  let name: string | undefined
   let email: string | undefined
+  let phone: string | undefined
 
   try {
-    const body = (await request.json()) as { email?: unknown }
-    if (typeof body.email === "string") {
-      email = body.email.trim()
+    const body = (await request.json()) as {
+      name?: unknown
+      email?: unknown
+      phone?: unknown
     }
+    if (typeof body.name === "string") name = body.name.trim()
+    if (typeof body.email === "string") email = body.email.trim()
+    if (typeof body.phone === "string") phone = body.phone.trim()
   } catch {
     return NextResponse.json(
       { ok: false, error: "invalid_json" },
+      { status: 400 },
+    )
+  }
+
+  if (!name || name.length < 2) {
+    return NextResponse.json(
+      { ok: false, error: "name_required" },
       { status: 400 },
     )
   }
@@ -49,6 +64,17 @@ export async function POST(request: Request) {
     )
   }
 
+  // Loose phone validation: strip non-digits and require at least 7 digits
+  // (international minimum). Friendly to "(415) 555-1234", "+1 415 555 1234",
+  // "4155551234", etc.
+  const phoneDigits = (phone ?? "").replace(/[^\d]/g, "")
+  if (phoneDigits.length < 7) {
+    return NextResponse.json(
+      { ok: false, error: "phone_invalid" },
+      { status: 400 },
+    )
+  }
+
   const pat = process.env.AIRTABLE_PAT
   const baseId = process.env.AIRTABLE_BASE_ID
   const tableName = process.env.AIRTABLE_WAITLIST_TABLE ?? "Waitlist"
@@ -56,7 +82,11 @@ export async function POST(request: Request) {
   // Dev mode: no Airtable configured — just log and accept the signup so the
   // form still works locally without secrets.
   if (!pat || !baseId) {
-    console.log("[waitlist] new signup (no Airtable configured):", email)
+    console.log("[waitlist] new signup (no Airtable configured):", {
+      name,
+      email,
+      phone,
+    })
     return NextResponse.json({ ok: true, destination: "log" })
   }
 
@@ -78,7 +108,9 @@ export async function POST(request: Request) {
           records: [
             {
               fields: {
+                Name: name,
                 Email: email,
+                Phone: phone,
                 Source: "248-anthems-v2",
               },
             },

@@ -354,14 +354,14 @@ export default function Page() {
             Get On The List.
           </h2>
           <p className="text-lg md:text-xl text-[#E2E8F0] leading-relaxed mb-10 text-center max-w-2xl mx-auto">
-            Custom anthems are built one round at a time. Drop your email and we&apos;ll open a
-            slot for you next.
+            Custom anthems are built one round at a time. Drop your details and
+            we&apos;ll open a slot for you next.
           </p>
 
-          <WaitlistForm className="max-w-2xl mx-auto" />
+          <WaitlistForm className="max-w-xl mx-auto" />
 
           <p className="mt-6 text-center font-mono text-xs text-[#64748B] uppercase tracking-wider">
-            No spam. Just an invite when your anthem is ready.
+            No spam. We text when your anthem is ready.
           </p>
         </div>
       </Section>
