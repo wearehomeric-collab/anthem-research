@@ -445,7 +445,7 @@ export default function Page() {
           </div>
         </div>
 
-        <SpatialAudioWaveform className="mt-12" />
+        <SpatialAudioWaveform theme="light" className="mt-12" />
       </Section>
 
       {/* 08.5 — THE NEURO EDGE */}
@@ -509,7 +509,7 @@ export default function Page() {
           </div>
         </div>
 
-        <BrainwaveFrequencyChart className="mb-10" />
+        <BrainwaveFrequencyChart theme="light" className="mb-10" />
 
         <HearTheDifference theme="light" />
 

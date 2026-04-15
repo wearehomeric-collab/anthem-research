@@ -3,8 +3,14 @@
 // Rich spatial-audio call-and-response waveform ported from
 // claude/anthem-orange-sBtvP branch. Shows the 8-second anthem cycle
 // as two stereo waveforms (L = Call, R = Response) with 10 annotated
-// moments that light up as the playhead crosses them. Play / pause /
-// reset controls; click anywhere on the waveform to scrub.
+// moments that light up as the playhead crosses them.
+//
+// Theme-aware via the `theme` prop:
+//  - dark (default): charcoal card, cream text, orange eyebrow, dark inner scope
+//  - light: white card + border, black text, orange eyebrow, DARK inner
+//    scope kept on both themes (bright colored waveform bars read best on
+//    a dark background — this is the DAW display convention, and the dark
+//    "scope" inside a light frame is a premium-product pattern).
 
 import React from "react"
 import { useEffect, useState, useRef, useCallback } from "react"
@@ -13,7 +19,7 @@ import { Play, Pause, RotateCcw } from "lucide-react"
 
 interface Annotation {
   id: string
-  start: number // percentage 0-100
+  start: number
   end: number
   label: string
   channel: "left" | "right" | "both"
@@ -33,11 +39,7 @@ const annotations: Annotation[] = [
   { id: "10", start: 88, end: 100, label: "Reset Signal", channel: "both", type: "cue" },
 ]
 
-// L channel = V2 blue (#3B82F6), R channel = V2 orange (#F59E0B). These
-// replace the alt branch's #ff6b35 / #e07a5f so the waveform matches the
-// V2 palette.
-const CH_LEFT = "#3B82F6"
-const CH_RIGHT = "#F59E0B"
+type Theme = "dark" | "light"
 
 function generateWaveform(samples: number, seed: number = 0): number[] {
   const data: number[] = []
@@ -57,9 +59,14 @@ function generateWaveform(samples: number, seed: number = 0): number[] {
 interface SpatialAudioWaveformProps {
   className?: string
   autoPlay?: boolean
+  theme?: Theme
 }
 
-export function SpatialAudioWaveform({ className, autoPlay = false }: SpatialAudioWaveformProps) {
+export function SpatialAudioWaveform({
+  className,
+  autoPlay = false,
+  theme = "dark",
+}: SpatialAudioWaveformProps) {
   const [isPlaying, setIsPlaying] = useState(autoPlay)
   const [playheadPosition, setPlayheadPosition] = useState(0)
   const [activeAnnotations, setActiveAnnotations] = useState<Annotation[]>([])
@@ -70,8 +77,41 @@ export function SpatialAudioWaveform({ className, autoPlay = false }: SpatialAud
   const lastTimeRef = useRef<number>(0)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // 112 BPM = ~535ms per beat, full cycle over ~8 beats = ~4.3 seconds.
-  // The visualization uses an 8-second cycle for readability.
+  const isLight = theme === "light"
+
+  // Channel colors. Light theme uses darker, more saturated blues/oranges
+  // that pop against white, and still look vibrant inside the dark inner
+  // scope. Dark theme uses the V2 dark palette accents.
+  const CH_LEFT = isLight ? "#1D4ED8" : "#3B82F6"
+  const CH_RIGHT = isLight ? "#EA580C" : "#F59E0B"
+  const ANCHOR_COLOR = isLight ? "#6B7280" : "#94A3B8"
+  const CUE_COLOR = isLight ? "#B45309" : "#B45309"
+
+  // Theme class helpers.
+  const cardClass = isLight
+    ? "border border-[#E5E7EB] bg-white shadow-sm"
+    : "border border-terra-cotta/30 bg-charcoal"
+  const eyebrowClass = isLight ? "text-[#EA580C]" : "text-terra-cotta"
+  const headingClass = isLight ? "text-[#0B0B0F]" : "text-cream-light"
+  const legendLabelClass = isLight ? "text-[#6B7280]" : "text-cream-dark"
+  // Inner "scope" stays dark on both themes — bright waveform bars only
+  // read well on a dark background.
+  const scopeBgClass = "bg-black/60"
+  const dividerClass = isLight ? "bg-[#1E3A5F]/30" : "bg-charcoal-light"
+  const dividerLabelClass = isLight ? "text-[#94A3B8]" : "text-cream-dark/50"
+  const timeMarkerClass = isLight ? "text-[#6B7280]" : "text-cream-dark/40"
+  const controlBtnOuterClass = isLight
+    ? "border border-[#0B0B0F]/30 bg-white text-[#0B0B0F] hover:bg-[#F1F5F9]"
+    : "border border-charcoal-light bg-charcoal-light/50 text-cream-dark hover:bg-charcoal-lighter hover:text-cream-light"
+  const positionLabelClass = isLight ? "text-[#0B0B0F]" : "text-cream-light"
+  const positionSubClass = isLight ? "text-[#6B7280]" : "text-cream-dark/60"
+  const separatorClass = isLight ? "bg-[#E5E7EB]" : "bg-charcoal-light"
+  const activeCueBoxClass = isLight
+    ? "border border-[#E5E7EB] bg-[#F8FAFC]"
+    : "border border-charcoal-light bg-black/30"
+  const activeCueEyebrowClass = isLight ? "text-[#6B7280]" : "text-cream-dark/50"
+  const cornerAccentClass = isLight ? "border-[#EA580C]/40" : "border-terra-cotta/50"
+
   const cycleDuration = 8000
 
   const animate = useCallback(
@@ -123,15 +163,17 @@ export function SpatialAudioWaveform({ className, autoPlay = false }: SpatialAud
   }
 
   const getAnnotationColor = (type: Annotation["type"]) => {
+    // Pill chip class pair: bg + text. Kept consistent across themes since
+    // these pills sit on the dark inner scope regardless of outer theme.
     switch (type) {
       case "call":
-        return "bg-orange text-black"
+        return "bg-[#3B82F6] text-white"
       case "response":
-        return "bg-terra-cotta text-black"
+        return "bg-[#F59E0B] text-black"
       case "anchor":
-        return "bg-cream-dark text-black"
+        return "bg-white/80 text-black"
       case "cue":
-        return "bg-orange-dark text-cream-light"
+        return "bg-[#B45309] text-white"
       default:
         return "bg-charcoal-light text-cream-light"
     }
@@ -201,8 +243,8 @@ export function SpatialAudioWaveform({ className, autoPlay = false }: SpatialAud
                       : annotation.type === "response"
                         ? CH_RIGHT
                         : annotation.type === "anchor"
-                          ? "#94A3B8"
-                          : "#B45309",
+                          ? ANCHOR_COLOR
+                          : CUE_COLOR,
                   borderRadius: "4px",
                 }}
               />
@@ -238,50 +280,57 @@ export function SpatialAudioWaveform({ className, autoPlay = false }: SpatialAud
 
   return (
     <div
-      className={cn(
-        "relative overflow-hidden rounded-2xl border border-terra-cotta/30 bg-charcoal p-6 sm:p-8",
-        className,
-      )}
+      className={cn("relative overflow-hidden rounded-2xl p-6 sm:p-8", cardClass, className)}
     >
-      <div className="mb-2 font-mono text-xs uppercase tracking-[0.15em] text-terra-cotta">
+      <div
+        className={cn("mb-2 font-mono text-xs uppercase tracking-[0.15em]", eyebrowClass)}
+      >
         Interactive Visualization
       </div>
-      <div className="mb-6 font-sans text-lg font-semibold text-cream-light sm:text-xl">
+      <div className={cn("mb-6 font-sans text-lg font-semibold sm:text-xl", headingClass)}>
         Spatial Audio Waveform
       </div>
 
       <div className="mb-6 flex flex-wrap gap-3">
         <div className="flex items-center gap-2">
           <div className="h-3 w-3 rounded-full" style={{ backgroundColor: CH_LEFT }} />
-          <span className="font-mono text-xs text-cream-dark">Call (L Channel)</span>
+          <span className={cn("font-mono text-xs", legendLabelClass)}>Call (L Channel)</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="h-3 w-3 rounded-full" style={{ backgroundColor: CH_RIGHT }} />
-          <span className="font-mono text-xs text-cream-dark">Response (R Channel)</span>
+          <span className={cn("font-mono text-xs", legendLabelClass)}>
+            Response (R Channel)
+          </span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="h-3 w-3 rounded-full bg-cream-dark" />
-          <span className="font-mono text-xs text-cream-dark">Anchor</span>
+          <div className="h-3 w-3 rounded-full" style={{ backgroundColor: ANCHOR_COLOR }} />
+          <span className={cn("font-mono text-xs", legendLabelClass)}>Anchor</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="h-3 w-3 rounded-full bg-orange-dark" />
-          <span className="font-mono text-xs text-cream-dark">Cue</span>
+          <div className="h-3 w-3 rounded-full" style={{ backgroundColor: CUE_COLOR }} />
+          <span className={cn("font-mono text-xs", legendLabelClass)}>Cue</span>
         </div>
       </div>
 
+      {/* Inner scope — dark background on both themes so bright waveform bars pop. */}
       <div
         ref={containerRef}
-        className="relative cursor-pointer select-none rounded-xl bg-black/40 px-8 py-6"
+        className={cn("relative cursor-pointer select-none rounded-xl px-8 py-6", scopeBgClass)}
         onClick={handleWaveformClick}
       >
         <div className="mb-4">{renderWaveform(leftWaveform, CH_LEFT, "left")}</div>
 
         <div className="my-4 flex items-center gap-4">
-          <div className="h-px flex-1 bg-charcoal-light" />
-          <span className="font-mono text-[10px] uppercase tracking-widest text-cream-dark/50">
+          <div className={cn("h-px flex-1", dividerClass)} />
+          <span
+            className={cn(
+              "font-mono text-[10px] uppercase tracking-widest",
+              dividerLabelClass,
+            )}
+          >
             Stereo Field
           </span>
-          <div className="h-px flex-1 bg-charcoal-light" />
+          <div className={cn("h-px flex-1", dividerClass)} />
         </div>
 
         <div className="mt-4">{renderWaveform(rightWaveform, CH_RIGHT, "right")}</div>
@@ -306,7 +355,7 @@ export function SpatialAudioWaveform({ className, autoPlay = false }: SpatialAud
 
         <div className="mt-4 flex justify-between px-0">
           {[0, 25, 50, 75, 100].map((tick) => (
-            <span key={tick} className="font-mono text-[10px] text-cream-dark/40">
+            <span key={tick} className={cn("font-mono text-[10px]", "text-white/50")}>
               {((tick / 100) * 8).toFixed(1)}s
             </span>
           ))}
@@ -326,7 +375,10 @@ export function SpatialAudioWaveform({ className, autoPlay = false }: SpatialAud
           <button
             type="button"
             onClick={handleReset}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-charcoal-light bg-charcoal-light/50 text-cream-dark transition-all hover:bg-charcoal-lighter hover:text-cream-light"
+            className={cn(
+              "flex h-10 w-10 items-center justify-center rounded-full transition-all",
+              controlBtnOuterClass,
+            )}
             aria-label="Reset"
           >
             <RotateCcw className="h-4 w-4" />
@@ -335,17 +387,29 @@ export function SpatialAudioWaveform({ className, autoPlay = false }: SpatialAud
 
         <div className="flex items-center gap-4">
           <div className="text-right">
-            <div className="font-mono text-2xl font-bold text-cream-light">
+            <div className={cn("font-mono text-2xl font-bold", positionLabelClass)}>
               {playheadPosition.toFixed(0)}%
             </div>
-            <div className="font-mono text-[10px] uppercase tracking-wider text-cream-dark/60">
+            <div
+              className={cn(
+                "font-mono text-[10px] uppercase tracking-wider",
+                positionSubClass,
+              )}
+            >
               Position
             </div>
           </div>
-          <div className="h-8 w-px bg-charcoal-light" />
+          <div className={cn("h-8 w-px", separatorClass)} />
           <div className="text-right">
-            <div className="font-mono text-2xl font-bold text-orange">112</div>
-            <div className="font-mono text-[10px] uppercase tracking-wider text-cream-dark/60">
+            <div className="font-mono text-2xl font-bold" style={{ color: CH_RIGHT }}>
+              112
+            </div>
+            <div
+              className={cn(
+                "font-mono text-[10px] uppercase tracking-wider",
+                positionSubClass,
+              )}
+            >
               BPM
             </div>
           </div>
@@ -353,8 +417,13 @@ export function SpatialAudioWaveform({ className, autoPlay = false }: SpatialAud
       </div>
 
       {activeAnnotations.length > 0 && (
-        <div className="mt-6 rounded-xl border border-charcoal-light bg-black/30 p-4">
-          <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-cream-dark/50">
+        <div className={cn("mt-6 rounded-xl p-4", activeCueBoxClass)}>
+          <div
+            className={cn(
+              "mb-2 font-mono text-[10px] uppercase tracking-widest",
+              activeCueEyebrowClass,
+            )}
+          >
             Active Audio Cues
           </div>
           <div className="flex flex-wrap gap-2">
@@ -373,8 +442,18 @@ export function SpatialAudioWaveform({ className, autoPlay = false }: SpatialAud
         </div>
       )}
 
-      <div className="pointer-events-none absolute top-0 left-0 h-8 w-8 border-t-2 border-l-2 border-terra-cotta/50" />
-      <div className="pointer-events-none absolute right-0 bottom-0 h-8 w-8 border-r-2 border-b-2 border-terra-cotta/50" />
+      <div
+        className={cn(
+          "pointer-events-none absolute top-0 left-0 h-8 w-8 border-t-2 border-l-2",
+          cornerAccentClass,
+        )}
+      />
+      <div
+        className={cn(
+          "pointer-events-none absolute right-0 bottom-0 h-8 w-8 border-r-2 border-b-2",
+          cornerAccentClass,
+        )}
+      />
     </div>
   )
 }
