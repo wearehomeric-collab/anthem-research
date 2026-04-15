@@ -1,5 +1,6 @@
 import { SectionLight as Section } from "@/components/SectionLight"
 import { Footer } from "@/components/scrollytelling/Footer"
+import { BpmPulseBar } from "@/components/BpmPulseBar"
 import { StickyAudioPlayer } from "@/components/StickyAudioPlayer"
 import { WaitlistForm } from "@/components/WaitlistForm"
 
@@ -9,6 +10,8 @@ import { WaitlistForm } from "@/components/WaitlistForm"
 export default function Page() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-white text-[#374151] pb-24">
+      <BpmPulseBar theme="light" />
+
       {/* 01 — HERO */}
       <Section variant="hero" fullHeight className="relative overflow-hidden">
         <div

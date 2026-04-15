@@ -1,12 +1,15 @@
 import { Section } from "@/components/scrollytelling/Section"
 import { Footer } from "@/components/scrollytelling/Footer"
 import { NeuralEntrainmentAnimator } from "@/components/scrollytelling/NeuralEntrainmentAnimator"
+import { BpmPulseBar } from "@/components/BpmPulseBar"
 import { StickyAudioPlayer } from "@/components/StickyAudioPlayer"
 import { WaitlistForm } from "@/components/WaitlistForm"
 
 export default function Page() {
   return (
     <main className="min-h-screen overflow-x-hidden pb-24">
+      <BpmPulseBar theme="dark" />
+
       {/* 01 — HERO */}
       <Section variant="royal" fullHeight className="relative overflow-hidden">
         <div
