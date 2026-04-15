@@ -89,6 +89,20 @@
 @theme inline {
   --font-sans: 'Space Grotesk', 'Geist', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Geist Mono', monospace;
+
+  /* Custom tokens used by the ported rich visualizations from
+     claude/anthem-orange-sBtvP (brainwave-frequency-chart,
+     spatial-audio-waveform). Scoped to match the V2 dark palette so
+     the components drop in without a rewrite. */
+  --color-charcoal: #05080F;
+  --color-charcoal-light: #0C1220;
+  --color-charcoal-lighter: #1E3A5F;
+  --color-cream-light: #F8FAFC;
+  --color-cream-dark: #94A3B8;
+  --color-orange: #F59E0B;
+  --color-orange-dark: #B45309;
+  --color-terra-cotta: #EA580C;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
