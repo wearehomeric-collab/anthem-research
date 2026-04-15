@@ -24,35 +24,55 @@ export default function Page() {
           }}
         />
         <div className="relative z-10 flex flex-col justify-center min-h-[calc(100vh-8rem)]">
-          <div className="font-mono text-[0.65rem] sm:text-xs md:text-sm text-[#6B7280] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-8">
-            24/8 Anthems · Neuro-Golf Performance Audio
-          </div>
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div>
+              <div className="font-mono text-[0.65rem] sm:text-xs md:text-sm text-[#6B7280] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-8">
+                24/8 Anthems · Neuro-Golf Performance Audio
+              </div>
 
-          <h1 className="text-[2.5rem] leading-[1.05] sm:text-5xl md:text-7xl lg:text-8xl font-bold text-[#0B0B0F] mb-8 max-w-5xl text-balance break-words">
-            Play Your Course.
-            <br />
-            <span className="text-[#1D4ED8]">Own Your Tempo.</span>
-          </h1>
+              <h1 className="text-[2.5rem] leading-[1.05] sm:text-5xl md:text-7xl lg:text-8xl font-bold text-[#0B0B0F] mb-8 text-balance break-words">
+                Tee Off Like
+                <br />
+                <span className="text-[#1D4ED8]">You Already Won.</span>
+              </h1>
 
-          <p className="text-lg sm:text-xl md:text-2xl text-[#374151] max-w-2xl mb-12 leading-relaxed">
-            Custom anthems. Your clubs. Your strategy. Locked to the tempo pros swing at.
-          </p>
+              <p className="text-lg sm:text-xl md:text-2xl text-[#374151] mb-12 leading-relaxed">
+                Your course. Your bag. Locked to 112 BPM.
+              </p>
 
-          <div className="flex flex-wrap gap-4">
-            <a
-              href="#waitlist"
-              className="inline-flex items-center gap-3 bg-[#1D4ED8] hover:bg-[#1E3A8A] text-white font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] px-6 sm:px-8 py-4 sm:py-5 text-xs sm:text-sm md:text-base transition-colors duration-200"
-            >
-              Commission Your Anthem
-              <span className="font-mono">→</span>
-            </a>
-            <a
-              href="#listen"
-              className="inline-flex items-center gap-3 border border-[#0B0B0F] hover:bg-[#0B0B0F] hover:text-white text-[#0B0B0F] font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] px-6 sm:px-8 py-4 sm:py-5 text-xs sm:text-sm md:text-base transition-colors duration-200"
-            >
-              <span className="font-mono">▶</span>
-              Listen to Augusta
-            </a>
+              <div className="flex">
+                <a
+                  href="#listen"
+                  className="inline-flex items-center gap-3 bg-[#1D4ED8] hover:bg-[#1E3A8A] text-white font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] px-6 sm:px-8 py-4 sm:py-5 text-xs sm:text-sm md:text-base transition-colors duration-200"
+                >
+                  <span className="font-mono">▶</span>
+                  Listen Now
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="font-mono text-xs text-[#1D4ED8] uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-4">
+                Sample Verse · Augusta National
+              </h3>
+              <div className="bg-[#F1F5F9] border-l-4 border-[#EA580C] p-6 sm:p-8 md:p-10">
+                <p className="text-xl sm:text-2xl md:text-3xl text-[#0B0B0F] font-semibold leading-[1.4] mb-6">
+                  &ldquo;Seven-iron to the back pin.
+                  <br />
+                  One sixty-five to carry the bunker.
+                  <br />
+                  You&apos;ve been here before.
+                  <br />
+                  <span className="text-[#1D4ED8]">You already made this shot.</span>&rdquo;
+                </p>
+                <div className="font-mono text-xs text-[#6B7280] uppercase tracking-wider">
+                  Generated from real club yardages · Strategy: Smart · Tempo: 112 BPM
+                </div>
+              </div>
+              <p className="mt-4 text-sm text-[#6B7280] italic">
+                Every line pulled from your bag, your tees, your course research.
+              </p>
+            </div>
           </div>
         </div>
       </Section>
@@ -92,44 +112,13 @@ export default function Page() {
         </div>
       </Section>
 
-      {/* 03 — SOCIAL PROOF STRIP */}
-      <Section variant="default" className="py-12 md:py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div>
-            <div className="font-mono text-3xl md:text-4xl font-bold text-[#1D4ED8] mb-2">
-              1,200+
-            </div>
-            <div className="text-xs md:text-sm text-[#6B7280] uppercase tracking-wider">
-              Anthems Built
-            </div>
-          </div>
-          <div>
-            <div className="font-mono text-3xl md:text-4xl font-bold text-[#EA580C] mb-2">
-              43
-            </div>
-            <div className="text-xs md:text-sm text-[#6B7280] uppercase tracking-wider">
-              Courses Mapped
-            </div>
-          </div>
-          <div>
-            <div className="font-mono text-3xl md:text-4xl font-bold text-[#1D4ED8] mb-2">
-              4
-            </div>
-            <div className="text-xs md:text-sm text-[#6B7280] uppercase tracking-wider">
-              Strategy Modes
-            </div>
-          </div>
-          <div>
-            <div className="font-mono text-3xl md:text-4xl font-bold text-[#0B0B0F] mb-2">
-              112
-            </div>
-            <div className="text-xs md:text-sm text-[#6B7280] uppercase tracking-wider">
-              BPM Locked
-            </div>
-          </div>
-        </div>
-        <p className="mt-10 text-center font-mono text-[0.65rem] sm:text-xs text-[#6B7280] uppercase tracking-[0.2em] sm:tracking-[0.3em] break-words">
-          Built for courses like Augusta · Pebble Beach · St Andrews · Bethpage Black
+      {/* 03 — TAGLINE BREATH */}
+      <Section variant="default" className="py-20 md:py-28">
+        <p className="text-center font-mono text-xs sm:text-sm md:text-base text-[#6B7280] uppercase tracking-[0.25em] sm:tracking-[0.35em] max-w-3xl mx-auto leading-relaxed">
+          For serious players.
+          <br className="sm:hidden" />
+          <span className="hidden sm:inline"> </span>
+          Commissioned one round at a time.
         </p>
       </Section>
 
@@ -152,61 +141,36 @@ export default function Page() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
-          <div>
-            <h3 className="font-mono text-xs text-[#1D4ED8] uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-4">
-              Sample Verse · Augusta National
-            </h3>
-            <div className="bg-[#F1F5F9] border-l-4 border-[#EA580C] p-6 sm:p-8 md:p-10">
-              <p className="text-xl sm:text-2xl md:text-3xl text-[#0B0B0F] font-semibold leading-[1.4] mb-6">
-                &ldquo;Seven-iron to the back pin.
-                <br />
-                One sixty-five to carry the bunker.
-                <br />
-                You&apos;ve been here before.
-                <br />
-                <span className="text-[#1D4ED8]">You already made this shot.</span>&rdquo;
-              </p>
-              <div className="font-mono text-xs text-[#6B7280] uppercase tracking-wider">
-                Generated from real club yardages · Strategy: Smart · Tempo: 112 BPM
-              </div>
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="bg-white border-l-4 border-[#1D4ED8] p-6 shadow-sm">
+            <div className="font-mono text-xs text-[#1D4ED8] uppercase tracking-wider mb-2">
+              Personalized
             </div>
-            <p className="mt-4 text-sm text-[#6B7280] italic">
-              Every line pulled from your bag, your tees, your course research.
+            <h4 className="text-xl font-bold text-[#0B0B0F] mb-2">Your bag. Your lyrics.</h4>
+            <p className="text-[#6B7280] leading-relaxed">
+              Your club yardages decide which hazards matter on every hole. The lyrics call
+              out shots your bag can actually reach.
             </p>
           </div>
-
-          <div className="grid gap-6">
-            <div className="bg-white border-l-4 border-[#1D4ED8] p-6 shadow-sm">
-              <div className="font-mono text-xs text-[#1D4ED8] uppercase tracking-wider mb-2">
-                Personalized
-              </div>
-              <h4 className="text-xl font-bold text-[#0B0B0F] mb-2">Your bag. Your lyrics.</h4>
-              <p className="text-[#6B7280] leading-relaxed">
-                Your club yardages decide which hazards matter on every hole. The lyrics call
-                out shots your bag can actually reach.
-              </p>
+          <div className="bg-white border-l-4 border-[#EA580C] p-6 shadow-sm">
+            <div className="font-mono text-xs text-[#EA580C] uppercase tracking-wider mb-2">
+              Course-Specific
             </div>
-            <div className="bg-white border-l-4 border-[#EA580C] p-6 shadow-sm">
-              <div className="font-mono text-xs text-[#EA580C] uppercase tracking-wider mb-2">
-                Course-Specific
-              </div>
-              <h4 className="text-xl font-bold text-[#0B0B0F] mb-2">Researched. Not generic.</h4>
-              <p className="text-[#6B7280] leading-relaxed">
-                Deep AI research into the layout, signature holes, and history of your course.
-                Nothing stock. Nothing recycled.
-              </p>
+            <h4 className="text-xl font-bold text-[#0B0B0F] mb-2">Researched. Not generic.</h4>
+            <p className="text-[#6B7280] leading-relaxed">
+              Deep AI research into the layout, signature holes, and history of your course.
+              Nothing stock. Nothing recycled.
+            </p>
+          </div>
+          <div className="bg-white border-l-4 border-[#0B0B0F] p-6 shadow-sm">
+            <div className="font-mono text-xs text-[#0B0B0F] uppercase tracking-wider mb-2">
+              Strategy-Tuned
             </div>
-            <div className="bg-white border-l-4 border-[#0B0B0F] p-6 shadow-sm">
-              <div className="font-mono text-xs text-[#0B0B0F] uppercase tracking-wider mb-2">
-                Strategy-Tuned
-              </div>
-              <h4 className="text-xl font-bold text-[#0B0B0F] mb-2">Pick your mode. We match it.</h4>
-              <p className="text-[#6B7280] leading-relaxed">
-                Smart. Aggressive. Conservative. Risk-Reward. The anthem leans into how you
-                actually want to play.
-              </p>
-            </div>
+            <h4 className="text-xl font-bold text-[#0B0B0F] mb-2">Pick your mode. We match it.</h4>
+            <p className="text-[#6B7280] leading-relaxed">
+              Smart. Aggressive. Conservative. Risk-Reward. The anthem leans into how you
+              actually want to play.
+            </p>
           </div>
         </div>
       </Section>
@@ -339,16 +303,21 @@ export default function Page() {
       {/* 07 — WAITLIST */}
       <Section id="waitlist" variant="panel">
         <div className="max-w-3xl mx-auto">
-          <div className="font-mono text-xs text-[#EA580C] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-4 text-center">
-            Limited Slots · Masters Season
-          </div>
           <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-[#0B0B0F] mb-6 text-balance text-center leading-[1.05]">
             Get On The List.
           </h2>
-          <p className="text-lg md:text-xl text-[#374151] leading-relaxed mb-10 text-center max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-[#374151] leading-relaxed mb-8 text-center max-w-2xl mx-auto">
             Custom anthems are built one round at a time. Drop your details and we&apos;ll
             open a slot for you next.
           </p>
+
+          <div className="flex justify-center mb-10">
+            <div className="inline-block border border-[#0B0B0F] bg-white px-4 sm:px-5 py-2 sm:py-3">
+              <p className="font-mono text-[0.65rem] sm:text-xs text-[#0B0B0F] uppercase tracking-[0.2em] sm:tracking-[0.3em] text-center">
+                By invitation · Limited to 8 rounds per month
+              </p>
+            </div>
+          </div>
 
           <WaitlistForm theme="light" className="max-w-xl mx-auto" />
 
