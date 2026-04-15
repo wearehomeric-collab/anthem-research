@@ -1,6 +1,7 @@
 import { SectionLight as Section } from "@/components/SectionLight"
 import { Footer } from "@/components/scrollytelling/Footer"
 import { BpmPulseBar } from "@/components/BpmPulseBar"
+import { HearTheDifference } from "@/components/HearTheDifference"
 import { StickyAudioPlayer } from "@/components/StickyAudioPlayer"
 import { WaitlistForm } from "@/components/WaitlistForm"
 
@@ -504,7 +505,9 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="bg-white border-l-4 border-[#1D4ED8] p-6 md:p-8 max-w-3xl shadow-sm">
+        <HearTheDifference theme="light" />
+
+        <div className="bg-white border-l-4 border-[#1D4ED8] p-6 md:p-8 max-w-3xl shadow-sm mt-10">
           <p className="text-[#0B0B0F] leading-relaxed">
             <span className="font-mono text-[0.65rem] sm:text-xs text-[#1D4ED8] uppercase tracking-[0.25em] block mb-2">
               The Whole Story

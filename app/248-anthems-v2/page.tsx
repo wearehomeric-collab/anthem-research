@@ -2,6 +2,7 @@ import { Section } from "@/components/scrollytelling/Section"
 import { Footer } from "@/components/scrollytelling/Footer"
 import { NeuralEntrainmentAnimator } from "@/components/scrollytelling/NeuralEntrainmentAnimator"
 import { BpmPulseBar } from "@/components/BpmPulseBar"
+import { HearTheDifference } from "@/components/HearTheDifference"
 import { StickyAudioPlayer } from "@/components/StickyAudioPlayer"
 import { WaitlistForm } from "@/components/WaitlistForm"
 
@@ -508,7 +509,9 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="border-l-2 border-[#00F0FF] pl-6 max-w-3xl">
+        <HearTheDifference theme="dark" />
+
+        <div className="border-l-2 border-[#00F0FF] pl-6 max-w-3xl mt-10">
           <p className="text-[#E2E8F0] leading-relaxed">
             <span className="font-mono text-[0.65rem] sm:text-xs text-[#00F0FF] uppercase tracking-[0.25em] block mb-2">
               The Whole Story
