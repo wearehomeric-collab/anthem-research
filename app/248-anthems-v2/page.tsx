@@ -601,6 +601,61 @@ export default function Page() {
         </div>
       </Section>
 
+      {/* 10.5 — THE RITUAL (pre-round use-case cards) */}
+      <Section id="ritual" variant="dark">
+        <div className="max-w-3xl mb-12">
+          <div className="font-mono text-xs text-[#F59E0B] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-4">
+            The Ritual
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl text-white mb-6 text-balance leading-[1.05]">
+            A pre-round ritual, on loop.
+          </h2>
+          <p className="text-lg md:text-xl text-[#E2E8F0] leading-relaxed">
+            The anthem isn&apos;t background music. It&apos;s the routine that stabilizes
+            your swing from the car to the 18th green.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="bg-[#0C1220] border-l-4 border-[#3B82F6] p-7">
+            <div className="font-mono text-xs text-[#3B82F6] uppercase tracking-wider mb-3">
+              01 · Lock-Screen Set
+            </div>
+            <h3 className="text-xl md:text-2xl font-bold text-white mb-3 leading-tight">
+              Save a line. See it every time.
+            </h3>
+            <p className="text-[#94A3B8] leading-relaxed">
+              Pull a moment from the lyrics and drop it on your lock screen. Every glance
+              is a priming cue for tempo, strategy, and commitment.
+            </p>
+          </div>
+          <div className="bg-[#0C1220] border-l-4 border-[#F59E0B] p-7">
+            <div className="font-mono text-xs text-[#F59E0B] uppercase tracking-wider mb-3">
+              02 · Walking The First Tee
+            </div>
+            <h3 className="text-xl md:text-2xl font-bold text-white mb-3 leading-tight">
+              Press play when you grab your driver.
+            </h3>
+            <p className="text-[#94A3B8] leading-relaxed">
+              Your anthem hits before you&apos;re standing over the ball. Tempo is already
+              loaded. Overthinking never gets a chance to show up.
+            </p>
+          </div>
+          <div className="bg-[#0C1220] border-l-4 border-[#00F0FF] p-7">
+            <div className="font-mono text-xs text-[#00F0FF] uppercase tracking-wider mb-3">
+              03 · Loop The Round
+            </div>
+            <h3 className="text-xl md:text-2xl font-bold text-white mb-3 leading-tight">
+              One earbud. Eighteen holes. Same song.
+            </h3>
+            <p className="text-[#94A3B8] leading-relaxed">
+              Same anthem from the 1st tee to the 18th green. Different swings, same
+              rhythm. The chorus lives rent-free until impact.
+            </p>
+          </div>
+        </div>
+      </Section>
+
       {/* 11 — ANTHEM LINES STRIP */}
       <Section id="lines" variant="dark">
         <div className="max-w-3xl mb-12">
@@ -712,6 +767,28 @@ export default function Page() {
         </div>
       </Section>
 
+
+      {/* 13.5 — FOR TEAMS (B2B strip) */}
+      <section className="border-t border-b border-[#1E3A5F]/60 bg-[#05080F] py-10 md:py-12 px-6 md:px-12 lg:px-20">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div>
+            <div className="font-mono text-[0.65rem] sm:text-xs text-[#F59E0B] uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-2">
+              For Teams
+            </div>
+            <p className="text-[#E2E8F0] text-base md:text-lg max-w-2xl leading-snug">
+              For clubs, tour pros, and teaching academies — custom anthem programs for
+              your players.
+            </p>
+          </div>
+          <a
+            href="mailto:hello@248anthems.com?subject=Course%20Anthem%20Program"
+            className="inline-flex items-center gap-2 border border-[#1E3A5F] hover:border-[#3B82F6] text-[#E2E8F0] hover:text-white font-mono text-xs uppercase tracking-[0.15em] px-5 py-3 transition-colors self-start md:self-auto shrink-0"
+          >
+            Talk To Us
+            <span>→</span>
+          </a>
+        </div>
+      </section>
 
       <Footer />
 
