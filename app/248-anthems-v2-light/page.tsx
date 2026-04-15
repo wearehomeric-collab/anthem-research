@@ -25,57 +25,57 @@ export default function Page() {
             backgroundSize: "60px 60px",
           }}
         />
-        <div className="relative z-10 flex flex-col justify-center min-h-[calc(100vh-8rem)]">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div>
-              <div className="font-mono text-[0.65rem] sm:text-xs md:text-sm text-[#6B7280] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-8">
-                24/8 Anthems · 3:1 Performance Audio
-              </div>
+        <div className="relative z-10 flex flex-col justify-center min-h-[calc(100vh-8rem)] py-16 md:py-20">
+          {/* Hero copy — full-width, no column constraint */}
+          <div className="max-w-5xl mb-14 md:mb-16">
+            <div className="font-mono text-[0.65rem] sm:text-xs md:text-sm text-[#6B7280] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-8">
+              24/8 Anthems · 3:1 Performance Audio
+            </div>
 
-              <h1 className="text-[2.5rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-[#0B0B0F] mb-8 text-balance break-words">
-                Performance.
+            <h1 className="text-[2.5rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-[#0B0B0F] mb-8 text-balance">
+              Performance.
+              <br />
+              <span className="text-[#1D4ED8]">Engineered For Your Swing.</span>
+            </h1>
+
+            <p className="text-lg sm:text-xl md:text-2xl text-[#374151] max-w-3xl mb-12 leading-relaxed">
+              3:1 tempo-locked audio to stabilize your swing and keep you composed when it matters most.
+            </p>
+
+            <div className="flex">
+              <a
+                href="#listen"
+                data-v2-play
+                className="inline-flex items-center gap-3 bg-[#1D4ED8] hover:bg-[#1E3A8A] text-white font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] px-6 sm:px-8 py-4 sm:py-5 text-xs sm:text-sm md:text-base transition-colors duration-200"
+              >
+                <span className="font-mono">▶</span>
+                Hear The Edge
+              </a>
+            </div>
+          </div>
+
+          {/* Sample verse card — stacks below the hero copy, up to max-w-3xl */}
+          <div className="max-w-3xl">
+            <h3 className="font-mono text-xs text-[#1D4ED8] uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-4">
+              Sample Verse · Augusta National
+            </h3>
+            <div className="bg-[#F1F5F9] border-l-4 border-[#EA580C] p-6 sm:p-8 md:p-10">
+              <p className="text-xl sm:text-2xl md:text-3xl text-[#0B0B0F] font-semibold leading-[1.4] mb-6">
+                &ldquo;Seven-iron to the back pin.
                 <br />
-                <span className="text-[#1D4ED8]">Engineered For Your Swing.</span>
-              </h1>
-
-              <p className="text-lg sm:text-xl md:text-2xl text-[#374151] mb-12 leading-relaxed">
-                3:1 tempo-locked audio to stabilize your swing and keep you composed when it matters most.
+                One sixty-five to carry the bunker.
+                <br />
+                You&apos;ve been here before.
+                <br />
+                <span className="text-[#1D4ED8]">You already made this shot.</span>&rdquo;
               </p>
-
-              <div className="flex">
-                <a
-                  href="#listen"
-                  data-v2-play
-                  className="inline-flex items-center gap-3 bg-[#1D4ED8] hover:bg-[#1E3A8A] text-white font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] px-6 sm:px-8 py-4 sm:py-5 text-xs sm:text-sm md:text-base transition-colors duration-200"
-                >
-                  <span className="font-mono">▶</span>
-                  Hear The Edge
-                </a>
+              <div className="font-mono text-xs text-[#6B7280] uppercase tracking-wider">
+                3:1 tempo model · 112 BPM · Built for Augusta
               </div>
             </div>
-
-            <div>
-              <h3 className="font-mono text-xs text-[#1D4ED8] uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-4">
-                Sample Verse · Augusta National
-              </h3>
-              <div className="bg-[#F1F5F9] border-l-4 border-[#EA580C] p-6 sm:p-8 md:p-10">
-                <p className="text-xl sm:text-2xl md:text-3xl text-[#0B0B0F] font-semibold leading-[1.4] mb-6">
-                  &ldquo;Seven-iron to the back pin.
-                  <br />
-                  One sixty-five to carry the bunker.
-                  <br />
-                  You&apos;ve been here before.
-                  <br />
-                  <span className="text-[#1D4ED8]">You already made this shot.</span>&rdquo;
-                </p>
-                <div className="font-mono text-xs text-[#6B7280] uppercase tracking-wider">
-                  3:1 tempo model · 112 BPM · Built for Augusta
-                </div>
-              </div>
-              <p className="mt-4 text-sm text-[#6B7280] italic">
-                Every line pulled from your bag, your tees, your course research.
-              </p>
-            </div>
+            <p className="mt-4 text-sm text-[#6B7280] italic">
+              Every line pulled from your bag, your tees, your course research.
+            </p>
           </div>
         </div>
       </Section>
@@ -678,7 +678,7 @@ export default function Page() {
           <div className="font-mono text-[0.65rem] text-[#1D4ED8] uppercase tracking-[0.3em] mb-5">
             Track 01 · The Core
           </div>
-          <p className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-[#0B0B0F] leading-[0.95] text-balance">
+          <p className="text-5xl sm:text-6xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-[#0B0B0F] leading-[0.95] text-balance">
             Smooth is fast.
             <br />
             <span className="text-[#1D4ED8] italic font-bold">
@@ -741,7 +741,7 @@ export default function Page() {
           <div className="font-mono text-[0.65rem] text-[#EA580C] uppercase tracking-[0.3em] mb-6 text-center">
             The Closer
           </div>
-          <p className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-[#0B0B0F] text-center leading-[0.95] max-w-4xl mx-auto">
+          <p className="text-5xl sm:text-6xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-[#0B0B0F] text-center leading-[0.95] max-w-4xl mx-auto">
             Same swing.
             <br />
             <span className="text-[#EA580C] italic font-bold">Every time.</span>
@@ -786,7 +786,7 @@ export default function Page() {
           <div className="font-mono text-xs text-[#EA580C] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-6">
             Performance · Engineered · Repeatable
           </div>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-[#0B0B0F] mb-8 text-balance leading-[1.0] break-words">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-[#0B0B0F] mb-8 text-balance leading-[1.0]">
             Tempo wins.
             <br />
             <span className="text-[#1D4ED8]">Everything else follows.</span>
