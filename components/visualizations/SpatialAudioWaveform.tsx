@@ -94,12 +94,20 @@ export function SpatialAudioWaveform({
   const eyebrowClass = isLight ? "text-[#EA580C]" : "text-terra-cotta"
   const headingClass = isLight ? "text-[#0B0B0F]" : "text-cream-light"
   const legendLabelClass = isLight ? "text-[#6B7280]" : "text-cream-dark"
-  // Inner "scope" stays dark on both themes — bright waveform bars only
-  // read well on a dark background.
-  const scopeBgClass = "bg-black/60"
-  const dividerClass = isLight ? "bg-[#1E3A5F]/30" : "bg-charcoal-light"
+  // Inner "scope" — dark on dark theme so bright waveform bars pop,
+  // subtle off-white with a soft border on light theme so it matches
+  // the card frame. Inactive-bar opacity and annotation colors are
+  // branched below to stay visible against whichever background we
+  // land on.
+  const scopeBgClass = isLight
+    ? "bg-[#F8FAFC] border border-[#E5E7EB]"
+    : "bg-black/60"
+  const dividerClass = isLight ? "bg-[#E5E7EB]" : "bg-charcoal-light"
   const dividerLabelClass = isLight ? "text-[#94A3B8]" : "text-cream-dark/50"
-  const timeMarkerClass = isLight ? "text-[#6B7280]" : "text-cream-dark/40"
+  // Time-tick labels under the scope — must be legible on whichever
+  // scope background we end up with. Light scope = slate gray, dark
+  // scope = white at 50%.
+  const timeMarkerClass = isLight ? "text-[#6B7280]" : "text-white/50"
   const controlBtnOuterClass = isLight
     ? "border border-[#0B0B0F]/30 bg-white text-[#0B0B0F] hover:bg-[#F1F5F9]"
     : "border border-charcoal-light bg-charcoal-light/50 text-cream-dark hover:bg-charcoal-lighter hover:text-cream-light"
@@ -162,9 +170,24 @@ export function SpatialAudioWaveform({
     setPlayheadPosition(Math.max(0, Math.min(100, percentage)))
   }
 
+  // Pill chip class pair: bg + text. Branched per theme because the
+  // anchor/cue pills specifically need different contrast against the
+  // light vs dark scope background.
   const getAnnotationColor = (type: Annotation["type"]) => {
-    // Pill chip class pair: bg + text. Kept consistent across themes since
-    // these pills sit on the dark inner scope regardless of outer theme.
+    if (isLight) {
+      switch (type) {
+        case "call":
+          return "bg-[#1D4ED8] text-white"
+        case "response":
+          return "bg-[#EA580C] text-white"
+        case "anchor":
+          return "bg-[#0B0B0F] text-white"
+        case "cue":
+          return "bg-[#B45309] text-white"
+        default:
+          return "bg-[#F1F5F9] text-[#0B0B0F]"
+      }
+    }
     switch (type) {
       case "call":
         return "bg-[#3B82F6] text-white"
@@ -208,7 +231,9 @@ export function SpatialAudioWaveform({
                 style={{
                   width: `${barWidth}%`,
                   height: `${Math.max(4, height)}%`,
-                  backgroundColor: isActive ? color : `${color}33`,
+                  // Inactive bars need more opacity on a light scope to stay
+                  // visible (55 ≈ 33% alpha) vs dark (33 ≈ 20% alpha).
+                  backgroundColor: isActive ? color : `${color}${isLight ? "55" : "33"}`,
                   borderRadius: "2px",
                 }}
               />
@@ -355,7 +380,7 @@ export function SpatialAudioWaveform({
 
         <div className="mt-4 flex justify-between px-0">
           {[0, 25, 50, 75, 100].map((tick) => (
-            <span key={tick} className={cn("font-mono text-[10px]", "text-white/50")}>
+            <span key={tick} className={cn("font-mono text-[10px]", timeMarkerClass)}>
               {((tick / 100) * 8).toFixed(1)}s
             </span>
           ))}
