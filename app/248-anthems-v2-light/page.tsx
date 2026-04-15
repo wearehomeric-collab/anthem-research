@@ -25,7 +25,7 @@ export default function Page() {
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div>
               <div className="font-mono text-[0.65rem] sm:text-xs md:text-sm text-[#6B7280] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-8">
-                24/8 Anthems · Performance-Engineered Golf Audio
+                24/8 Anthems · 3:1 Performance Audio
               </div>
 
               <h1 className="text-[2.5rem] leading-[1.05] sm:text-5xl md:text-7xl lg:text-8xl text-[#0B0B0F] mb-8 text-balance break-words">
@@ -35,7 +35,7 @@ export default function Page() {
               </h1>
 
               <p className="text-lg sm:text-xl md:text-2xl text-[#374151] mb-12 leading-relaxed">
-                Tempo-locked audio to stabilize your swing and keep you composed when it matters most.
+                3:1 tempo-locked audio to stabilize your swing and keep you composed when it matters most.
               </p>
 
               <div className="flex">
@@ -131,7 +131,8 @@ export default function Page() {
                 A 3:1 tempo model — twenty-four units back, eight units through.
               </p>
               <p className="text-base md:text-lg text-[#6B7280] leading-relaxed">
-                We build music around that ratio so your body feels the timing instead of thinking about it.
+                We build music around the 3:1 ratio so your body feels the timing instead of
+                thinking about it. 24/8 is the flagship implementation.
               </p>
             </div>
           </div>
@@ -151,6 +152,16 @@ export default function Page() {
           <p className="mt-10 text-lg md:text-xl text-[#1D4ED8] font-semibold italic">
             Just rhythm, sequence, and commitment.
           </p>
+
+          <div className="mt-12 border-l-2 border-[#EA580C] pl-6 max-w-2xl">
+            <div className="font-mono text-[0.65rem] sm:text-xs text-[#EA580C] uppercase tracking-[0.25em] mb-2">
+              More 3:1 Timings Coming
+            </div>
+            <p className="text-[#374151] leading-relaxed">
+              24/8 is our first release. The 3:1 system supports multiple timings — each built
+              for a different swing archetype. Same principle, different ratios.
+            </p>
+          </div>
         </div>
       </Section>
 
@@ -264,9 +275,9 @@ export default function Page() {
         </div>
       </Section>
 
-      {/* 07 — TESTIMONIALS */}
+      {/* 07 — TESTIMONIALS (horizontal scroll-snap carousel) */}
       <Section id="testimonials" variant="subtle">
-        <div className="max-w-3xl mb-12">
+        <div className="max-w-3xl mb-10">
           <div className="font-mono text-xs text-[#EA580C] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-4">
             Early Signal
           </div>
@@ -275,69 +286,74 @@ export default function Page() {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-          <figure className="bg-white border border-[#E5E7EB] p-6 shadow-sm">
-            <blockquote className="text-[#374151] text-base md:text-lg leading-relaxed italic mb-4">
-              &ldquo;I didn&apos;t think music could actually change anything — but within a
-              few swings I stopped rushing everything. It just slowed me down without me
-              thinking about it.&rdquo;
-            </blockquote>
-            <figcaption className="font-mono text-xs text-[#1D4ED8] uppercase tracking-wider">
-              On Tempo · Range Session
-            </figcaption>
-          </figure>
+        <div className="-mx-6 md:-mx-12 lg:-mx-20">
+          <div className="flex gap-5 md:gap-6 overflow-x-auto snap-x snap-mandatory scroll-px-6 md:scroll-px-12 lg:scroll-px-20 px-6 md:px-12 lg:px-20 pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <figure className="snap-start shrink-0 w-[85%] sm:w-[55%] md:w-[42%] lg:w-[30%] bg-white border-l-4 border-[#1D4ED8] p-7 shadow-sm">
+              <blockquote className="text-[#0B0B0F] text-lg md:text-xl font-bold leading-snug mb-5">
+                &ldquo;Within a few swings I stopped rushing everything. It just slowed me
+                down without me thinking about it.&rdquo;
+              </blockquote>
+              <figcaption className="font-mono text-[0.65rem] sm:text-xs text-[#1D4ED8] uppercase tracking-wider">
+                On Tempo · Range Session
+              </figcaption>
+            </figure>
 
-          <figure className="bg-white border border-[#E5E7EB] p-6 shadow-sm">
-            <blockquote className="text-[#374151] text-base md:text-lg leading-relaxed italic mb-4">
-              &ldquo;Usually I speed up when it matters. With this, I felt like I had something
-              to lock into. Same swing, just way more controlled.&rdquo;
-            </blockquote>
-            <figcaption className="font-mono text-xs text-[#EA580C] uppercase tracking-wider">
-              On Pressure · In Round
-            </figcaption>
-          </figure>
+            <figure className="snap-start shrink-0 w-[85%] sm:w-[55%] md:w-[42%] lg:w-[30%] bg-white border-l-4 border-[#EA580C] p-7 shadow-sm">
+              <blockquote className="text-[#0B0B0F] text-lg md:text-xl font-bold leading-snug mb-5">
+                &ldquo;Usually I speed up when it matters. With this, I felt like I had
+                something to lock into. Same swing, way more controlled.&rdquo;
+              </blockquote>
+              <figcaption className="font-mono text-[0.65rem] sm:text-xs text-[#EA580C] uppercase tracking-wider">
+                On Pressure · In Round
+              </figcaption>
+            </figure>
 
-          <figure className="bg-white border border-[#E5E7EB] p-6 shadow-sm">
-            <blockquote className="text-[#374151] text-base md:text-lg leading-relaxed italic mb-4">
-              &ldquo;It&apos;s not just tempo — it&apos;s weirdly how it makes you think. I
-              wasn&apos;t forcing shots. I just played smarter without overanalyzing.&rdquo;
-            </blockquote>
-            <figcaption className="font-mono text-xs text-[#0B0B0F] uppercase tracking-wider">
-              On Decisions · After 9 Holes
-            </figcaption>
-          </figure>
+            <figure className="snap-start shrink-0 w-[85%] sm:w-[55%] md:w-[42%] lg:w-[30%] bg-white border-l-4 border-[#0B0B0F] p-7 shadow-sm">
+              <blockquote className="text-[#0B0B0F] text-lg md:text-xl font-bold leading-snug mb-5">
+                &ldquo;It&apos;s not just tempo — it&apos;s weirdly how it makes you think.
+                I played smarter without overanalyzing.&rdquo;
+              </blockquote>
+              <figcaption className="font-mono text-[0.65rem] sm:text-xs text-[#0B0B0F] uppercase tracking-wider">
+                On Decisions · After 9 Holes
+              </figcaption>
+            </figure>
 
-          <figure className="bg-white border border-[#E5E7EB] p-6 shadow-sm">
-            <blockquote className="text-[#374151] text-base md:text-lg leading-relaxed italic mb-4">
-              &ldquo;This isn&apos;t hype music. It actually feels like it&apos;s doing something
-              to your swing.&rdquo;
-            </blockquote>
-            <figcaption className="font-mono text-xs text-[#1D4ED8] uppercase tracking-wider">
-              First Impression
-            </figcaption>
-          </figure>
+            <figure className="snap-start shrink-0 w-[85%] sm:w-[55%] md:w-[42%] lg:w-[30%] bg-white border-l-4 border-[#1D4ED8] p-7 shadow-sm">
+              <blockquote className="text-[#0B0B0F] text-lg md:text-xl font-bold leading-snug mb-5">
+                &ldquo;This isn&apos;t hype music. It actually feels like it&apos;s doing
+                something to your swing.&rdquo;
+              </blockquote>
+              <figcaption className="font-mono text-[0.65rem] sm:text-xs text-[#1D4ED8] uppercase tracking-wider">
+                First Impression
+              </figcaption>
+            </figure>
 
-          <figure className="bg-white border border-[#E5E7EB] p-6 shadow-sm">
-            <blockquote className="text-[#374151] text-base md:text-lg leading-relaxed italic mb-4">
-              &ldquo;We played a match with it and it honestly felt unfair. One side was
-              steady… the other wasn&apos;t.&rdquo;
-            </blockquote>
-            <figcaption className="font-mono text-xs text-[#EA580C] uppercase tracking-wider">
-              On The Edge · Match Play
-            </figcaption>
-          </figure>
+            <figure className="snap-start shrink-0 w-[85%] sm:w-[55%] md:w-[42%] lg:w-[30%] bg-white border-l-4 border-[#EA580C] p-7 shadow-sm">
+              <blockquote className="text-[#0B0B0F] text-lg md:text-xl font-bold leading-snug mb-5">
+                &ldquo;We played a match with it and it honestly felt unfair. One side was
+                steady… the other wasn&apos;t.&rdquo;
+              </blockquote>
+              <figcaption className="font-mono text-[0.65rem] sm:text-xs text-[#EA580C] uppercase tracking-wider">
+                On The Edge · Match Play
+              </figcaption>
+            </figure>
 
-          <figure className="bg-white border border-[#E5E7EB] p-6 shadow-sm">
-            <blockquote className="text-[#0B0B0F] text-xl md:text-2xl font-semibold leading-snug mb-4">
-              &ldquo;Smooth showed up.
-              <br />
-              <span className="text-[#1D4ED8]">The chaos didn&apos;t.</span>&rdquo;
-            </blockquote>
-            <figcaption className="font-mono text-xs text-[#1D4ED8] uppercase tracking-wider">
-              Post-Round
-            </figcaption>
-          </figure>
+            <figure className="snap-start shrink-0 w-[85%] sm:w-[55%] md:w-[42%] lg:w-[30%] bg-white border-l-4 border-[#0B0B0F] p-7 shadow-sm">
+              <blockquote className="text-[#0B0B0F] text-2xl md:text-3xl font-black leading-snug mb-5">
+                &ldquo;Smooth showed up.
+                <br />
+                <span className="text-[#1D4ED8]">The chaos didn&apos;t.</span>&rdquo;
+              </blockquote>
+              <figcaption className="font-mono text-[0.65rem] sm:text-xs text-[#1D4ED8] uppercase tracking-wider">
+                Post-Round
+              </figcaption>
+            </figure>
+          </div>
         </div>
+
+        <p className="mt-6 font-mono text-[0.65rem] sm:text-xs text-[#6B7280] uppercase tracking-[0.2em]">
+          Swipe to read more →
+        </p>
       </Section>
 
       {/* 08 — ENGINEERED, NOT GUESSED */}
@@ -402,6 +418,85 @@ export default function Page() {
               Spatial awareness baked into every mix.
             </p>
           </div>
+        </div>
+      </Section>
+
+      {/* 08.5 — THE NEURO EDGE (no animator on light — text only for bg contrast) */}
+      <Section id="neuro" variant="default">
+        <div className="max-w-4xl mb-12">
+          <div className="font-mono text-xs text-[#1D4ED8] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-4">
+            The Neuro Edge
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-6xl text-[#0B0B0F] mb-6 text-balance leading-[1.0]">
+            Your brain syncs.
+            <br />
+            <span className="text-[#1D4ED8]">You swing free.</span>
+          </h2>
+          <p className="text-lg md:text-xl text-[#374151] leading-relaxed max-w-2xl">
+            Rhythm isn&apos;t decoration — it&apos;s a direct input to the motor cortex.
+            Predictable tempo triggers neural entrainment, the brain&apos;s natural tendency
+            to lock onto external rhythm. When it locks, overthinking loses its grip.
+          </p>
+        </div>
+
+        <div className="max-w-3xl space-y-8 mb-12">
+          <div className="flex gap-6">
+            <div className="font-mono text-5xl font-black text-[#1D4ED8] leading-none shrink-0 w-24">
+              40
+              <span className="text-2xl align-top ml-1">Hz</span>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-[#0B0B0F] mb-2">Gamma Lock</h3>
+              <p className="text-[#6B7280] leading-relaxed">
+                Gamma-band oscillations are the brain&apos;s focus frequency. Consistent
+                rhythmic input nudges cortical activity toward gamma coherence — the
+                signature of elite-level concentration.
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-6">
+            <div className="font-mono text-5xl font-black text-[#EA580C] leading-none shrink-0 w-24">
+              3:1
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-[#0B0B0F] mb-2">Motor Timing</h3>
+              <p className="text-[#6B7280] leading-relaxed">
+                Your cerebellum recognizes 3:1 phrasing as biologically natural. That&apos;s
+                why pros swing it and amateurs don&apos;t. We hand the ratio to the body
+                directly through audio.
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-6">
+            <div className="font-mono text-5xl font-black text-[#0B0B0F] leading-none shrink-0 w-24">
+              DA
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-[#0B0B0F] mb-2">Dopamine Drive</h3>
+              <p className="text-[#6B7280] leading-relaxed">
+                Predictable rhythm releases dopamine in the reward pathway. Dopamine triggers
+                flow. Flow triggers the swing you already own — without mechanics, without
+                pressure.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white border-l-4 border-[#1D4ED8] p-6 md:p-8 max-w-3xl shadow-sm">
+          <p className="text-[#0B0B0F] leading-relaxed">
+            <span className="font-mono text-[0.65rem] sm:text-xs text-[#1D4ED8] uppercase tracking-[0.25em] block mb-2">
+              The Whole Story
+            </span>
+            This is the part we don&apos;t oversell. The 24/8 system sits on a spectrum —
+            part rigorous neuroscience, part brilliant engineering. Both produce measurable
+            results.{" "}
+            <a
+              href="/"
+              className="text-[#1D4ED8] hover:text-[#0B0B0F] underline underline-offset-4 transition-colors"
+            >
+              Read the deep research →
+            </a>
+          </p>
         </div>
       </Section>
 
