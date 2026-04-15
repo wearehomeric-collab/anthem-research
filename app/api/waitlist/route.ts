@@ -14,6 +14,7 @@ import { NextResponse } from "next/server"
  *     - "Name"     Single line text  (required)
  *     - "Email"    Single line text  (required)
  *     - "Phone"    Single line text  (required)
+ *     - "Course"   Single line text  (required)
  *     - "Source"   Single line text  (optional — we send "248-anthems-v2")
  *     - "Created"  Created time      (optional — auto-populated by Airtable)
  *
@@ -25,16 +26,19 @@ export async function POST(request: Request) {
   let name: string | undefined
   let email: string | undefined
   let phone: string | undefined
+  let course: string | undefined
 
   try {
     const body = (await request.json()) as {
       name?: unknown
       email?: unknown
       phone?: unknown
+      course?: unknown
     }
     if (typeof body.name === "string") name = body.name.trim()
     if (typeof body.email === "string") email = body.email.trim()
     if (typeof body.phone === "string") phone = body.phone.trim()
+    if (typeof body.course === "string") course = body.course.trim()
   } catch {
     return NextResponse.json(
       { ok: false, error: "invalid_json" },
@@ -75,6 +79,13 @@ export async function POST(request: Request) {
     )
   }
 
+  if (!course || course.length < 2) {
+    return NextResponse.json(
+      { ok: false, error: "course_required" },
+      { status: 400 },
+    )
+  }
+
   const pat = process.env.AIRTABLE_PAT
   const baseId = process.env.AIRTABLE_BASE_ID
   const tableName = process.env.AIRTABLE_WAITLIST_TABLE ?? "Waitlist"
@@ -86,6 +97,7 @@ export async function POST(request: Request) {
       name,
       email,
       phone,
+      course,
     })
     return NextResponse.json({ ok: true, destination: "log" })
   }
@@ -111,6 +123,7 @@ export async function POST(request: Request) {
                 Name: name,
                 Email: email,
                 Phone: phone,
+                Course: course,
                 Source: "248-anthems-v2",
               },
             },

@@ -12,6 +12,22 @@ interface WaitlistFormProps {
   theme?: Theme
 }
 
+// Popular courses for the picker dropdown. "Other" triggers a write-in field.
+// Easy one-array edit to add/remove courses later.
+const COURSE_OPTIONS = [
+  "Augusta National",
+  "Pebble Beach",
+  "St Andrews",
+  "Bethpage Black",
+  "Whistling Straits",
+  "TPC Sawgrass",
+  "Oakmont",
+  "Bandon Dunes",
+  "Torrey Pines",
+  "Medinah",
+]
+const OTHER_OPTION = "__other__"
+
 // Normalize a phone string down to digits so we can validate length.
 // Accepts "(415) 555-1234" / "+1 415-555-1234" / "4155551234" etc.
 function normalizePhone(raw: string): string {
@@ -27,17 +43,22 @@ export function WaitlistForm({
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
+  const [courseSelect, setCourseSelect] = useState("")
+  const [courseOther, setCourseOther] = useState("")
   const [status, setStatus] = useState<Status>("idle")
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
   const isLight = theme === "light"
+  const isOther = courseSelect === OTHER_OPTION
+
+  // Resolve the final course string from the select or the write-in field.
+  const resolvedCourse = isOther ? courseOther.trim() : courseSelect
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     if (status === "submitting" || status === "success") return
 
-    // Client-side sanity checks before we hit the network. The server
-    // re-validates everything, this just saves a round-trip.
+    // Client-side sanity checks. Server re-validates everything.
     if (name.trim().length < 2) {
       setStatus("error")
       setErrorMsg("Name is required.")
@@ -46,6 +67,11 @@ export function WaitlistForm({
     if (normalizePhone(phone).length < 7) {
       setStatus("error")
       setErrorMsg("That phone number doesn't look right.")
+      return
+    }
+    if (!resolvedCourse || resolvedCourse.length < 2) {
+      setStatus("error")
+      setErrorMsg("Pick a course — or type your own.")
       return
     }
 
@@ -60,6 +86,7 @@ export function WaitlistForm({
           name: name.trim(),
           email: email.trim(),
           phone: phone.trim(),
+          course: resolvedCourse,
         }),
       })
 
@@ -77,7 +104,9 @@ export function WaitlistForm({
               ? "That phone number doesn't look right."
               : data.error === "name_required"
                 ? "Name is required."
-                : "Couldn't sign you up. Try again in a sec.",
+                : data.error === "course_required"
+                  ? "Pick a course — or type your own."
+                  : "Couldn't sign you up. Try again in a sec.",
         )
         return
       }
@@ -111,6 +140,10 @@ export function WaitlistForm({
   const inputClass = isLight
     ? "w-full bg-white border border-[#0B0B0F] focus:border-[#1D4ED8] focus:outline-none text-[#0B0B0F] placeholder:text-[#94A3B8] px-5 py-4 font-mono text-sm tracking-wide transition-colors disabled:opacity-60"
     : "w-full bg-[#0C1220] border border-[#1E3A5F] focus:border-[#3B82F6] focus:outline-none text-white placeholder:text-[#64748B] px-5 py-4 font-mono text-sm tracking-wide transition-colors disabled:opacity-60"
+
+  const selectClass = isLight
+    ? "w-full bg-white border border-[#0B0B0F] focus:border-[#1D4ED8] focus:outline-none text-[#0B0B0F] px-5 py-4 font-mono text-sm tracking-wide transition-colors disabled:opacity-60 appearance-none"
+    : "w-full bg-[#0C1220] border border-[#1E3A5F] focus:border-[#3B82F6] focus:outline-none text-white px-5 py-4 font-mono text-sm tracking-wide transition-colors disabled:opacity-60 appearance-none"
 
   const buttonClass = isLight
     ? "w-full bg-[#1D4ED8] hover:bg-[#1E3A8A] disabled:bg-[#94A3B8] disabled:cursor-not-allowed text-white font-bold uppercase tracking-[0.15em] px-8 py-4 transition-colors duration-200"
@@ -157,6 +190,43 @@ export function WaitlistForm({
         disabled={status === "submitting"}
         className={inputClass}
       />
+      <div className="relative">
+        <select
+          required
+          value={courseSelect}
+          onChange={(e) => setCourseSelect(e.target.value)}
+          disabled={status === "submitting"}
+          className={selectClass}
+        >
+          <option value="" disabled>
+            Pick your course
+          </option>
+          {COURSE_OPTIONS.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+          <option value={OTHER_OPTION}>Other (type in)</option>
+        </select>
+        <span
+          aria-hidden="true"
+          className={`pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 font-mono text-xs ${isLight ? "text-[#6B7280]" : "text-[#64748B]"}`}
+        >
+          ▾
+        </span>
+      </div>
+      {isOther && (
+        <input
+          type="text"
+          required
+          placeholder="Type your course name"
+          value={courseOther}
+          onChange={(e) => setCourseOther(e.target.value)}
+          disabled={status === "submitting"}
+          maxLength={120}
+          className={inputClass}
+        />
+      )}
       <button
         type="submit"
         disabled={status === "submitting"}
