@@ -65,7 +65,7 @@ export default function Page() {
                   <span className="text-[#1D4ED8]">You already made this shot.</span>&rdquo;
                 </p>
                 <div className="font-mono text-xs text-[#6B7280] uppercase tracking-wider">
-                  24/8 tempo model · 112 BPM · Built for Augusta
+                  3:1 tempo model · 112 BPM · Built for Augusta
                 </div>
               </div>
               <p className="mt-4 text-sm text-[#6B7280] italic">
@@ -86,7 +86,7 @@ export default function Page() {
             Hear What Calm Sounds Like.
           </h2>
           <p className="text-lg md:text-xl text-[#374151] leading-relaxed">
-            One course. One anthem. Built on the 24/8 tempo model. Press play to pull up the
+            One course. One anthem. Built on the 3:1 tempo model. Press play to pull up the
             player from the bottom of the page.
           </p>
         </div>
@@ -506,7 +506,7 @@ export default function Page() {
             <span className="font-mono text-[0.65rem] sm:text-xs text-[#1D4ED8] uppercase tracking-[0.25em] block mb-2">
               The Whole Story
             </span>
-            This is the part we don&apos;t oversell. The 24/8 system sits on a spectrum —
+            This is the part we don&apos;t oversell. The 3:1 system sits on a spectrum —
             part rigorous neuroscience, part brilliant engineering. Both produce measurable
             results.{" "}
             <a
