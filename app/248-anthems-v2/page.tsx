@@ -1,12 +1,12 @@
-import Script from "next/script"
 import { Section } from "@/components/scrollytelling/Section"
 import { Footer } from "@/components/scrollytelling/Footer"
 import { NeuralEntrainmentAnimator } from "@/components/scrollytelling/NeuralEntrainmentAnimator"
+import { StickyAudioPlayer } from "@/components/StickyAudioPlayer"
 import { WaitlistForm } from "@/components/WaitlistForm"
 
 export default function Page() {
   return (
-    <main className="min-h-screen overflow-x-hidden">
+    <main className="min-h-screen overflow-x-hidden pb-24">
       {/* 01 — HERO */}
       <Section variant="royal" fullHeight className="relative overflow-hidden">
         <div
@@ -39,6 +39,7 @@ export default function Page() {
               <div className="flex">
                 <a
                   href="#listen"
+                  data-v2-play
                   className="inline-flex items-center gap-3 bg-[#3B82F6] hover:bg-[#2563EB] text-white font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] px-6 sm:px-8 py-4 sm:py-5 text-xs sm:text-sm md:text-base transition-colors duration-200"
                 >
                   <span className="font-mono">▶</span>
@@ -83,21 +84,39 @@ export default function Page() {
             Hear What Calm Sounds Like.
           </h2>
           <p className="text-lg md:text-xl text-[#E2E8F0] leading-relaxed">
-            One course. One anthem. Built on the 24/8 tempo model.
+            One course. One anthem. Built on the 24/8 tempo model. Press play to pull up the
+            player from the bottom of the page.
           </p>
         </div>
 
-        <div className="bg-[#0C1220] border border-[#1E3A5F] p-4 md:p-6 overflow-x-auto">
-          <Script src="https://elfsightcdn.com/platform.js" strategy="afterInteractive" />
-          <div
-            className="elfsight-app-6a38b85d-2e93-4765-8a0c-80415ee7b970"
-            data-elfsight-app-lazy
-          />
-        </div>
+        <button
+          type="button"
+          data-v2-play
+          className="group w-full text-left bg-gradient-to-br from-[#0C1220] to-[#05080F] border border-[#1E3A5F] hover:border-[#3B82F6] p-8 md:p-12 transition-colors"
+        >
+          <div className="flex items-center gap-6 md:gap-10">
+            <div className="shrink-0 w-16 h-16 md:w-24 md:h-24 rounded-full bg-[#3B82F6] group-hover:bg-[#2563EB] flex items-center justify-center transition-colors">
+              <span className="font-mono text-3xl md:text-5xl text-white translate-x-0.5 md:translate-x-1">
+                ▶
+              </span>
+            </div>
+            <div className="min-w-0">
+              <div className="font-mono text-[0.65rem] sm:text-xs text-[#3B82F6] uppercase tracking-[0.25em] mb-2">
+                The Augusta Anthem · 112 BPM · 3:1
+              </div>
+              <div className="text-xl md:text-3xl font-black text-white leading-tight mb-2">
+                Press play. Tee off.
+              </div>
+              <div className="text-sm md:text-base text-[#94A3B8]">
+                Player slides up from the bottom.
+              </div>
+            </div>
+          </div>
+        </button>
 
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
           <p className="text-sm text-[#94A3B8] font-mono uppercase tracking-wider">
-            Press play to hear the Augusta anthem
+            One course. One anthem. Every round.
           </p>
           <a
             href="#waitlist"
@@ -695,6 +714,8 @@ export default function Page() {
 
 
       <Footer />
+
+      <StickyAudioPlayer theme="dark" />
     </main>
   )
 }
