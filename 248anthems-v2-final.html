@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0D0D0D; --black-mid: #111111; --black-light: #1a1a1a; --black-card: #141414;
+    --gold: #F2C94C; --gold-dim: rgba(242,201,76,0.12); --gold-faint: rgba(242,201,76,0.05); --gold-glow: rgba(242,201,76,0.25);
+    --orange: #FF6A2F; --orange-dim: rgba(255,106,47,0.12); --orange-faint: rgba(255,106,47,0.05);
+    --white: #F7FAFC; --white-dim: rgba(247,250,252,0.55); --white-faint: rgba(247,250,252,0.05);
+    --border: rgba(242,201,76,0.1);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--black); color:var(--white); font-family:'Barlow',sans-serif; font-weight:300; overflow-x:hidden; }
+
+  /* NAV */
+  nav { position:sticky; top:0; z-index:200; display:flex; align-items:center; justify-content:space-between; padding:18px 40px; background:rgba(13,13,13,0.97); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); }
+  .nav-logo { font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:0.05em; color:var(--white); text-decoration:none; }
+  .nav-logo .slash { color:var(--gold); }
+  .nav-links { display:flex; align-items:center; gap:32px; list-style:none; }
+  .nav-links a { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:400; letter-spacing:0.15em; text-transform:uppercase; color:var(--white-dim); text-decoration:none; }
+  .nav-links a:hover { color:var(--gold); }
+  .nav-science { font-family:'DM Mono',monospace; font-size:10px; color:var(--orange); letter-spacing:0.08em; opacity:0.8; }
+  .nav-cta { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--black); background:var(--gold); padding:9px 20px; text-decoration:none; clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%); }
+  .nav-cta:hover { background:#f5d265; }
+
+  /* HERO */
+  .hero { position:relative; min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:100px 40px 90px; overflow:hidden; }
+  .hero-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(242,201,76,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(242,201,76,0.03) 1px,transparent 1px); background-size:60px 60px; mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 80%); pointer-events:none; }
+  .hero-glow { position:absolute; top:20%; right:5%; width:500px; height:500px; background:radial-gradient(ellipse,rgba(255,106,47,0.07) 0%,transparent 70%); pointer-events:none; }
+  .hero-glow2 { position:absolute; bottom:0; left:10%; width:400px; height:300px; background:radial-gradient(ellipse,rgba(242,201,76,0.06) 0%,transparent 70%); pointer-events:none; }
+  .hero-ratio-bg { position:absolute; right:-40px; top:50%; transform:translateY(-50%); font-family:'Bebas Neue',sans-serif; font-size:320px; color:transparent; -webkit-text-stroke:1px rgba(242,201,76,0.06); line-height:0.9; pointer-events:none; user-select:none; animation:slowdrift 18s ease-in-out infinite alternate; }
+  @keyframes slowdrift { from{transform:translateY(-50%)} to{transform:translateY(calc(-50% - 20px))} }
+  .hero-content { position:relative; z-index:2; max-width:720px; }
+  .hero-tag { display:inline-flex; align-items:center; gap:10px; margin-bottom:24px; }
+  .hero-tag-pill { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; color:var(--black); background:var(--orange); padding:5px 12px; text-transform:uppercase; clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%); }
+  .hero-tag-text { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; color:var(--white-dim); }
+  .hero-tag-text span { color:var(--gold); }
+  h1.hero-headline { font-family:'Bebas Neue',sans-serif; font-size:clamp(64px,9vw,110px); line-height:0.88; letter-spacing:0.02em; color:var(--white); margin-bottom:20px; }
+  h1.hero-headline .gold { color:var(--gold); }
+  h1.hero-headline .orange { color:var(--orange); }
+  .hero-sub { font-size:16px; line-height:1.7; color:var(--white-dim); max-width:500px; margin-bottom:36px; }
+  .hero-ctas { display:flex; align-items:center; gap:20px; flex-wrap:wrap; margin-bottom:48px; }
+  .btn-primary { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--black); background:var(--gold); padding:15px 36px; text-decoration:none; display:inline-flex; align-items:center; gap:10px; clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%); transition:background .2s,transform .15s,box-shadow .2s; }
+  .btn-primary:hover { background:#f5d265; transform:translateY(-2px); box-shadow:0 16px 48px var(--gold-glow); }
+  .btn-ghost { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--white-dim); text-decoration:none; display:inline-flex; align-items:center; gap:8px; border-bottom:1px solid rgba(247,250,252,0.18); padding-bottom:2px; }
+  .btn-ghost:hover { color:var(--white); }
+  .hero-ratios { display:flex; gap:0; border-top:1px solid var(--border); padding-top:24px; max-width:600px; }
+  .ratio-item { flex:1; padding-right:24px; margin-right:24px; border-right:1px solid var(--border); }
+  .ratio-item:last-child { border-right:none; margin-right:0; padding-right:0; }
+  .ratio-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:var(--white-dim); margin-bottom:5px; }
+  .ratio-value { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:0.04em; color:var(--gold); line-height:1; }
+  .ratio-value.orange { color:var(--orange); }
+  .ratio-sub { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:0.1em; color:rgba(247,250,252,0.3); margin-top:3px; }
+  .trust-strip { border-top:1px solid var(--border); display:flex; background:rgba(13,13,13,0.6); }
+  .trust-item { flex:1; padding:16px 20px; display:flex; align-items:center; gap:8px; border-right:1px solid var(--border); font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--white-dim); }
+  .trust-item:last-child { border-right:none; }
+  .trust-pip { width:5px; height:5px; border-radius:50%; background:var(--orange); flex-shrink:0; }
+  .trust-pip.gold { background:var(--gold); }
+
+  /* TICKER */
+  .science-banner { background:linear-gradient(90deg,var(--black) 0%,#0f0d00 50%,var(--black) 100%); border-top:1px solid var(--border); border-bottom:1px solid var(--border); overflow:hidden; }
+  .science-ticker { display:flex; animation:ticker 28s linear infinite; white-space:nowrap; padding:16px 0; }
+  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  .ticker-item { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; padding:0 36px; display:inline-flex; align-items:center; gap:10px; }
+  .t-gold { color:var(--gold); }
+  .t-orange { color:var(--orange); }
+
+  /* SHARED SECTION */
+  section { position:relative; z-index:1; }
+  .section-tag { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+  .section-tag::before { content:''; display:block; width:18px; height:1px; background:var(--orange); }
+  .section-headline { font-family:'Bebas Neue',sans-serif; font-size:clamp(40px,5vw,68px); line-height:0.9; color:var(--white); letter-spacing:0.02em; }
+  .section-headline .gold { color:var(--gold); }
+  .section-headline .orange { color:var(--orange); }
+
+  /* SYSTEM */
+  .system-section { padding:100px 40px; background:var(--black-mid); }
+  .system-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; max-width:1200px; margin:0 auto; }
+  .system-headline { font-family:'Bebas Neue',sans-serif; font-size:clamp(44px,5.5vw,72px); line-height:0.9; color:var(--white); letter-spacing:0.02em; margin-bottom:20px; }
+  .system-headline .gold { color:var(--gold); }
+  .system-body { font-size:14px; line-height:1.78; color:var(--white-dim); margin-bottom:32px; }
+  .system-body em { color:var(--white); font-style:normal; font-weight:400; }
+  .ratio-viz { background:var(--black-card); border:1px solid var(--border); padding:28px; position:relative; }
+  .ratio-viz::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--orange),var(--gold)); }
+  .ratio-viz-title { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.14em; text-transform:uppercase; color:var(--white-dim); margin-bottom:20px; }
+  .ratio-bar-wrap { display:flex; height:44px; gap:3px; margin-bottom:12px; overflow:hidden; }
+  .ratio-back { background:linear-gradient(90deg,var(--orange),rgba(255,106,47,0.7)); flex:3; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:17px; letter-spacing:0.08em; color:var(--black); clip-path:polygon(0 0,calc(100% - 8px) 0,100% 100%,0 100%); }
+  .ratio-down { background:var(--gold); flex:1; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:17px; color:var(--black); clip-path:polygon(8px 0,100% 0,100% 100%,0 100%); }
+  .ratio-labels { display:flex; gap:3px; }
+  .ratio-lbl { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:0.1em; text-transform:uppercase; color:var(--white-dim); }
+  .ratio-lbl.flex3 { flex:3; color:var(--orange); }
+  .ratio-lbl.flex1 { flex:1; color:var(--gold); }
+  .ratio-ratios-row { display:flex; gap:2px; margin-top:22px; }
+  .ratio-chip { flex:1; background:var(--black); border:1px solid var(--border); padding:12px 10px; cursor:pointer; transition:border-color .2s,background .2s; text-align:center; }
+  .ratio-chip:hover,.ratio-chip.active { border-color:var(--gold); background:var(--gold-faint); }
+  .chip-ratio { font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--gold); line-height:1; margin-bottom:3px; }
+  .chip-ratio.orange { color:var(--orange); }
+  .chip-label { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:0.1em; text-transform:uppercase; color:var(--white-dim); }
+  .system-right { display:flex; flex-direction:column; gap:2px; }
+  .sci-card { background:var(--black-card); border:1px solid rgba(242,201,76,0.08); border-left:3px solid transparent; padding:24px 28px; transition:border-left-color .25s,background .25s; cursor:pointer; }
+  .sci-card:hover { background:var(--gold-faint); border-left-color:var(--gold); }
+  .sci-card.orange-l { border-left-color:var(--orange); }
+  .sci-card.orange-l:hover { background:var(--orange-faint); }
+  .sci-num { font-family:'Bebas Neue',sans-serif; font-size:44px; color:var(--gold); line-height:1; margin-bottom:3px; }
+  .sci-num.orange { color:var(--orange); }
+  .sci-num .unit { font-size:24px; }
+  .sci-label { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--white); margin-bottom:5px; }
+  .sci-desc { font-size:12px; line-height:1.6; color:var(--white-dim); }
+
+  /* HOW */
+  .how-section { padding:100px 40px; background:var(--black); border-top:1px solid var(--border); }
+  .how-inner { max-width:1200px; margin:0 auto; }
+  .how-header { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:end; margin-bottom:52px; }
+  .how-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+  .how-card { background:var(--black-card); border:1px solid rgba(242,201,76,0.08); padding:40px 28px; position:relative; overflow:hidden; transition:background .2s; cursor:pointer; }
+  .how-card:hover { background:var(--gold-faint); }
+  .how-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--orange),var(--gold)); transform:scaleX(0); transform-origin:left; transition:transform .3s; }
+  .how-card:hover::after { transform:scaleX(1); }
+  .how-step { font-family:'DM Mono',monospace; font-size:52px; color:rgba(242,201,76,0.07); line-height:1; position:absolute; top:16px; right:20px; }
+  .how-icon { width:40px; height:40px; background:var(--gold-dim); border:1px solid rgba(242,201,76,0.2); display:flex; align-items:center; justify-content:center; margin-bottom:24px; clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%); }
+  .how-icon svg { width:16px; height:16px; stroke:var(--gold); fill:none; stroke-width:1.5; }
+  .how-title { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--white); margin-bottom:10px; }
+  .how-body { font-size:13px; line-height:1.72; color:var(--white-dim); }
+  .how-mono { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold); margin-top:18px; padding-top:14px; border-top:1px solid var(--border); }
+
+  /* COURSES */
+  .courses-section { padding:100px 0 100px 40px; background:var(--black-mid); overflow:hidden; border-top:1px solid var(--border); }
+  .courses-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:40px; padding-right:40px; }
+  .courses-rail { display:flex; gap:14px; overflow-x:auto; padding-right:40px; scrollbar-width:none; cursor:grab; }
+  .courses-rail::-webkit-scrollbar { display:none; }
+  .course-card { flex-shrink:0; width:272px; background:var(--black-card); border:1px solid rgba(242,201,76,0.1); overflow:hidden; transition:transform .25s,border-color .25s; cursor:pointer; }
+  .course-card:hover { transform:translateY(-5px); border-color:rgba(242,201,76,0.3); }
+  .course-thumb { height:160px; background:linear-gradient(135deg,var(--black-light) 0%,var(--black-card) 100%); position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+  .course-thumb-initials { font-family:'Bebas Neue',sans-serif; font-size:68px; color:rgba(242,201,76,0.07); letter-spacing:-0.02em; user-select:none; }
+  .course-badge { position:absolute; top:10px; left:10px; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.14em; text-transform:uppercase; color:var(--black); background:var(--orange); padding:3px 9px; clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%); }
+  .course-bpm { position:absolute; top:10px; right:10px; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); background:rgba(13,13,13,0.8); padding:3px 7px; border:1px solid rgba(242,201,76,0.2); }
+  .course-play { position:absolute; bottom:10px; right:10px; width:34px; height:34px; background:rgba(13,13,13,0.85); border:1px solid rgba(242,201,76,0.3); display:flex; align-items:center; justify-content:center; transition:background .2s; cursor:pointer; }
+  .course-play:hover { background:var(--gold); }
+  .course-play:hover svg { fill:var(--black); }
+  .course-play svg { width:11px; height:11px; fill:var(--gold); margin-left:2px; }
+  .course-body { padding:18px 18px; }
+  .course-name { font-family:'Barlow Condensed',sans-serif; font-size:17px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:var(--white); margin-bottom:2px; }
+  .course-loc { font-size:11px; color:var(--white-dim); letter-spacing:0.04em; margin-bottom:12px; }
+  .course-meta { display:flex; gap:7px; align-items:center; margin-bottom:14px; flex-wrap:wrap; }
+  .cmeta { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.08em; color:var(--gold); }
+  .cmeta-sep { width:3px; height:3px; background:rgba(242,201,76,0.2); border-radius:50%; }
+  .mini-wave { display:flex; align-items:center; gap:2px; height:18px; margin-bottom:12px; }
+  .mini-wave span { width:2px; background:var(--gold); border-radius:1px; opacity:0.4; }
+  .course-card:hover .mini-wave span { opacity:0.8; }
+  .course-cta { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--orange); text-decoration:none; display:flex; align-items:center; gap:5px; }
+  .course-cta:hover { gap:9px; }
+  .course-card-req { flex-shrink:0; width:240px; background:transparent; border:1px dashed rgba(242,201,76,0.2); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:36px 24px; min-height:320px; }
+
+  /* WHY */
+  .why-section { padding:100px 40px; background:var(--black); border-top:1px solid var(--border); }
+  .why-inner { max-width:1200px; margin:0 auto; }
+  .why-top { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:end; margin-bottom:60px; }
+  .why-intro { font-size:15px; line-height:1.75; color:var(--white-dim); }
+  .why-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
+  .why-item { background:var(--black-card); border:1px solid rgba(242,201,76,0.06); padding:30px 24px; position:relative; overflow:hidden; cursor:pointer; transition:background .2s; }
+  .why-item:hover { background:var(--gold-faint); }
+  .why-item::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,var(--gold),transparent); transform:scaleX(0); transform-origin:left; transition:transform .3s; }
+  .why-item:hover::before { transform:scaleX(1); }
+  .why-icon { font-family:'DM Mono',monospace; font-size:24px; color:rgba(242,201,76,0.22); margin-bottom:14px; line-height:1; }
+  .why-title { font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--white); margin-bottom:8px; }
+  .why-body { font-size:12px; line-height:1.68; color:var(--white-dim); }
+  .why-tag { margin-top:14px; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:var(--orange); }
+
+  /* SCIENCE PULLQUOTE */
+  .science-section { padding:90px 40px; background:linear-gradient(135deg,#0d0b00 0%,var(--black) 50%,#0a0a0d 100%); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+  .science-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+  .sq-mark { font-family:'Bebas Neue',sans-serif; font-size:64px; color:var(--gold); opacity:0.2; line-height:0.7; margin-bottom:12px; }
+  .sq-text { font-family:'Barlow Condensed',sans-serif; font-size:clamp(24px,3vw,38px); font-weight:700; line-height:1.1; color:var(--white); letter-spacing:0.02em; margin-bottom:20px; }
+  .sq-text .gold { color:var(--gold); }
+  .sq-text .orange { color:var(--orange); }
+  .sq-sub { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; color:var(--white-dim); line-height:1.6; }
+  .sq-sub a { color:var(--gold); text-decoration:none; border-bottom:1px solid rgba(242,201,76,0.3); }
+  .science-stats { display:flex; flex-direction:column; gap:2px; }
+  .sstat { background:var(--white-faint); border:1px solid var(--border); padding:24px 28px; display:flex; align-items:center; gap:20px; cursor:pointer; transition:background .2s; }
+  .sstat:hover { background:var(--gold-faint); }
+  .sstat-num { font-family:'Bebas Neue',sans-serif; font-size:42px; color:var(--gold); line-height:1; flex-shrink:0; min-width:80px; }
+  .sstat-num.orange { color:var(--orange); }
+  .sstat-label { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--white); margin-bottom:3px; }
+  .sstat-desc { font-size:11px; color:var(--white-dim); line-height:1.5; }
+
+  /* PARTNERS */
+  .partners-section { padding:100px 40px; background:var(--black-mid); border-top:1px solid var(--border); }
+  .partners-inner { max-width:1200px; margin:0 auto; }
+  .partners-top { text-align:center; margin-bottom:60px; }
+  .partners-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+  .partner-card { background:var(--black-card); border:1px solid rgba(242,201,76,0.08); padding:36px 28px; cursor:pointer; transition:background .2s,border-color .2s; position:relative; overflow:hidden; }
+  .partner-card:hover { background:var(--gold-faint); border-color:rgba(242,201,76,0.25); }
+  .partner-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--orange),var(--gold)); transform:scaleX(0); transform-origin:left; transition:transform .35s; }
+  .partner-card:hover::after { transform:scaleX(1); }
+  .partner-type { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--orange); margin-bottom:14px; display:flex; align-items:center; gap:6px; }
+  .partner-type::before { content:'//'; opacity:0.5; }
+  .partner-title { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--white); margin-bottom:12px; }
+  .partner-body { font-size:13px; line-height:1.7; color:var(--white-dim); margin-bottom:22px; }
+  .partner-link { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); text-decoration:none; display:inline-flex; align-items:center; gap:5px; }
+
+  /* TESTIMONIALS */
+  .testimonials-section { padding:90px 40px; background:var(--black); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+  .testimonials-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+  .tcard { background:var(--black-card); border:1px solid rgba(242,201,76,0.07); padding:34px 28px; cursor:pointer; transition:background .2s; }
+  .tcard:hover { background:var(--gold-faint); }
+  .tmark { font-family:'Bebas Neue',sans-serif; font-size:44px; color:var(--gold); opacity:0.22; line-height:0.8; margin-bottom:12px; }
+  .ttext { font-size:13px; line-height:1.78; color:var(--white); font-style:italic; margin-bottom:20px; font-weight:300; }
+  .tauthor { display:flex; align-items:center; gap:10px; }
+  .tavatar { width:32px; height:32px; border-radius:50%; background:var(--gold-dim); border:1px solid rgba(242,201,76,0.25); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:12px; color:var(--gold); flex-shrink:0; }
+  .tname { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--white); }
+  .tdetail { font-size:10px; color:var(--white-dim); }
+
+  /* CTA */
+  .cta-section { padding:120px 40px; background:var(--black); text-align:center; position:relative; overflow:hidden; }
+  .cta-glow { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:600px; height:600px; background:radial-gradient(ellipse,rgba(242,201,76,0.06) 0%,transparent 65%); pointer-events:none; }
+  .cta-bg-num { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:260px; color:transparent; -webkit-text-stroke:1px rgba(242,201,76,0.04); letter-spacing:-0.02em; pointer-events:none; user-select:none; }
+  .cta-inner { position:relative; z-index:2; }
+  .cta-headline { font-family:'Bebas Neue',sans-serif; font-size:clamp(52px,7vw,90px); line-height:0.9; color:var(--white); letter-spacing:0.02em; margin-bottom:18px; }
+  .cta-headline .gold { color:var(--gold); }
+  .cta-headline .orange { color:var(--orange); }
+  .cta-sub { font-size:15px; color:var(--white-dim); max-width:400px; margin:0 auto 40px; line-height:1.7; }
+  .email-wrap { display:inline-flex; gap:0; background:var(--white-faint); border:1px solid rgba(242,201,76,0.25); padding:5px 5px 5px 20px; clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%); max-width:400px; width:100%; }
+  .email-wrap input { flex:1; background:transparent; border:none; outline:none; font-family:'DM Mono',monospace; font-size:12px; letter-spacing:0.06em; color:var(--white); }
+  .email-wrap input::placeholder { color:rgba(247,250,252,0.2); }
+  .email-wrap button { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--black); background:var(--gold); border:none; padding:11px 24px; cursor:pointer; clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%); }
+  .email-wrap button:hover { background:#f5d265; }
+  .cta-note { margin-top:12px; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; color:rgba(247,250,252,0.2); text-transform:uppercase; }
+
+  /* FOOTER */
+  footer { background:#080808; border-top:1px solid rgba(242,201,76,0.1); padding:52px 40px 30px; }
+  .footer-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:52px; margin-bottom:36px; }
+  .footer-logo { font-family:'Bebas Neue',sans-serif; font-size:26px; color:var(--white); text-decoration:none; display:block; margin-bottom:10px; }
+  .footer-logo .slash { color:var(--gold); }
+  .footer-tagline { font-size:12px; color:var(--white-dim); line-height:1.6; max-width:200px; margin-bottom:14px; }
+  .footer-mono { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--orange); margin-bottom:16px; }
+  .footer-social { display:flex; gap:8px; }
+  .footer-social a { width:30px; height:30px; border:1px solid rgba(242,201,76,0.15); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:10px; color:var(--white-dim); text-decoration:none; }
+  .footer-social a:hover { border-color:var(--gold); color:var(--gold); }
+  .fcol-title { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; }
+  .fcol-links { list-style:none; display:flex; flex-direction:column; gap:9px; }
+  .fcol-links a { font-size:12px; color:var(--white-dim); text-decoration:none; }
+  .fcol-links a:hover { color:var(--white); }
+  .footer-bottom { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding-top:20px; border-top:1px solid rgba(247,250,252,0.04); }
+  .footer-copy { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.08em; color:rgba(247,250,252,0.2); }
+  .footer-copy .gold { color:rgba(242,201,76,0.5); }
+  .footer-system { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; color:rgba(255,106,47,0.4); text-transform:uppercase; }
+
+  @keyframes wave { 0%{height:3px} 100%{height:18px} }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">24<span class="slash">/</span>8 ANTHEMS</a>
+  <ul class="nav-links">
+    <li><a href="#system">The System</a></li>
+    <li><a href="#courses">Courses</a></li>
+    <li><a href="#partners">Partners</a></li>
+    <li><a href="#">Science</a></li>
+  </ul>
+  <span class="nav-science">3:1 // 112 BPM // FRAMES NOT SECONDS</span>
+  <a href="#access" class="nav-cta">Get Early Access</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-ratio-bg">3/1</div>
+  <div class="hero-content">
+    <div class="hero-tag">
+      <span class="hero-tag-pill">New Category</span>
+      <span class="hero-tag-text">Neuro-Golf Performance Audio // <span>Frames Not Seconds</span></span>
+    </div>
+    <h1 class="hero-headline">YOUR BRAIN<br>DOESN'T<br><span class="gold">NEGOTIATE</span><br><span class="orange">THE TEMPO.</span></h1>
+    <p class="hero-sub">Course-specific strategy, premium anthem production, and the <em>3:1 ratio</em> — the exact temporal structure your basal ganglia craves for automated, repeatable golf. 24 frames back. 8 frames down. Every time.</p>
+    <div class="hero-ctas">
+      <a href="#access" class="btn-primary">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        Get Early Access
+      </a>
+      <a href="#system" class="btn-ghost">Explore the System →</a>
+    </div>
+    <div class="hero-ratios">
+      <div class="ratio-item">
+        <div class="ratio-label">The Signature</div>
+        <div class="ratio-value">24<span style="color:var(--orange)">/</span>8</div>
+        <div class="ratio-sub">Flagship ratio // 3:1</div>
+      </div>
+      <div class="ratio-item">
+        <div class="ratio-label">Coming Next</div>
+        <div class="ratio-value orange">27<span style="color:var(--gold)">/</span>9</div>
+        <div class="ratio-sub">Extended backswing // 3:1</div>
+      </div>
+      <div class="ratio-item">
+        <div class="ratio-label">The Constant</div>
+        <div class="ratio-value" style="color:var(--white)">3<span style="color:var(--gold)">/</span>1</div>
+        <div class="ratio-sub">The ratio that never changes</div>
+      </div>
+      <div class="ratio-item">
+        <div class="ratio-label">BPM Lock</div>
+        <div class="ratio-value gold">112</div>
+        <div class="ratio-sub">448 micro-ticks precision</div>
+      </div>
+    </div>
+  </div>
+  <div class="trust-strip">
+    <div class="trust-item"><span class="trust-pip gold"></span>3:1 Ratio — Universal Pro Tempo</div>
+    <div class="trust-item"><span class="trust-pip"></span>Basal Ganglia Motor Entrainment</div>
+    <div class="trust-item"><span class="trust-pip gold"></span>Hole-by-Hole Course Strategy</div>
+    <div class="trust-item"><span class="trust-pip"></span>Premium AI Anthem Production</div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="science-banner">
+  <div class="science-ticker">
+    <span class="ticker-item">THE 3:1 RATIO — <span class="t-gold">NON-NEGOTIABLE MOTOR CONTROL</span></span>
+    <span class="ticker-item">112 BPM // <span class="t-orange">448 MICRO-TICKS</span> // MILLISECOND PRECISION</span>
+    <span class="ticker-item">BASAL GANGLIA AUTOMATION — <span class="t-gold">PREFRONTAL CORTEX: GET OUT OF THE WAY</span></span>
+    <span class="ticker-item">24/8 → 27/9 → <span class="t-orange">ALL 3:1 // ALL BUILT ON THE SAME SCIENCE</span></span>
+    <span class="ticker-item">FRAMES NOT SECONDS // <span class="t-gold">MATH MEETS MUSCLE</span></span>
+    <span class="ticker-item">THE 3:1 RATIO — <span class="t-gold">NON-NEGOTIABLE MOTOR CONTROL</span></span>
+    <span class="ticker-item">112 BPM // <span class="t-orange">448 MICRO-TICKS</span> // MILLISECOND PRECISION</span>
+    <span class="ticker-item">BASAL GANGLIA AUTOMATION — <span class="t-gold">PREFRONTAL CORTEX: GET OUT OF THE WAY</span></span>
+    <span class="ticker-item">24/8 → 27/9 → <span class="t-orange">ALL 3:1 // ALL BUILT ON THE SAME SCIENCE</span></span>
+    <span class="ticker-item">FRAMES NOT SECONDS // <span class="t-gold">MATH MEETS MUSCLE</span></span>
+  </div>
+</div>
+
+<!-- SYSTEM -->
+<section class="system-section" id="system">
+  <div class="system-grid">
+    <div>
+      <div class="section-tag">The Foundation</div>
+      <h2 class="system-headline">THE <span class="gold">3:1</span><br>RATIO IS<br>NON-NEGOTIABLE</h2>
+      <p class="system-body">Every elite golfer swings with a backswing-to-downswing ratio of <em>3:1</em>. Not because they're natural athletes. Because the human motor system automates rhythm when timing ratios are consistent.<br><br>24/8 locks this at 112 BPM. 27/9 locks the same ratio — different frame count, same science. Every anthem is a delivery vehicle for the ratio your cerebellum already craves. <em>We give it a sound.</em></p>
+      <div class="ratio-viz">
+        <div class="ratio-viz-title">// 3:1 Ratio Visualizer — All Swing Tempos</div>
+        <div class="ratio-bar-wrap">
+          <div class="ratio-back" id="rBack">BACK 24 FRAMES</div>
+          <div class="ratio-down" id="rDown">8</div>
+        </div>
+        <div class="ratio-labels">
+          <div class="ratio-lbl flex3">▲ Backswing (3 parts)</div>
+          <div class="ratio-lbl flex1">▼ Down (1 part)</div>
+        </div>
+        <div class="ratio-ratios-row">
+          <div class="ratio-chip active" onclick="setR(this,'24','8')"><div class="chip-ratio">24/8</div><div class="chip-label">Flagship</div></div>
+          <div class="ratio-chip" onclick="setR(this,'27','9')"><div class="chip-ratio orange">27/9</div><div class="chip-label">Extended</div></div>
+          <div class="ratio-chip" onclick="setR(this,'21','7')"><div class="chip-ratio">21/7</div><div class="chip-label">Compact</div></div>
+          <div class="ratio-chip" onclick="setR(this,'18','6')"><div class="chip-ratio orange">18/6</div><div class="chip-label">Attack</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="system-right">
+      <div class="sci-card"><div class="sci-num">3<span class="unit">:1</span></div><div class="sci-label">The Universal Pro Tempo</div><div class="sci-desc">Every tour swing. Every handicap category that performs under pressure. The ratio doesn't change — only the frame count does.</div></div>
+      <div class="sci-card orange-l"><div class="sci-num orange">112<span class="unit" style="font-size:20px"> BPM</span></div><div class="sci-label">The Frequency Lock</div><div class="sci-desc">112 BPM × 4 beats = 448 micro-ticks. The granular timing resolution your basal ganglia uses for motor control.</div></div>
+      <div class="sci-card"><div class="sci-num">↓<span class="unit">87%</span></div><div class="sci-label">Swing Thought Reduction</div><div class="sci-desc">When timing is entrained, the prefrontal cortex stops micromanaging mechanics. The swing becomes automated. Flow becomes available.</div></div>
+      <div class="sci-card orange-l"><div class="sci-num orange">18</div><div class="sci-label">Holes. One Anthem. Full Lock-In.</div><div class="sci-desc">Course-specific strategy embedded in the sound. Hole by hole. Tee to green. The system runs so your brain doesn't have to.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="how-section" id="how">
+  <div class="how-inner">
+    <div class="how-header">
+      <div><div class="section-tag">Process</div><h2 class="section-headline">HOW THE<br>SYSTEM<br>WORKS</h2></div>
+      <p style="max-width:300px;font-size:13px;color:var(--white-dim);line-height:1.75;align-self:end;">Three steps. Your course. Your tees. Your ratio. Press play and let the temporal structure do the work.</p>
+    </div>
+    <div class="how-cards">
+      <div class="how-card">
+        <div class="how-step">01</div>
+        <div class="how-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div class="how-title">Pick Your Course</div>
+        <p class="how-body">Choose from our growing library. Filter by course type, region, or your target tee set. Every anthem is built around specific hole yardages, layouts, and pressure points.</p>
+        <div class="how-mono">// AI-researched course data</div>
+      </div>
+      <div class="how-card">
+        <div class="how-step">02</div>
+        <div class="how-icon"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        <div class="how-title">Press Play</div>
+        <p class="how-body">The anthem runs at 112 BPM with the 3:1 ratio locked in. Backswing cues, approach strategy, tempo anchors — all embedded. Not background music. Neural engineering.</p>
+        <div class="how-mono">// 112 BPM // 3:1 locked</div>
+      </div>
+      <div class="how-card">
+        <div class="how-step">03</div>
+        <div class="how-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <div class="how-title">Step Into Rhythm</div>
+        <p class="how-body">Your cerebellum syncs to the beat. Your basal ganglia automate the pattern. Your prefrontal cortex gets out of the way. Calmer, cleaner, more dangerous over the ball.</p>
+        <div class="how-mono">// Frames not seconds</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section class="courses-section" id="courses">
+  <div class="courses-header">
+    <div><div class="section-tag">The Library</div><h2 class="section-headline">FEATURED<br>COURSE<br>ANTHEMS</h2></div>
+    <a href="#" class="btn-ghost" style="margin-right:40px;">Full Library →</a>
+  </div>
+  <div class="courses-rail" id="rail">
+    <div class="course-card"><div class="course-thumb"><div class="course-thumb-initials">PB</div><div class="course-badge">Links</div><div class="course-bpm">112 BPM</div><div class="course-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><div class="course-body"><div class="course-name">Pebble Beach</div><div class="course-loc">Pebble Beach, CA</div><div class="course-meta"><span class="cmeta">Par 72</span><span class="cmeta-sep"></span><span class="cmeta">6,828 yds</span><span class="cmeta-sep"></span><span class="cmeta">74.5/143</span></div><div class="mini-wave" id="mw1"></div><a href="#" class="course-cta">Listen →</a></div></div>
+    <div class="course-card"><div class="course-thumb"><div class="course-thumb-initials">TP</div><div class="course-badge">Parkland</div><div class="course-bpm">112 BPM</div><div class="course-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><div class="course-body"><div class="course-name">Torrey Pines South</div><div class="course-loc">La Jolla, CA</div><div class="course-meta"><span class="cmeta">Par 72</span><span class="cmeta-sep"></span><span class="cmeta">7,698 yds</span><span class="cmeta-sep"></span><span class="cmeta">76.6/144</span></div><div class="mini-wave" id="mw2"></div><a href="#" class="course-cta">Listen →</a></div></div>
+    <div class="course-card"><div class="course-thumb"><div class="course-thumb-initials">BB</div><div class="course-badge">Parkland</div><div class="course-bpm">112 BPM</div><div class="course-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><div class="course-body"><div class="course-name">Bethpage Black</div><div class="course-loc">Farmingdale, NY</div><div class="course-meta"><span class="cmeta">Par 71</span><span class="cmeta-sep"></span><span class="cmeta">7,468 yds</span><span class="cmeta-sep"></span><span class="cmeta">77.0/152</span></div><div class="mini-wave" id="mw3"></div><a href="#" class="course-cta">Listen →</a></div></div>
+    <div class="course-card"><div class="course-thumb"><div class="course-thumb-initials">DCC</div><div class="course-badge">Private</div><div class="course-bpm">112 BPM</div><div class="course-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><div class="course-body"><div class="course-name">Dallas Country Club</div><div class="course-loc">Dallas, TX</div><div class="course-meta"><span class="cmeta">Par 71</span><span class="cmeta-sep"></span><span class="cmeta">6,742 yds</span></div><div class="mini-wave" id="mw4"></div><a href="#" class="course-cta">Listen →</a></div></div>
+    <div class="course-card"><div class="course-thumb"><div class="course-thumb-initials">SC</div><div class="course-badge">Coastal</div><div class="course-bpm">112 BPM</div><div class="course-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><div class="course-body"><div class="course-name">Streamsong Black</div><div class="course-loc">Bowling Green, FL</div><div class="course-meta"><span class="cmeta">Par 73</span><span class="cmeta-sep"></span><span class="cmeta">7,228 yds</span><span class="cmeta-sep"></span><span class="cmeta">75.4/141</span></div><div class="mini-wave" id="mw5"></div><a href="#" class="course-cta">Listen →</a></div></div>
+    <div class="course-card-req"><div style="font-family:'Bebas Neue',sans-serif;font-size:40px;color:rgba(242,201,76,0.2);line-height:1;">+</div><div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--white-dim);text-align:center;">Your Course<br>Not Here?</div><a href="#access" class="btn-primary" style="font-size:10px;padding:10px 18px;margin-top:4px;">Request It</a></div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="why-section">
+  <div class="why-inner">
+    <div class="why-top">
+      <h2 class="section-headline">BUILT FOR<br>GOLFERS WHO<br><span class="orange">HATE</span> SWING<br>THOUGHT<br>CHAOS</h2>
+      <p class="why-intro">Not motivation. Not meditation. A performance system with a sound — where the science is real and the ritual amplifies every effect. Press play. Let the ratio run. Stop steering.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-item"><div class="why-icon">◎</div><div class="why-title">Course-Specific Intel</div><p class="why-body">Every anthem built around real hole data — yardages, par, layout, danger zones. Not generic. The exact course you're playing.</p><div class="why-tag">// AI-researched per course</div></div>
+      <div class="why-item"><div class="why-icon">⌁</div><div class="why-title">The 3:1 Framework</div><p class="why-body">24/8. 27/9. 21/7. Different frame counts, same ratio. Every anthem is a 3:1 delivery vehicle. The ratio your motor system already knows.</p><div class="why-tag">// Basal ganglia automation</div></div>
+      <div class="why-item"><div class="why-icon">◈</div><div class="why-title">Premium Ritual</div><p class="why-body">Pre-round, range, recovery modes. From warmup to first tee to final putt. A performance ritual — not another content app.</p><div class="why-tag">// Engineered belief system</div></div>
+      <div class="why-item"><div class="why-icon">⊞</div><div class="why-title">Neural Entrainment</div><p class="why-body">112 BPM rhythmic stimulation. Neurons synchronize to the beat. Brainwave entrainment is measurable. This is the mechanism.</p><div class="why-tag">// Brainwave synchronization</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCIENCE PULLQUOTE -->
+<section class="science-section">
+  <div class="science-inner">
+    <div>
+      <div class="sq-mark">"</div>
+      <div class="sq-text">The <span class="gold">24/8</span> system doesn't ask your brain politely. It <span class="orange">entrains</span> it.</div>
+      <p class="sq-sub">When exposed to rhythmic stimulation, neurons synchronize their firing to match the external rhythm — brainwave entrainment. The 3:1 ratio is the constant. The anthem is the mechanism.<br><br><a href="#">Read the full research →</a></p>
+    </div>
+    <div class="science-stats">
+      <div class="sstat"><div class="sstat-num">3:1</div><div><div class="sstat-label">Pro Tempo Ratio</div><div class="sstat-desc">Every elite golfer. Every tour swing. The ratio the basal ganglia automates regardless of frame count.</div></div></div>
+      <div class="sstat"><div class="sstat-num orange">112</div><div><div class="sstat-label">BPM Precision Lock</div><div class="sstat-desc">448 micro-ticks per measure. The granular timing resolution that separates good contact from flushed irons.</div></div></div>
+      <div class="sstat"><div class="sstat-num">40<span style="font-size:22px">Hz</span></div><div><div class="sstat-label">Gamma Entrainment</div><div class="sstat-desc">40Hz gamma oscillations — heightened attention, perceptual binding, peak cognitive performance.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS -->
+<section class="partners-section" id="partners">
+  <div class="partners-inner">
+    <div class="partners-top">
+      <div class="section-tag" style="justify-content:center;">Open Paths</div>
+      <h2 class="section-headline" style="text-align:center;">BUILT FOR <span class="gold">PARTNERS</span></h2>
+      <p style="margin-top:12px;font-size:14px;color:var(--white-dim);max-width:440px;margin-left:auto;margin-right:auto;text-align:center;">Courses, coaches, resorts, and sponsors. Multiple entry points. One platform that sounds like nothing else in golf.</p>
+    </div>
+    <div class="partners-grid">
+      <div class="partner-card"><div class="partner-type">For Courses & Resorts</div><div class="partner-title">Commission Your Anthem</div><p class="partner-body">Give members and guests a branded audio experience built around your layout. Hole strategy, course history, and the 3:1 system — with your name on it.</p><a href="#" class="partner-link">Learn More →</a></div>
+      <div class="partner-card"><div class="partner-type">For Coaches & Instructors</div><div class="partner-title">The Coach Edition</div><p class="partner-body">Custom anthems built around your students' swing tendencies, tempo profile, and target ratio. A premium add-on that sets your program apart.</p><a href="#" class="partner-link">Learn More →</a></div>
+      <div class="partner-card"><div class="partner-type">For Sponsors & Brands</div><div class="partner-title">Sponsor the Soundtrack</div><p class="partner-body">Co-branded anthem slots, campaign integrations, and category exclusivity inside golf's most distinctive new performance platform.</p><a href="#" class="partner-link">Learn More →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div class="testimonials-inner">
+    <div class="tcard"><div class="tmark">"</div><p class="ttext">Played Torrey Pines South with the anthem running. Cleanest first tee shot I've had in years. Knowing what's coming hole by hole — and that tempo — just settled everything down.</p><div class="tauthor"><div class="tavatar">MR</div><div><div class="tname">Marcus R.</div><div class="tdetail">7-handicap · San Diego, CA</div></div></div></div>
+    <div class="tcard"><div class="tmark">"</div><p class="ttext">My students kept asking about the music. When I explained the 3:1 ratio and the strategy layer, three bought in that day. This is a different kind of training tool entirely.</p><div class="tauthor"><div class="tavatar">JS</div><div><div class="tname">Jordan S.</div><div class="tdetail">PGA Teaching Professional</div></div></div></div>
+    <div class="tcard"><div class="tmark">"</div><p class="ttext">The 24/8 system is legit. Not because it's complicated — because it's not. The ratio is real, the science is real, pressing play does something. I don't care why it works. It works.</p><div class="tauthor"><div class="tavatar">DL</div><div><div class="tname">Dana L.</div><div class="tdetail">Scratch golfer · Austin, TX</div></div></div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="access">
+  <div class="cta-glow"></div>
+  <div class="cta-bg-num">3/1</div>
+  <div class="cta-inner">
+    <div class="section-tag" style="justify-content:center;margin-bottom:18px;">Early Access</div>
+    <h2 class="cta-headline">READY TO<br><span class="gold">PRESS</span> <span class="orange">PLAY?</span></h2>
+    <p class="cta-sub">Join golfers building their pre-round ritual. Course drops. New ratios. The full system — when it's ready.</p>
+    <div class="email-wrap">
+      <input type="email" placeholder="your@email.com">
+      <button>Get Access</button>
+    </div>
+    <div class="cta-note">// No spam. Just the drop when it's ready. // 3:1 forever.</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <a href="#" class="footer-logo">24<span class="slash">/</span>8 ANTHEMS</a>
+      <p class="footer-tagline">Neuro-golf performance audio. The 3:1 ratio. The anthem for every round.</p>
+      <div class="footer-mono">112 BPM // Frames Not Seconds</div>
+      <div class="footer-social"><a href="#">IG</a><a href="#">TW</a><a href="#">YT</a></div>
+    </div>
+    <div><div class="fcol-title">Platform</div><ul class="fcol-links"><li><a href="#">Course Library</a></li><li><a href="#">How It Works</a></li><li><a href="#">The Science</a></li><li><a href="#">Request a Course</a></li></ul></div>
+    <div><div class="fcol-title">Partners</div><ul class="fcol-links"><li><a href="#">For Courses</a></li><li><a href="#">For Coaches</a></li><li><a href="#">For Sponsors</a></li><li><a href="#">Media Kit</a></li></ul></div>
+    <div><div class="fcol-title">Company</div><ul class="fcol-links"><li><a href="#">About 24/8</a></li><li><a href="#">The Method</a></li><li><a href="#">Research</a></li><li><a href="#">Contact</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 <span class="gold">24/8 Anthems</span> by Gulick. All rights reserved.</div>
+    <div class="footer-system">SYSTEM ACTIVE // 3:1 // 112 BPM</div>
+  </div>
+</footer>
+
+<script>
+  function setR(el,back,down){
+    document.querySelectorAll('.ratio-chip').forEach(c=>c.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('rBack').textContent='BACK '+back+' FRAMES';
+    document.getElementById('rDown').textContent=down;
+  }
+  ['mw1','mw2','mw3','mw4','mw5'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    for(let i=0;i<44;i++){
+      const s=document.createElement('span');
+      s.style.height=(Math.random()*16+2)+'px';
+      s.style.animation='wave '+(1+Math.random()*1.5)+'s ease-in-out '+(Math.random()*2)+'s infinite alternate';
+      el.appendChild(s);
+    }
+  });
+  const rail=document.getElementById('rail');
+  let dn=false,sx,sl;
+  rail.addEventListener('mousedown',e=>{dn=true;sx=e.pageX-rail.offsetLeft;sl=rail.scrollLeft;});
+  rail.addEventListener('mouseleave',()=>dn=false);
+  rail.addEventListener('mouseup',()=>dn=false);
+  rail.addEventListener('mousemove',e=>{if(!dn)return;e.preventDefault();rail.scrollLeft=sl-(e.pageX-rail.offsetLeft-sx)*1.5;});
+</script>
+</body>
+</html>
