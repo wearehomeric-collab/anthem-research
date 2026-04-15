@@ -32,7 +32,7 @@ export default function Page() {
                 24/8 Anthems · 3:1 Performance Audio
               </div>
 
-              <h1 className="text-[2.5rem] leading-[1.05] sm:text-5xl md:text-7xl lg:text-8xl text-[#0B0B0F] mb-8 text-balance break-words">
+              <h1 className="text-[2.5rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-[#0B0B0F] mb-8 text-balance break-words">
                 Performance.
                 <br />
                 <span className="text-[#1D4ED8]">Engineered For Your Swing.</span>
@@ -86,7 +86,7 @@ export default function Page() {
           <div className="font-mono text-xs text-[#1D4ED8] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-4">
             Listen · First Release
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-6xl text-[#0B0B0F] mb-6 text-balance leading-[1.05]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#0B0B0F] mb-6 text-balance leading-[1.05]">
             Hear What Calm Sounds Like.
           </h2>
           <p className="text-lg md:text-xl text-[#374151] leading-relaxed">
@@ -201,7 +201,7 @@ export default function Page() {
           <div className="font-mono text-xs text-[#EA580C] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-4">
             The Flagship Product
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-6xl text-[#0B0B0F] mb-6 text-balance leading-[1.05]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#0B0B0F] mb-6 text-balance leading-[1.05]">
             Know the course before
             <br />
             <span className="text-[#1D4ED8]">you step on the tee.</span>
@@ -718,7 +718,7 @@ export default function Page() {
       {/* 12 — WAITLIST */}
       <Section id="waitlist" variant="panel">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl md:text-6xl text-[#0B0B0F] mb-6 text-balance text-center leading-[1.05]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#0B0B0F] mb-6 text-balance text-center leading-[1.05]">
             Request Your Course.
           </h2>
           <p className="text-lg md:text-xl text-[#374151] leading-relaxed mb-8 text-center max-w-2xl mx-auto">
@@ -752,7 +752,7 @@ export default function Page() {
           <div className="font-mono text-xs text-[#EA580C] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-6">
             Performance · Engineered · Repeatable
           </div>
-          <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-[#0B0B0F] mb-8 text-balance leading-[1.0] break-words">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-[#0B0B0F] mb-8 text-balance leading-[1.0] break-words">
             Tempo wins.
             <br />
             <span className="text-[#1D4ED8]">Everything else follows.</span>
