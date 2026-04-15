@@ -6,27 +6,44 @@ import { NextResponse } from "next/server"
  * Posts to Airtable when AIRTABLE_PAT + AIRTABLE_BASE_ID are configured on the
  * server. Falls back to console logging only (dev mode) when they aren't.
  *
+ * The form is a 2-stage flow client-side (course → onboarding) but the server
+ * receives everything in one POST at the end of stage 2. All fields are
+ * required except Handicap.
+ *
  * Required Airtable table schema (create this once in the base, see
  * .env.example):
  *
  *   Table name: "Waitlist"  (override via AIRTABLE_WAITLIST_TABLE env var)
  *   Fields:
- *     - "Name"     Single line text  (required)
- *     - "Email"    Single line text  (required)
- *     - "Phone"    Single line text  (required)
- *     - "Course"   Single line text  (required)
- *     - "Source"   Single line text  (optional — we send "248-anthems-v2")
- *     - "Created"  Created time      (optional — auto-populated by Airtable)
+ *     - "Name"      Single line text   (required)
+ *     - "Email"     Single line text   (required)
+ *     - "Phone"     Single line text   (required)
+ *     - "Course"    Single line text   (required)
+ *     - "Strategy"  Single line text   (required — one of: Smart, Aggressive,
+ *                                       Conservative, Risk-Reward)
+ *     - "Handicap"  Single line text   (optional)
+ *     - "Source"    Single line text   (optional — we send "248-anthems-v2")
+ *     - "Created"   Created time       (optional — auto-populated by Airtable)
  *
  * Extra fields on the table are fine; we only write the ones listed above.
  * Missing/renamed required fields will cause the Airtable write to 422, which
  * we propagate as a 500 to the caller so signups aren't silently dropped.
  */
+
+const ALLOWED_STRATEGIES = new Set([
+  "Smart",
+  "Aggressive",
+  "Conservative",
+  "Risk-Reward",
+])
+
 export async function POST(request: Request) {
   let name: string | undefined
   let email: string | undefined
   let phone: string | undefined
   let course: string | undefined
+  let strategy: string | undefined
+  let handicap: string | undefined
 
   try {
     const body = (await request.json()) as {
@@ -34,11 +51,15 @@ export async function POST(request: Request) {
       email?: unknown
       phone?: unknown
       course?: unknown
+      strategy?: unknown
+      handicap?: unknown
     }
     if (typeof body.name === "string") name = body.name.trim()
     if (typeof body.email === "string") email = body.email.trim()
     if (typeof body.phone === "string") phone = body.phone.trim()
     if (typeof body.course === "string") course = body.course.trim()
+    if (typeof body.strategy === "string") strategy = body.strategy.trim()
+    if (typeof body.handicap === "string") handicap = body.handicap.trim()
   } catch {
     return NextResponse.json(
       { ok: false, error: "invalid_json" },
@@ -86,6 +107,13 @@ export async function POST(request: Request) {
     )
   }
 
+  if (!strategy || !ALLOWED_STRATEGIES.has(strategy)) {
+    return NextResponse.json(
+      { ok: false, error: "strategy_required" },
+      { status: 400 },
+    )
+  }
+
   const pat = process.env.AIRTABLE_PAT
   const baseId = process.env.AIRTABLE_BASE_ID
   const tableName = process.env.AIRTABLE_WAITLIST_TABLE ?? "Waitlist"
@@ -98,6 +126,8 @@ export async function POST(request: Request) {
       email,
       phone,
       course,
+      strategy,
+      handicap,
     })
     return NextResponse.json({ ok: true, destination: "log" })
   }
@@ -106,6 +136,19 @@ export async function POST(request: Request) {
   // the serverless function.
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), 5000)
+
+  // Build the fields payload. Handicap is only included if it was provided.
+  const fields: Record<string, string> = {
+    Name: name,
+    Email: email,
+    Phone: phone,
+    Course: course,
+    Strategy: strategy,
+    Source: "248-anthems-v2",
+  }
+  if (handicap && handicap.length > 0) {
+    fields.Handicap = handicap
+  }
 
   try {
     const res = await fetch(
@@ -117,17 +160,7 @@ export async function POST(request: Request) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          records: [
-            {
-              fields: {
-                Name: name,
-                Email: email,
-                Phone: phone,
-                Course: course,
-                Source: "248-anthems-v2",
-              },
-            },
-          ],
+          records: [{ fields }],
           // Let Airtable create any select options we haven't pre-defined.
           typecast: true,
         }),
