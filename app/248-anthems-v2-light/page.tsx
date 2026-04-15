@@ -658,60 +658,94 @@ export default function Page() {
         </div>
       </Section>
 
-      {/* 11 — ANTHEM LINES STRIP */}
+      {/* 11 — ANTHEM LINES (editorial typographic wall) */}
       <Section id="lines" variant="subtle">
-        <div className="max-w-3xl mb-12">
+        <div className="max-w-3xl mb-16">
           <div className="font-mono text-xs text-[#EA580C] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-4">
             From The Anthems
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl text-[#0B0B0F] mb-6 text-balance leading-[1.05]">
             Lines that live in your head.
           </h2>
+          <p className="text-base md:text-lg text-[#6B7280] leading-relaxed max-w-xl">
+            Not lyrics you forget. Commands your cerebellum rehearses before your
+            conscious brain can second-guess.
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-4 md:gap-6">
-          <div className="bg-white border-l-4 border-[#1D4ED8] pl-6 py-4 pr-4 shadow-sm">
-            <p className="text-xl md:text-2xl font-black text-[#0B0B0F] leading-snug">
-              Smooth is fast.
-              <br />
-              <span className="text-[#1D4ED8]">Don&apos;t fight the swing.</span>
-            </p>
+        {/* HERO QUOTE — oversized editorial breakout */}
+        <div className="mb-16 max-w-5xl">
+          <div className="font-mono text-[0.65rem] text-[#1D4ED8] uppercase tracking-[0.3em] mb-5">
+            Track 01 · The Core
           </div>
-          <div className="bg-white border-l-4 border-[#EA580C] pl-6 py-4 pr-4 shadow-sm">
-            <p className="text-xl md:text-2xl font-black text-[#0B0B0F] leading-snug">
-              Tempo or tumble.
-              <br />
+          <p className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-[#0B0B0F] leading-[0.95] text-balance">
+            Smooth is fast.
+            <br />
+            <span className="text-[#1D4ED8] italic font-bold">
+              Don&apos;t fight the swing.
+            </span>
+          </p>
+        </div>
+
+        {/* 12-COL ASYMMETRIC GRID — mixed fills / weights / alignment */}
+        <div className="grid md:grid-cols-12 gap-6 md:gap-8 mb-16">
+          {/* Row 1: filled card + outlined card */}
+          <figure className="md:col-span-7 bg-white border-l-4 border-[#EA580C] p-7 md:p-10 shadow-sm">
+            <div className="font-mono text-[0.65rem] text-[#EA580C] uppercase tracking-[0.3em] mb-4">
+              On Pressure
+            </div>
+            <p className="text-3xl md:text-4xl font-black text-[#0B0B0F] leading-tight">
+              Tempo or tumble.{" "}
               <span className="text-[#EA580C]">Choose it now.</span>
             </p>
-          </div>
-          <div className="bg-white border-l-4 border-[#0B0B0F] pl-6 py-4 pr-4 shadow-sm">
-            <p className="text-xl md:text-2xl font-black text-[#0B0B0F] leading-snug">
+          </figure>
+
+          <figure className="md:col-span-5 border-2 border-[#0B0B0F] p-7 md:p-10 flex flex-col justify-between">
+            <div className="font-mono text-[0.65rem] text-[#0B0B0F] uppercase tracking-[0.3em] mb-4">
+              On Commit
+            </div>
+            <p className="text-2xl md:text-3xl font-bold text-[#0B0B0F] leading-tight italic">
               Pick your line.
               <br />
-              <span className="text-[#0B0B0F]">Commit or don&apos;t swing.</span>
+              <span className="not-italic font-black">
+                Commit or don&apos;t swing.
+              </span>
             </p>
-          </div>
-          <div className="bg-white border-l-4 border-[#1D4ED8] pl-6 py-4 pr-4 shadow-sm">
-            <p className="text-xl md:text-2xl font-black text-[#0B0B0F] leading-snug">
+          </figure>
+
+          {/* Row 2: right-aligned text-only + wide gradient */}
+          <figure className="md:col-span-4 py-2 md:py-6 md:text-right md:border-r-2 md:border-[#0B0B0F]/30 md:pr-8">
+            <div className="font-mono text-[0.65rem] text-[#0B0B0F] uppercase tracking-[0.3em] mb-4">
+              On Rhythm
+            </div>
+            <p className="text-2xl md:text-3xl font-black text-[#0B0B0F] leading-snug">
               Load it slow…
               <br />
-              <span className="text-[#1D4ED8]">release it free.</span>
+              <span className="italic font-bold">release it free.</span>
             </p>
-          </div>
-          <div className="bg-white border-l-4 border-[#EA580C] pl-6 py-4 pr-4 shadow-sm">
-            <p className="text-xl md:text-2xl font-black text-[#0B0B0F] leading-snug">
-              Fairway first.
-              <br />
-              <span className="text-[#EA580C]">Everything else opens up.</span>
+          </figure>
+
+          <figure className="md:col-span-8 bg-gradient-to-r from-[#1D4ED8]/10 via-[#1D4ED8]/5 to-transparent border-l-4 border-[#1D4ED8] p-7 md:p-10">
+            <div className="font-mono text-[0.65rem] text-[#1D4ED8] uppercase tracking-[0.3em] mb-4">
+              On Strategy
+            </div>
+            <p className="text-3xl md:text-4xl lg:text-5xl font-black text-[#0B0B0F] leading-tight">
+              Fairway first.{" "}
+              <span className="text-[#1D4ED8]">Everything else opens up.</span>
             </p>
+          </figure>
+        </div>
+
+        {/* THE CLOSER — full-width centered typographic moment */}
+        <div className="pt-12 md:pt-16 border-t border-[#E5E7EB]">
+          <div className="font-mono text-[0.65rem] text-[#EA580C] uppercase tracking-[0.3em] mb-6 text-center">
+            The Closer
           </div>
-          <div className="bg-white border-l-4 border-[#0B0B0F] pl-6 py-4 pr-4 shadow-sm">
-            <p className="text-xl md:text-2xl font-black text-[#0B0B0F] leading-snug">
-              Same swing.
-              <br />
-              <span className="text-[#0B0B0F]">Every time.</span>
-            </p>
-          </div>
+          <p className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-[#0B0B0F] text-center leading-[0.95] max-w-4xl mx-auto">
+            Same swing.
+            <br />
+            <span className="text-[#EA580C] italic font-bold">Every time.</span>
+          </p>
         </div>
       </Section>
 
