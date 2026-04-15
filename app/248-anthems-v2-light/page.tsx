@@ -1,5 +1,7 @@
 import { SectionLight as Section } from "@/components/SectionLight"
 import { Footer } from "@/components/scrollytelling/Footer"
+import { BrainwaveFrequencyChart } from "@/components/visualizations/BrainwaveFrequencyChart"
+import { SpatialAudioWaveform } from "@/components/visualizations/SpatialAudioWaveform"
 import { BpmPulseBar } from "@/components/BpmPulseBar"
 import { HearTheDifference } from "@/components/HearTheDifference"
 import { StickyAudioPlayer } from "@/components/StickyAudioPlayer"
@@ -442,9 +444,11 @@ export default function Page() {
             </p>
           </div>
         </div>
+
+        <SpatialAudioWaveform className="mt-12" />
       </Section>
 
-      {/* 08.5 — THE NEURO EDGE (no animator on light — text only for bg contrast) */}
+      {/* 08.5 — THE NEURO EDGE */}
       <Section id="neuro" variant="default">
         <div className="max-w-4xl mb-12">
           <div className="font-mono text-xs text-[#1D4ED8] uppercase tracking-[0.25em] sm:tracking-[0.4em] mb-4">
@@ -504,6 +508,8 @@ export default function Page() {
             </div>
           </div>
         </div>
+
+        <BrainwaveFrequencyChart className="mb-10" />
 
         <HearTheDifference theme="light" />
 
