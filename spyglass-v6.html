@@ -1,0 +1,2827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="color-scheme" content="light only">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Spyglass Hill × 248 Anthem — Vol. I · No. 03</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,300;1,9..144,400;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================================
+   TOKENS
+   ============================================================================ */
+:root {
+  --font-serif: 'Fraunces', 'Tiempos', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px;
+  --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px;
+  --s9: 96px; --s10: 128px;
+}
+
+/* ============================================================================
+   THEMES — PAPER is the default (applied to :root), INK applies via body.ink
+   ============================================================================ */
+
+/* PAPER — default for all users, cascades unless .ink class overrides */
+:root {
+  --bg: #f7f3e8;
+  --bg-2: #eee6d2;
+  --bg-3: #fbf7ed;
+  --surface: #fdfaf0;
+  --card: #ffffff;
+  --ink: #14110e;
+  --ink-2: #2e2922;
+  --ink-3: #574f43;
+  --ink-4: #887e6e;
+  --rule: #c9bfa3;
+  --rule-soft: #dcd4b8;
+  --accent: #c44d22;
+  --accent-2: #a43c15;
+  --accent-soft: rgba(196, 77, 34, 0.08);
+  --marker: #14110e;
+  --topo: #a89a7c;
+}
+
+/* INK — applies via body.ink class */
+body.ink {
+  --bg: #0a0907;
+  --bg-2: #110f0c;
+  --bg-3: #171411;
+  --surface: #14110d;
+  --card: #1c1914;
+  --ink: #f2ead6;
+  --ink-2: #cdc2a8;
+  --ink-3: #958a77;
+  --ink-4: #635b4c;
+  --rule: #2e2a22;
+  --rule-soft: #211d17;
+  --accent: #e8683d;
+  --accent-2: #f07848;
+  --accent-soft: rgba(232, 104, 61, 0.1);
+  --marker: #e8683d;
+  --topo: #3a3228;
+}
+
+/* ============================================================================
+   RESET
+   ============================================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background: #f7f3e8;  /* hard floor so no white flash before CSS loads */
+}
+body {
+  font-family: var(--font-sans);
+  background: var(--bg) !important;  /* force against any iframe/sandbox override */
+  color: var(--ink);
+  line-height: 1.5;
+  font-size: 15px;
+  transition: background 0.5s ease, color 0.5s ease;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ============================================================================
+   TOPOGRAPHIC BACKGROUND — robust inline SVG with proper encoding
+   ============================================================================ */
+.topo-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.5;
+}
+.topo-bg svg {
+  position: absolute;
+  top: -5%;
+  left: -5%;
+  width: 110%;
+  height: 110%;
+  display: block;
+}
+.topo-bg path {
+  fill: none;
+  stroke: var(--topo);
+  stroke-width: 0.6;
+}
+
+body.ink .topo-bg { opacity: 0.4; }
+
+main { position: relative; z-index: 2; }
+
+.wrap { max-width: 1440px; margin: 0 auto; padding: 0 var(--s6); }
+.wrap-narrow { max-width: 960px; margin: 0 auto; padding: 0 var(--s6); }
+
+/* ============================================================================
+   TYPOGRAPHY
+   ============================================================================ */
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.chapter-marker {
+  display: inline-flex; align-items: center; gap: var(--s3);
+  font-family: var(--font-mono); font-size: 10.5px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink);
+  font-weight: 500;
+}
+.chapter-marker::before {
+  content: ''; display: inline-block;
+  width: 9px; height: 9px; background: var(--marker);
+  flex-shrink: 0;
+}
+.chapter-marker .divider { color: var(--ink-4); margin: 0 4px; }
+
+.meta-strip {
+  display: flex; align-items: baseline; gap: var(--s5);
+  font-family: var(--font-mono); font-size: 10.5px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-3);
+  flex-wrap: wrap;
+}
+.meta-strip .pair { display: inline-flex; align-items: baseline; gap: var(--s2); }
+.meta-strip .k { color: var(--ink-3); }
+.meta-strip .dash { color: var(--ink-4); }
+.meta-strip .v { color: var(--ink); font-weight: 600; }
+.meta-strip .v.hl { color: var(--accent); font-weight: 700; }
+
+/* ============================================================================
+   MASTHEAD
+   ============================================================================ */
+.masthead {
+  position: sticky; top: 0; z-index: 100;
+  border-bottom: 1px solid var(--rule);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.masthead { background: rgba(247, 243, 232, 0.94); }
+body.ink .masthead { background: rgba(10, 9, 7, 0.92); }
+
+.masthead-inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: var(--s3) var(--s6);
+  gap: var(--s5);
+  max-width: 1440px; margin: 0 auto;
+}
+.masthead-left, .masthead-right { display: flex; align-items: center; gap: var(--s4); }
+.masthead-right { justify-content: flex-end; }
+.masthead-center {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 14px; color: var(--ink-2);
+}
+
+.toggle {
+  display: flex;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  padding: 2px;
+}
+.toggle button {
+  background: transparent; border: none;
+  padding: 5px 11px;
+  font-family: var(--font-mono); font-size: 9.5px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-3); cursor: pointer;
+  transition: all 0.25s;
+  font-weight: 500;
+}
+.toggle button.active { background: var(--ink); color: var(--bg); }
+
+/* ============================================================================
+   COVER
+   ============================================================================ */
+.cover {
+  padding: var(--s8) 0 var(--s9);
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+}
+
+.cover-topline {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding-bottom: var(--s5);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: var(--s8);
+  font-family: var(--font-mono); font-size: 10.5px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-3);
+  flex-wrap: wrap; gap: var(--s4);
+}
+.cover-topline .left, .cover-topline .right { display: flex; gap: var(--s5); }
+.cover-topline .right { color: var(--ink); font-weight: 500; }
+
+.cover-marker { margin-bottom: var(--s6); }
+
+.cover h1 {
+  font-size: clamp(4rem, 12vw, 9.5rem);
+  line-height: 0.88;
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  margin-bottom: var(--s2);
+  color: var(--ink);
+}
+.cover h1 .italic {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+  display: block;
+  font-size: 0.92em;
+}
+
+.cover-sub {
+  max-width: 520px;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin: var(--s6) 0 var(--s7);
+}
+
+.cover-meta {
+  border-top: 1px solid var(--rule-soft);
+  padding-top: var(--s4);
+}
+
+.page-num-watermark {
+  position: absolute;
+  right: var(--s6); top: 40%;
+  font-family: var(--font-serif);
+  font-size: clamp(10rem, 22vw, 18rem);
+  font-weight: 300;
+  line-height: 0.8;
+  color: var(--accent);
+  opacity: 0.85;
+  pointer-events: none;
+  letter-spacing: -0.04em;
+  font-style: italic;
+  z-index: 1;
+}
+@media (max-width: 900px) {
+  .page-num-watermark { font-size: 8rem; right: 16px; top: auto; bottom: 100px; opacity: 0.2; }
+}
+
+.running-foot {
+  display: flex; justify-content: space-between;
+  font-family: var(--font-mono); font-size: 10.5px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-3);
+  padding: var(--s5) 0;
+  border-top: 1px solid var(--rule);
+  font-weight: 500;
+}
+.running-foot .right { color: var(--ink); display: flex; align-items: center; gap: var(--s2); }
+.running-foot .right::before {
+  content: ''; display: inline-block; width: 8px; height: 8px;
+  background: var(--marker);
+}
+
+/* ============================================================================
+   SPREAD
+   ============================================================================ */
+.spread {
+  padding: var(--s9) 0;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+}
+
+.spread-head {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--s7);
+  padding-bottom: var(--s6);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: var(--s7);
+}
+@media (max-width: 800px) {
+  .spread-head { grid-template-columns: 1fr; gap: var(--s4); }
+}
+
+.spread-head .chapter-marker { margin-bottom: var(--s4); }
+
+.spread-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+.spread-title .italic {
+  font-style: italic;
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.spread-dek {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 56ch;
+}
+
+/* ============================================================================
+   BRIEF ROW
+   ============================================================================ */
+.brief-row {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  background: var(--surface);
+}
+@media (max-width: 900px) { .brief-row { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px) { .brief-row { grid-template-columns: 1fr; } }
+
+.brief-cell {
+  padding: var(--s6) var(--s5) var(--s5);
+  border-right: 1px solid var(--rule-soft);
+  position: relative;
+}
+.brief-cell:last-child { border-right: none; }
+.brief-cell .num {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 3.5rem;
+  line-height: 0.9;
+  color: var(--accent);
+  margin-bottom: var(--s3);
+  letter-spacing: -0.03em;
+}
+.brief-cell .num .u {
+  font-size: 0.4em;
+  color: var(--ink-3);
+  font-style: normal;
+  margin-left: 4px;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+.brief-cell .l {
+  font-family: var(--font-mono); font-size: 9.5px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: var(--s3);
+  font-weight: 500;
+}
+.brief-cell p {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 13.5px; line-height: 1.5;
+  color: var(--ink-2);
+}
+
+/* ============================================================================
+   PULL CARD
+   ============================================================================ */
+.pull-card {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  padding: var(--s6) var(--s7);
+  max-width: 720px;
+  margin: var(--s7) auto;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.pull-card .label {
+  font-family: var(--font-mono); font-size: 9.5px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: var(--s4);
+  font-weight: 500;
+}
+.pull-card blockquote {
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  line-height: 1.35;
+  font-weight: 400;
+  color: var(--ink);
+}
+.pull-card blockquote .hl {
+  font-style: italic;
+  color: var(--accent);
+}
+
+/* ============================================================================
+   EDITORIAL TWO-COL
+   ============================================================================ */
+.editorial {
+  display: grid; grid-template-columns: 2fr 1fr;
+  gap: var(--s7);
+}
+@media (max-width: 800px) { .editorial { grid-template-columns: 1fr; } }
+
+.editorial-body {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--ink-2);
+  column-count: 2;
+  column-gap: var(--s6);
+  column-rule: 1px solid var(--rule-soft);
+}
+@media (max-width: 700px) { .editorial-body { column-count: 1; } }
+.editorial-body p { margin-bottom: var(--s4); break-inside: avoid; }
+.editorial-body p:first-child::first-letter {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: 4.25rem;
+  line-height: 0.85;
+  float: left;
+  margin: 0.1em 0.12em 0 -0.05em;
+  color: var(--accent);
+}
+
+.editorial-aside {
+  background: transparent;
+  border-left: 2px solid var(--accent);
+  padding-left: var(--s5);
+}
+.editorial-aside .label {
+  font-family: var(--font-mono); font-size: 9.5px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: var(--s4);
+  font-weight: 600;
+}
+.editorial-aside .list { list-style: none; }
+.editorial-aside .list li {
+  display: grid; grid-template-columns: 1fr auto;
+  gap: var(--s3);
+  padding: var(--s3) 0;
+  border-bottom: 1px dashed var(--rule-soft);
+  font-family: var(--font-mono); font-size: 11px;
+  align-items: baseline;
+}
+.editorial-aside .list li:last-child { border-bottom: none; }
+.editorial-aside .list .k {
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--ink-3); font-size: 10px;
+  font-weight: 500;
+}
+.editorial-aside .list .v {
+  color: var(--ink); font-weight: 500;
+  font-family: var(--font-serif); font-size: 14px; font-style: italic;
+  letter-spacing: 0;
+}
+
+/* ============================================================================
+   STATS DASHBOARD
+   ============================================================================ */
+.stats {
+  display: grid; gap: var(--s5);
+}
+.stat-row {
+  display: grid;
+  grid-template-columns: 160px 90px 1fr 140px;
+  align-items: center;
+  gap: var(--s5);
+  padding: var(--s4) 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+@media (max-width: 720px) {
+  .stat-row { grid-template-columns: 1fr 70px; gap: var(--s3); }
+  .stat-row .stat-bar, .stat-row .stat-note { grid-column: span 2; }
+}
+.stat-row .stat-label {
+  font-family: var(--font-mono); font-size: 10.5px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--ink);
+  font-weight: 600;
+}
+.stat-row .stat-val {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 2rem;
+  color: var(--accent);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+}
+.stat-bar {
+  height: 3px; background: var(--rule); position: relative;
+}
+.stat-bar span {
+  display: block; height: 100%;
+  background: var(--accent);
+  position: relative;
+}
+.stat-bar span::after {
+  content: ''; position: absolute;
+  right: -4px; top: -3px;
+  width: 9px; height: 9px;
+  background: var(--accent);
+}
+.stat-note {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 13px; color: var(--ink-3);
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+.pill-row { display: flex; gap: var(--s2); flex-wrap: wrap; margin-top: var(--s6); }
+.pill {
+  font-family: var(--font-mono); font-size: 9.5px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 6px 11px;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-weight: 500;
+}
+.pill.accent { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+/* ============================================================================
+   HOLE CARDS
+   ============================================================================ */
+.holes-scroller-wrap {
+  position: relative;
+  margin: 0 calc(var(--s6) * -1);
+  padding: 0 var(--s6);
+}
+
+.holes-scroller {
+  display: flex;
+  gap: var(--s5);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: var(--s5) var(--s6) var(--s7);
+  margin: 0 calc(var(--s6) * -1);
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--rule-soft);
+}
+.holes-scroller::-webkit-scrollbar { height: 8px; }
+.holes-scroller::-webkit-scrollbar-track { background: var(--rule-soft); }
+.holes-scroller::-webkit-scrollbar-thumb { background: var(--accent); }
+
+.hole-card {
+  flex: 0 0 min(520px, 90vw);
+  scroll-snap-align: start;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  position: relative;
+  min-height: 620px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  overflow: hidden;
+}
+
+.hole-topstrip {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--s4);
+  padding: var(--s3) var(--s5);
+  border-bottom: 1px solid var(--rule);
+  background: var(--bg-3);
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  font-weight: 500;
+}
+.hole-topstrip .slot-left { color: var(--ink); display: flex; align-items: center; gap: var(--s2); }
+.hole-topstrip .slot-left::before {
+  content: ''; width: 8px; height: 8px; background: var(--marker);
+  flex-shrink: 0;
+}
+.hole-topstrip .slot-center {
+  text-align: center; color: var(--ink-3);
+  font-family: var(--font-serif); font-style: italic;
+  letter-spacing: 0;
+  font-size: 13px;
+  text-transform: none;
+  font-weight: 400;
+}
+.hole-topstrip .slot-right { text-align: right; color: var(--ink-3); }
+
+.hole-main {
+  padding: var(--s6);
+  position: relative;
+  display: flex; flex-direction: column;
+  flex: 1;
+  min-height: 460px;
+  overflow: hidden;
+}
+
+/* MEGA NUMERAL — dominates the composition, anchored bottom-right */
+.hole-mega-num {
+  position: absolute;
+  bottom: -0.55rem;
+  right: -1rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(14rem, 38vw, 20rem);
+  line-height: 0.72;
+  color: var(--accent);
+  letter-spacing: -0.07em;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+  opacity: 0.95;
+}
+
+/* Par badge — top anchor */
+.hole-par-badge {
+  position: relative; z-index: 3;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: flex; align-items: baseline; gap: var(--s3);
+  padding-bottom: var(--s5);
+  border-bottom: 1px solid var(--rule-soft);
+  margin-bottom: var(--s5);
+  font-weight: 500;
+  flex-wrap: wrap;
+}
+.hole-par-badge .dot { color: var(--ink-4); }
+.hole-par-badge .v { color: var(--ink); font-weight: 600; }
+.hole-par-badge .v.hl { color: var(--accent); font-weight: 700; }
+
+/* Hole name — serif display */
+.hole-name-display {
+  position: relative; z-index: 3;
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-bottom: var(--s2);
+  max-width: 80%;
+}
+.hole-name-display .italic {
+  font-style: italic;
+  color: var(--accent);
+  font-weight: 300;
+}
+
+/* Compositional typography zone */
+.hole-composition {
+  position: relative; z-index: 2;
+  flex: 1;
+  margin: var(--s5) 0 var(--s4);
+  min-height: 190px;
+}
+
+.hc-word {
+  position: absolute;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--ink-2);
+  pointer-events: none;
+  max-width: 60%;
+}
+.hc-word.mono {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.hc-word.mono.accent { color: var(--accent); font-weight: 600; }
+.hc-word.italic {
+  font-style: italic;
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 1.25rem;
+  line-height: 1.15;
+}
+.hc-word.italic.big {
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+}
+.hc-word.plain {
+  font-size: 0.95rem;
+  color: var(--ink-2);
+  font-weight: 400;
+}
+.hc-word.plain em {
+  color: var(--accent);
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* Thin rules suggest spatial flow */
+.hc-rule {
+  position: absolute;
+  height: 1px;
+  background: var(--ink);
+  opacity: 0.4;
+}
+.hc-rule.accent { background: var(--accent); opacity: 1; height: 2px; }
+
+/* Data strip — compact bottom band */
+.hole-data-strip {
+  position: relative; z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule-soft);
+  background: var(--surface);
+}
+.hole-data-strip > div {
+  padding: var(--s3) var(--s4);
+  border-right: 1px solid var(--rule-soft);
+}
+.hole-data-strip > div:last-child { border-right: none; }
+.hole-data-strip .k {
+  font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+.hole-data-strip .v {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+}
+.hole-data-strip .v.hl { color: var(--accent); }
+
+.hole-cue-ribbon {
+  padding: var(--s4) var(--s5);
+  border-top: 1px solid var(--rule);
+  background: var(--card);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--s3);
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 500;
+  position: relative; z-index: 3;
+}
+.hole-cue-ribbon .cue-label { color: var(--accent); display: flex; align-items: center; gap: 6px; font-weight: 600; }
+.hole-cue-ribbon .cue-bars {
+  font-family: var(--font-serif);
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 14px;
+  color: var(--ink);
+  font-weight: 400;
+}
+
+.scroll-indicator {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--s4) 0;
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-3);
+  border-top: 1px solid var(--rule);
+  margin-top: var(--s5);
+  gap: var(--s4);
+  font-weight: 500;
+}
+.scroll-indicator .left { display: flex; align-items: center; gap: var(--s2); flex-shrink: 0; }
+.scroll-indicator .arrows { display: flex; gap: var(--s2); flex-shrink: 0; }
+.scroll-btn {
+  border: 1px solid var(--rule); background: var(--surface);
+  width: 34px; height: 34px; display: grid; place-items: center;
+  cursor: pointer; color: var(--ink);
+  transition: all 0.2s;
+  font-size: 14px;
+}
+.scroll-btn:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+.hole-progress {
+  flex: 1; max-width: 320px;
+  height: 2px; background: var(--rule);
+  position: relative;
+}
+.hole-progress span {
+  position: absolute; top: 0; left: 0;
+  height: 100%; background: var(--accent);
+  width: 5.5%;
+  transition: width 0.3s ease;
+}
+
+.hole-count {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 19px; letter-spacing: 0;
+  text-transform: none; color: var(--accent);
+  font-weight: 400;
+}
+
+/* ============================================================================
+   WEATHER
+   ============================================================================ */
+.weather-row {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--rule);
+  background: var(--surface);
+}
+@media (max-width: 700px) { .weather-row { grid-template-columns: repeat(2, 1fr); } }
+
+.wday {
+  padding: var(--s5);
+  border-right: 1px solid var(--rule-soft);
+  text-align: left;
+}
+.wday:last-child { border-right: none; }
+.wday .round {
+  font-family: var(--font-mono); font-size: 9.5px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: var(--s3);
+  font-weight: 500;
+}
+.wday .temp {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 3.5rem;
+  line-height: 0.9;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+}
+.wday .cond {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 13px; color: var(--ink-3);
+  margin-top: var(--s2); margin-bottom: var(--s4);
+  font-weight: 400;
+}
+.wday .wind-line {
+  display: flex; align-items: center; gap: var(--s2);
+  padding-top: var(--s3);
+  border-top: 1px dashed var(--rule-soft);
+}
+.wday .wind-line .arrow {
+  font-family: var(--font-serif);
+  font-size: 20px; color: var(--accent);
+  display: inline-block;
+  line-height: 1;
+}
+.wday .wind-line .val {
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.1em; color: var(--ink);
+  font-weight: 500;
+}
+
+/* ============================================================================
+   ANTHEM DROP
+   ============================================================================ */
+.anthem-drop {
+  padding: var(--s10) 0;
+  background: #0a0907;
+  color: #f2ead6;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  overflow: hidden;
+}
+.anthem-drop::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(242,234,214,0.12) 1px, transparent 1px);
+  background-size: 14px 14px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.anthem-drop::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 20%, rgba(0,0,0,0.5) 100%);
+  pointer-events: none;
+}
+
+.anthem-drop-inner { position: relative; z-index: 2; }
+
+.anthem-drop .chapter-marker { color: #f2ead6; }
+.anthem-drop .chapter-marker::before { background: #e8683d; }
+
+.anthem-drop-title {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 9vw, 7.5rem);
+  font-weight: 300;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  margin: var(--s6) 0;
+  color: #f2ead6;
+}
+.anthem-drop-title .italic {
+  font-style: italic;
+  color: #e8683d;
+  display: block;
+}
+
+.anthem-drop-dek {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.55;
+  color: rgba(242,234,214,0.78);
+  max-width: 54ch;
+  margin-bottom: var(--s7);
+}
+
+.anthem-spec-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  border-top: 1px solid rgba(242,234,214,0.2);
+  border-bottom: 1px solid rgba(242,234,214,0.2);
+}
+@media (max-width: 700px) { .anthem-spec-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.anthem-spec-cell {
+  padding: var(--s6) var(--s4);
+  border-right: 1px solid rgba(242,234,214,0.1);
+  text-align: left;
+}
+.anthem-spec-cell:last-child { border-right: none; }
+.anthem-spec-cell .num {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 3rem;
+  line-height: 0.9;
+  color: #e8683d;
+  letter-spacing: -0.03em;
+}
+.anthem-spec-cell .l {
+  font-family: var(--font-mono); font-size: 9.5px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(242,234,214,0.65);
+  margin-top: var(--s3);
+  font-weight: 500;
+}
+
+.anthem-drop .meta-strip { color: rgba(242,234,214,0.65); }
+.anthem-drop .meta-strip .k { color: rgba(242,234,214,0.5); }
+.anthem-drop .meta-strip .dash { color: rgba(242,234,214,0.3); }
+.anthem-drop .meta-strip .v { color: #f2ead6; }
+.anthem-drop .meta-strip .v.hl { color: #e8683d; }
+
+/* ============================================================================
+   TRACK TECHNOLOGY
+   ============================================================================ */
+.track-tech {
+  padding: var(--s10) 0;
+  background: var(--bg-2);
+  position: relative;
+  border-bottom: 1px solid var(--rule);
+}
+
+.track-tech-head {
+  text-align: center; max-width: 720px; margin: 0 auto var(--s9);
+}
+.track-tech-head .chapter-marker {
+  justify-content: center; margin-bottom: var(--s4);
+  display: inline-flex;
+}
+
+.tech-spec-band {
+  margin: 0 auto var(--s9);
+  max-width: 960px;
+  padding: var(--s6);
+  background: var(--card);
+  border: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--s5);
+  text-align: center;
+}
+@media (max-width: 700px) { .tech-spec-band { grid-template-columns: repeat(2, 1fr); } }
+
+.tech-spec-band .cell {
+  padding: var(--s3);
+  border-right: 1px solid var(--rule-soft);
+}
+.tech-spec-band .cell:last-child { border-right: none; }
+@media (max-width: 700px) {
+  .tech-spec-band .cell { border-right: none; border-bottom: 1px solid var(--rule-soft); padding-bottom: var(--s4); }
+  .tech-spec-band .cell:last-child { border-bottom: none; }
+}
+
+.tech-spec-band .val {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 2.5rem;
+  line-height: 0.9;
+  color: var(--accent);
+  letter-spacing: -0.03em;
+  margin-bottom: var(--s2);
+}
+.tech-spec-band .val .u {
+  font-size: 0.5em;
+  font-style: normal;
+  font-weight: 500;
+  color: var(--ink-3);
+  letter-spacing: 0;
+  margin-left: 2px;
+}
+.tech-spec-band .l {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 500;
+}
+
+.tech-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--s8);
+}
+@media (max-width: 900px) {
+  .tech-layout { grid-template-columns: 1fr; gap: var(--s7); }
+}
+
+.tech-mechanisms {
+  display: flex; flex-direction: column;
+  gap: var(--s6);
+}
+
+.mech-card {
+  padding: var(--s5) 0;
+  border-bottom: 1px solid var(--rule-soft);
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: var(--s5);
+  align-items: start;
+}
+.mech-card:last-child { border-bottom: none; }
+
+.mech-num {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 3.5rem;
+  font-weight: 300;
+  line-height: 0.85;
+  color: var(--accent);
+  letter-spacing: -0.04em;
+}
+
+.mech-body h4 {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--s2);
+  color: var(--ink);
+}
+.mech-body h4 .italic { font-style: italic; color: var(--accent); font-weight: 400; }
+
+.mech-meta {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: var(--s3);
+  font-weight: 500;
+}
+.mech-meta .sep { margin: 0 8px; color: var(--ink-4); }
+.mech-meta .freq { color: var(--accent); font-weight: 600; }
+
+.mech-body p {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.mech-body p em { color: var(--ink); font-weight: 500; }
+
+.lyric-snippets {
+  display: flex; flex-direction: column;
+  gap: var(--s5);
+}
+.lyric-snippets-head {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-bottom: var(--s3);
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+}
+.lyric-snippets-head .track-title {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.snippet {
+  padding: var(--s5);
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  position: relative;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+
+.snippet-mark {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--s3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+}
+.snippet-mark .bar { color: var(--ink-3); font-weight: 500; }
+
+.snippet blockquote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.375rem;
+  line-height: 1.35;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.snippet-caption {
+  margin-top: var(--s3);
+  padding-top: var(--s3);
+  border-top: 1px dashed var(--rule-soft);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--ink-3);
+  line-height: 1.5;
+  font-weight: 500;
+}
+.snippet-caption strong { color: var(--accent); font-weight: 600; }
+
+.snippet.placeholder {
+  border-left-color: var(--ink-4);
+  border-left-style: dashed;
+}
+.snippet.placeholder blockquote {
+  color: var(--ink-3);
+  font-weight: 400;
+}
+
+.snippet-note {
+  padding: var(--s4);
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  font-weight: 500;
+}
+.snippet-note strong {
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 9px;
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+/* ============================================================================
+   LISTEN / PAIRING / FOOTER
+   ============================================================================ */
+.listen-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: var(--s7); align-items: center;
+}
+@media (max-width: 800px) { .listen-grid { grid-template-columns: 1fr; } }
+
+.listen-copy h3 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  line-height: 1.05;
+  margin-bottom: var(--s4);
+  color: var(--ink);
+}
+.listen-copy h3 .italic { font-style: italic; color: var(--accent); }
+
+.listen-copy p {
+  font-family: var(--font-serif); font-weight: 400;
+  font-size: 15.5px; line-height: 1.6;
+  color: var(--ink-2); margin-bottom: var(--s5);
+}
+
+.cta-link {
+  display: inline-flex; align-items: center; gap: var(--s2);
+  padding: var(--s3) var(--s5);
+  background: var(--ink); color: var(--bg);
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--ink);
+  transition: all 0.25s;
+  font-weight: 600;
+}
+.cta-link:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.embed-box {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  aspect-ratio: 3 / 2;
+  display: grid; place-items: center;
+  color: var(--ink-3);
+  font-family: var(--font-mono); font-size: 10.5px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  text-align: center; padding: var(--s5);
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.pairing-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--rule);
+  background: var(--surface);
+}
+@media (max-width: 800px) { .pairing-grid { grid-template-columns: 1fr; } }
+
+.pair-cell {
+  padding: var(--s6);
+  border-right: 1px solid var(--rule-soft);
+}
+.pair-cell:last-child { border-right: none; }
+.pair-cell .l {
+  font-family: var(--font-mono); font-size: 9.5px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: var(--s3);
+  font-weight: 600;
+}
+.pair-cell h4 {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 1.5rem; font-weight: 400;
+  margin-bottom: var(--s3);
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.pair-cell p {
+  font-family: var(--font-serif); font-weight: 400;
+  font-size: 14.5px; line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.foot {
+  padding: var(--s8) 0 var(--s5);
+  background: var(--bg-2);
+  border-top: 1px solid var(--rule);
+}
+.foot-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--s6);
+  padding-bottom: var(--s6);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: var(--s4);
+}
+@media (max-width: 800px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
+
+.foot h5 {
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: var(--s3);
+  font-weight: 600;
+}
+.foot ul { list-style: none; }
+.foot li {
+  font-family: var(--font-serif); font-size: 14px;
+  padding: 3px 0; color: var(--ink-2);
+}
+.foot li a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule); }
+
+.foot-meta {
+  display: flex; justify-content: space-between;
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.2em; color: var(--ink-3);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.shown { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- Topographic background layer — full-coverage SVG with real contour curves -->
+<div class="topo-bg" aria-hidden="true">
+  <svg viewBox="0 0 1200 1600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <g>
+      <path d="M -50 120 Q 200 100, 400 140 T 900 150 T 1300 130" />
+      <path d="M -50 180 Q 200 160, 400 200 T 900 210 T 1300 190" />
+      <path d="M -50 240 Q 200 220, 400 260 T 900 270 T 1300 250" />
+      <path d="M -50 300 Q 200 285, 400 320 T 900 330 T 1300 310" />
+      <path d="M -50 360 Q 200 345, 400 380 T 900 390 T 1300 370" />
+      <path d="M -50 420 Q 200 405, 400 440 T 900 450 T 1300 430" />
+      <path d="M -50 480 Q 200 465, 400 500 T 900 510 T 1300 490" />
+      <path d="M -50 540 Q 200 525, 400 560 T 900 570 T 1300 550" />
+      <path d="M -50 600 Q 200 585, 400 620 T 900 630 T 1300 610" />
+      <path d="M -50 660 Q 200 650, 400 680 T 900 690 T 1300 670" />
+      <path d="M -50 720 Q 200 710, 400 740 T 900 750 T 1300 730" />
+      <path d="M -50 780 Q 200 770, 400 800 T 900 810 T 1300 790" />
+      <path d="M -50 840 Q 200 830, 400 860 T 900 870 T 1300 850" />
+      <path d="M -50 900 Q 200 890, 400 920 T 900 930 T 1300 910" />
+      <path d="M -50 960 Q 200 950, 400 980 T 900 990 T 1300 970" />
+      <path d="M -50 1020 Q 200 1010, 400 1040 T 900 1050 T 1300 1030" />
+      <path d="M -50 1080 Q 200 1070, 400 1100 T 900 1110 T 1300 1090" />
+      <path d="M -50 1140 Q 200 1130, 400 1160 T 900 1170 T 1300 1150" />
+      <path d="M -50 1200 Q 200 1190, 400 1220 T 900 1230 T 1300 1210" />
+      <path d="M -50 1260 Q 200 1250, 400 1280 T 900 1290 T 1300 1270" />
+      <path d="M -50 1320 Q 200 1310, 400 1340 T 900 1350 T 1300 1330" />
+      <path d="M -50 1380 Q 200 1370, 400 1400 T 900 1410 T 1300 1390" />
+      <path d="M -50 1440 Q 200 1430, 400 1460 T 900 1470 T 1300 1450" />
+      <path d="M -50 1500 Q 200 1490, 400 1520 T 900 1530 T 1300 1510" />
+    </g>
+    <!-- Closed contour island — hill form in the middle -->
+    <g opacity="0.75">
+      <ellipse cx="700" cy="700" rx="280" ry="180" fill="none" stroke="var(--topo)" stroke-width="0.6"/>
+      <ellipse cx="705" cy="700" rx="230" ry="148" fill="none" stroke="var(--topo)" stroke-width="0.6"/>
+      <ellipse cx="710" cy="702" rx="180" ry="118" fill="none" stroke="var(--topo)" stroke-width="0.6"/>
+      <ellipse cx="715" cy="704" rx="130" ry="88" fill="none" stroke="var(--topo)" stroke-width="0.6"/>
+      <ellipse cx="720" cy="706" rx="80" ry="58" fill="none" stroke="var(--topo)" stroke-width="0.6"/>
+      <ellipse cx="725" cy="708" rx="34" ry="24" fill="none" stroke="var(--topo)" stroke-width="0.6"/>
+    </g>
+  </svg>
+</div>
+
+<!-- ============================================================
+     MASTHEAD
+     ============================================================ -->
+<div class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-left">
+      <div class="chapter-marker">
+        <span>24/8 Anthems</span>
+        <span class="divider">·</span>
+        <span>Course Intelligence</span>
+      </div>
+    </div>
+    <div class="masthead-center">
+      <em>Vol. I</em> · No. 03
+    </div>
+    <div class="masthead-right">
+      <div class="toggle" role="group" aria-label="Theme">
+        <button data-theme-btn="paper" class="active">Paper</button>
+        <button data-theme-btn="ink">Ink</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<!-- COVER -->
+<section class="cover">
+  <div class="wrap">
+    <div class="cover-topline">
+      <div class="left">
+        <span>Course Intelligence</span>
+        <span>·</span>
+        <span>Vol I</span>
+      </div>
+      <div class="right">
+        <span>The Course</span>
+        <span>03 / 18</span>
+      </div>
+    </div>
+
+    <div class="cover-marker">
+      <span class="chapter-marker">
+        <span>03</span>
+        <span class="divider">|</span>
+        <span>The Course</span>
+      </span>
+    </div>
+
+    <h1>
+      Spyglass
+      <span class="italic">writes itself.</span>
+    </h1>
+
+    <p class="cover-sub">
+      Robert Trent Jones's coastal brute opens with five holes through Stevenson's
+      dunes, then climbs into the Del Monte Forest — a course that rewards patience
+      and finds the tempo inside every swing.
+    </p>
+
+    <div class="cover-meta">
+      <div class="meta-strip">
+        <span class="pair"><span class="k">Tool</span><span class="dash">—</span><span class="v">Spyglass Hill</span></span>
+        <span class="pair"><span class="k">Input</span><span class="dash">—</span><span class="v hl">112 BPM</span></span>
+        <span class="pair"><span class="k">Par</span><span class="dash">—</span><span class="v">72</span></span>
+        <span class="pair"><span class="k">Yardage</span><span class="dash">—</span><span class="v">7,041</span></span>
+        <span class="pair"><span class="k">Output</span><span class="dash">—</span><span class="v hl">Full Script</span></span>
+      </div>
+    </div>
+
+    <div class="page-num-watermark">03</div>
+  </div>
+
+  <div class="wrap" style="margin-top: var(--s9);">
+    <div class="running-foot">
+      <span>03 / 18 &nbsp;—&nbsp; The Course</span>
+      <span class="right">@248anthems</span>
+    </div>
+  </div>
+</section>
+
+<!-- THE IDEA -->
+<section class="spread">
+  <div class="wrap-narrow">
+    <div style="text-align: center; margin-bottom: var(--s7);">
+      <span class="chapter-marker"><span>04</span><span class="divider">|</span><span>The Idea</span></span>
+    </div>
+
+    <h2 class="spread-title" style="text-align: center; margin-bottom: var(--s5);">
+      You play the course.
+      <span class="italic">It plays you back.</span>
+    </h2>
+
+    <p class="spread-dek" style="text-align: center; margin: 0 auto var(--s6);">
+      A course preview engineered the way the swing is engineered. Twenty-four frames
+      back. Eight down. A rhythm you don't think about — you just trust.
+    </p>
+
+    <div class="pull-card">
+      <div class="label">Quick Take · 112 BPM</div>
+      <blockquote>
+        The first five holes are the most demanding opening stretch in American golf.
+        The back nine <span class="hl">gives it back</span> — if you can find rhythm
+        between the trees.
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- BRIEF -->
+<section class="spread">
+  <div class="wrap">
+    <div class="spread-head">
+      <div>
+        <span class="chapter-marker"><span>05</span><span class="divider">|</span><span>Brief</span></span>
+      </div>
+      <div>
+        <h2 class="spread-title">The <span class="italic">numbers</span> that matter.</h2>
+        <p class="spread-dek" style="margin-top: var(--s4);">
+          Five data points that define how Spyglass plays this week — the non-obvious
+          edges hiding in the course setup.
+        </p>
+      </div>
+    </div>
+
+    <div class="brief-row">
+      <div class="brief-cell">
+        <div class="num">+1.8<span class="u">sg</span></div>
+        <div class="l">Scoring vs Pebble</div>
+        <p>Historically plays ~1.8 strokes harder than Pebble in Pro-Am rotation.</p>
+      </div>
+      <div class="brief-cell">
+        <div class="num">2.4<span class="u">mph</span></div>
+        <div class="l">Wind Delta · H1–5 vs 6–18</div>
+        <p>Oceanfront opener runs cooler. Interior holes lose most of the wind.</p>
+      </div>
+      <div class="brief-cell">
+        <div class="num">72<span class="u">%</span></div>
+        <div class="l">Poa Make Rate</div>
+        <p>Poa surfaces degrade through afternoon. Morning wave holds the edge.</p>
+      </div>
+      <div class="brief-cell">
+        <div class="num">5.3</div>
+        <div class="l">GIRs Lost · H1–5</div>
+        <p>The tournament's highest GIR-attrition zone across all Pro-Am venues.</p>
+      </div>
+      <div class="brief-cell">
+        <div class="num">+0.34</div>
+        <div class="l">SG: Approach Corr.</div>
+        <p>Winners here have been approach-heavy — ball-striking eats variance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRATEGY -->
+<section class="spread">
+  <div class="wrap">
+    <div class="spread-head">
+      <div>
+        <span class="chapter-marker"><span>06</span><span class="divider">|</span><span>Strategy</span></span>
+      </div>
+      <div>
+        <h2 class="spread-title">Two courses, <span class="italic">one routing.</span></h2>
+      </div>
+    </div>
+
+    <div class="editorial">
+      <div class="editorial-body">
+        <p>Spyglass operates on two distinct engines. The first five holes, routed through the dunes of Stevenson's inspiration, favor a links-hybrid mindset: flight down, carry controlled, commit to the line even when the wind argues.</p>
+        <p>From the 6th onward, the routing turns inland into Del Monte Forest and becomes a different test. Narrow corridors between Monterey pines reward the player who can shape the ball both ways off the tee.</p>
+        <p>Green complexes are Poa annua — bumpy by afternoon, grain-heavy near the coast. The winning score correlates most strongly with strokes gained: approach from 150–200 yards, the range that sits near every defensive pin on the back nine.</p>
+        <p>The tempo demand is real. Slow play, cold mornings, and cypress shadows conspire against rhythm. This course rewards players who find a tempo and protect it.</p>
+      </div>
+
+      <aside class="editorial-aside">
+        <div class="label">— Non-Negotiables</div>
+        <ul class="list">
+          <li><span class="k">Miss Pattern</span><span class="v">Short-right</span></li>
+          <li><span class="k">Tee Club</span><span class="v">3W default</span></li>
+          <li><span class="k">Approach</span><span class="v">150–200y</span></li>
+          <li><span class="k">Bail-out</span><span class="v">Front-side</span></li>
+          <li><span class="k">Surface</span><span class="v">Poa annua</span></li>
+          <li><span class="k">Stimp</span><span class="v">11.5</span></li>
+          <li><span class="k">Key Stat</span><span class="v">SG: APP</span></li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="spread">
+  <div class="wrap">
+    <div class="spread-head">
+      <div>
+        <span class="chapter-marker"><span>07</span><span class="divider">|</span><span>Stats</span></span>
+      </div>
+      <div>
+        <h2 class="spread-title">SG <span class="italic">correlation weights.</span></h2>
+        <p class="spread-dek" style="margin-top: var(--s4);">
+          Historical correlation with winning scores at Spyglass. Categories ranked by predictive lift.
+        </p>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-row">
+        <div class="stat-label">SG: Approach</div>
+        <div class="stat-val">0.34</div>
+        <div class="stat-bar"><span style="width: 88%"></span></div>
+        <div class="stat-note">highest-weighted · winners gain from 150+</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-label">SG: Off the Tee</div>
+        <div class="stat-val">0.21</div>
+        <div class="stat-bar"><span style="width: 62%"></span></div>
+        <div class="stat-note">accuracy &gt; distance</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-label">SG: Around Green</div>
+        <div class="stat-val">0.18</div>
+        <div class="stat-bar"><span style="width: 52%"></span></div>
+        <div class="stat-note">short-game rescue on tight leaderboards</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-label">SG: Putting</div>
+        <div class="stat-val">0.11</div>
+        <div class="stat-bar"><span style="width: 32%"></span></div>
+        <div class="stat-note">poa variance — coin flip after noon</div>
+      </div>
+    </div>
+
+    <div class="pill-row">
+      <span class="pill accent">↑ elite ball-strikers</span>
+      <span class="pill accent">↑ morning wave</span>
+      <span class="pill">— poa putters</span>
+      <span class="pill">↓ bomb-&amp;-gouge</span>
+    </div>
+  </div>
+</section>
+
+<!-- HOLE-BY-HOLE -->
+<section class="spread" id="holes">
+  <div class="wrap">
+    <div class="spread-head">
+      <div>
+        <span class="chapter-marker"><span>08</span><span class="divider">|</span><span>The 18</span></span>
+      </div>
+      <div>
+        <h2 class="spread-title">Hole by hole, <span class="italic">scroll through.</span></h2>
+        <p class="spread-dek" style="margin-top: var(--s4);">
+          Every hole — the number, the name, the scoring data, and the tactical calls.
+          <em>Drag right, or use arrow keys.</em>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="holes-scroller-wrap">
+      <div class="holes-scroller" id="holesScroller">
+        <article class="hole-card">
+          <header class="hole-topstrip">
+            <div class="slot-left">Hole 01</div>
+            <div class="slot-center"><em>&ldquo;Opening Shot&rdquo;</em></div>
+            <div class="slot-right">Par 5 · 600y</div>
+          </header>
+          <div class="hole-main">
+            <div class="hole-par-badge">
+              <span>Par</span>
+              <span class="v">5</span>
+              <span class="dot">·</span>
+              <span class="v">600y</span>
+              <span class="dot">·</span>
+              <span>Hdcp</span>
+              <span class="v ">5th</span>
+            </div>
+            <div class="hole-name-display">Opening <span class="italic">Shot</span></div>
+            <div class="hole-composition">
+            <div class="hc-rule" style="top: 22%; left: 0; width: 40%;"></div>
+            <div class="hc-rule accent" style="top: 48%; left: 6%; width: 30%;"></div>
+            <div class="hc-rule" style="top: 78%; left: 26%; width: 45%;"></div>
+            <div class="hc-word mono" style="top: 4%; left: 0%;">tee <span style="color: var(--ink);">left-center commit</span></div>
+            <div class="hc-word italic" style="top: 26%; left: 4%;">downhill<br>to a reachable green</div>
+            <div class="hc-word mono" style="top: 50%; left: 6%;">lay <span style="color: var(--ink);">one-hundred yards</span></div>
+            <div class="hc-word plain" style="top: 72%; left: 10%;">wedge<br>to the <em>cove-side pin</em></div>
+            <div class="hc-word mono accent" style="top: 4%; right: 0%; left: auto; text-align: right;">birdie track</div>
+            </div>
+            <div class="hole-mega-num"><em>01</em></div>
+          </div>
+          <div class="hole-data-strip">
+            <div><div class="k">Avg</div><div class="v">4.87</div></div>
+            <div><div class="k">Δ Par</div><div class="v">−0.13</div></div>
+            <div><div class="k">Wind</div><div class="v ">↘ 12</div></div>
+          </div>
+          <footer class="hole-cue-ribbon">
+            <span class="cue-label">♪ Cue</span>
+            <span class="cue-bars"><em>Bar 1–4 · intro · settle</em></span>
+          </footer>
+        </article>
+
+        <article class="hole-card">
+          <header class="hole-topstrip">
+            <div class="slot-left">Hole 02</div>
+            <div class="slot-center"><em>&ldquo;Iceplant&rdquo;</em></div>
+            <div class="slot-right">Par 4 · 349y</div>
+          </header>
+          <div class="hole-main">
+            <div class="hole-par-badge">
+              <span>Par</span>
+              <span class="v">4</span>
+              <span class="dot">·</span>
+              <span class="v">349y</span>
+              <span class="dot">·</span>
+              <span>Hdcp</span>
+              <span class="v ">13th</span>
+            </div>
+            <div class="hole-name-display"><span class="italic">Iceplant</span></div>
+            <div class="hole-composition">
+            <div class="hc-rule" style="top: 22%; left: 0; width: 40%;"></div>
+            <div class="hc-rule accent" style="top: 48%; left: 6%; width: 30%;"></div>
+            <div class="hc-rule" style="top: 78%; left: 26%; width: 45%;"></div>
+            <div class="hc-word mono" style="top: 4%; left: 0%;">tee <span style="color: var(--ink);">three-wood</span></div>
+            <div class="hc-word italic" style="top: 26%; left: 4%;">narrow<br>between the natives</div>
+            <div class="hc-word plain" style="top: 50%; left: 6%;">wedge<br>to a <em>small firm green</em></div>
+            <div class="hc-word mono" style="top: 62%; right: 2%; left: auto; text-align: right;">bail <span style="color: var(--ink);">short-right</span></div>
+            <div class="hc-word mono accent" style="top: 4%; right: 0%; left: auto; text-align: right;">no recovery</div>
+            </div>
+            <div class="hole-mega-num"><em>02</em></div>
+          </div>
+          <div class="hole-data-strip">
+            <div><div class="k">Avg</div><div class="v">4.21</div></div>
+            <div><div class="k">Δ Par</div><div class="v">+0.21</div></div>
+            <div><div class="k">Wind</div><div class="v ">↘ 14</div></div>
+          </div>
+          <footer class="hole-cue-ribbon">
+            <span class="cue-label">♪ Cue</span>
+            <span class="cue-bars"><em>Bar 5–8 · verse begins</em></span>
+          </footer>
+        </article>
+
+        <article class="hole-card">
+          <header class="hole-topstrip">
+            <div class="slot-left">Hole 03</div>
+            <div class="slot-center"><em>&ldquo;Dunes Short&rdquo;</em></div>
+            <div class="slot-right">Par 3 · 165y</div>
+          </header>
+          <div class="hole-main">
+            <div class="hole-par-badge">
+              <span>Par</span>
+              <span class="v">3</span>
+              <span class="dot">·</span>
+              <span class="v">165y</span>
+              <span class="dot">·</span>
+              <span>Hdcp</span>
+              <span class="v ">11th</span>
+            </div>
+            <div class="hole-name-display">Dunes <span class="italic">Short</span></div>
+            <div class="hole-composition">
+            <div class="hc-rule" style="top: 22%; left: 0; width: 40%;"></div>
+            <div class="hc-rule accent" style="top: 48%; left: 6%; width: 30%;"></div>
+            <div class="hc-rule" style="top: 78%; left: 26%; width: 45%;"></div>
+            <div class="hc-word mono accent" style="top: 4%; right: 0%; left: auto; text-align: right;">wind <span style="color: var(--ink);">×1.5 clubs</span></div>
+            <div class="hc-word italic big" style="top: 26%; left: 4%;">commit</div>
+            <div class="hc-word plain" style="top: 50%; left: 6%;">full swing<br><em>center green</em></div>
+            <div class="hc-word mono" style="top: 62%; right: 2%; left: auto; text-align: right;">fifteen-foot look</div>
+            <div class="hc-word mono" style="bottom: 2%; left: 0%; top: auto;">putt uphill</div>
+            </div>
+            <div class="hole-mega-num"><em>03</em></div>
+          </div>
+          <div class="hole-data-strip">
+            <div><div class="k">Avg</div><div class="v">3.14</div></div>
+            <div><div class="k">Δ Par</div><div class="v">+0.14</div></div>
+            <div><div class="k">Wind</div><div class="v hl">↘ 16</div></div>
+          </div>
+          <footer class="hole-cue-ribbon">
+            <span class="cue-label">♪ Cue</span>
+            <span class="cue-bars"><em>Bar 9–12 · rhythm enters</em></span>
+          </footer>
+        </article>
+
+        <article class="hole-card">
+          <header class="hole-topstrip">
+            <div class="slot-left">Hole 04</div>
+            <div class="slot-center"><em>&ldquo;The Sliver&rdquo;</em></div>
+            <div class="slot-right">Par 4 · 365y</div>
+          </header>
+          <div class="hole-main">
+            <div class="hole-par-badge">
+              <span>Par</span>
+              <span class="v">4</span>
+              <span class="dot">·</span>
+              <span class="v">365y</span>
+              <span class="dot">·</span>
+              <span>Hdcp</span>
+              <span class="v ">9th</span>
+            </div>
+            <div class="hole-name-display">The <span class="italic">Sliver</span></div>
+            <div class="hole-composition">
+            <div class="hc-rule" style="top: 22%; left: 0; width: 40%;"></div>
+            <div class="hc-rule accent" style="top: 48%; left: 6%; width: 30%;"></div>
+            <div class="hc-rule" style="top: 78%; left: 26%; width: 45%;"></div>
+            <div class="hc-word mono" style="top: 4%; left: 0%;">tee <span style="color: var(--ink);">fairway metal</span></div>
+            <div class="hc-word italic" style="top: 26%; left: 4%;">smallest green<br>on property</div>
+            <div class="hc-word plain" style="top: 50%; left: 6%;">wedge with <em>spin</em></div>
+            <div class="hc-word mono" style="top: 62%; right: 2%; left: auto; text-align: right;">miss short-right</div>
+            <div class="hc-word mono accent" style="bottom: 2%; right: 0%; left: auto; top: auto; text-align: right;">never long</div>
+            </div>
+            <div class="hole-mega-num"><em>04</em></div>
+          </div>
+          <div class="hole-data-strip">
+            <div><div class="k">Avg</div><div class="v">4.35</div></div>
+            <div><div class="k">Δ Par</div><div class="v">+0.35</div></div>
+            <div><div class="k">Wind</div><div class="v ">→ 10</div></div>
+          </div>
+          <footer class="hole-cue-ribbon">
+            <span class="cue-label">♪ Cue</span>
+            <span class="cue-bars"><em>Bar 13–16 · verse one close</em></span>
+          </footer>
+        </article>
+
+        <article class="hole-card">
+          <header class="hole-topstrip">
+            <div class="slot-left">Hole 05</div>
+            <div class="slot-center"><em>&ldquo;Coastal Finale&rdquo;</em></div>
+            <div class="slot-right">Par 3 · 195y</div>
+          </header>
+          <div class="hole-main">
+            <div class="hole-par-badge">
+              <span>Par</span>
+              <span class="v">3</span>
+              <span class="dot">·</span>
+              <span class="v">195y</span>
+              <span class="dot">·</span>
+              <span>Hdcp</span>
+              <span class="v ">7th</span>
+            </div>
+            <div class="hole-name-display">Coastal <span class="italic">Finale</span></div>
+            <div class="hole-composition">
+            <div class="hc-rule" style="top: 22%; left: 0; width: 40%;"></div>
+            <div class="hc-rule accent" style="top: 48%; left: 6%; width: 30%;"></div>
+            <div class="hc-rule" style="top: 78%; left: 26%; width: 45%;"></div>
+            <div class="hc-word mono" style="top: 4%; left: 0%;">club <span style="color: var(--ink);">long iron</span></div>
+            <div class="hc-word italic big" style="top: 26%; left: 4%;">last ocean hole</div>
+            <div class="hc-word plain" style="top: 50%; left: 6%;">front-center<br>green slopes <em>hard front</em></div>
+            <div class="hc-word mono" style="top: 62%; right: 2%; left: auto; text-align: right;">below the hole</div>
+            <div class="hc-word mono accent" style="bottom: 2%; left: 0%; top: auto;">two-putt par</div>
+            </div>
+            <div class="hole-mega-num"><em>05</em></div>
+          </div>
+          <div class="hole-data-strip">
+            <div><div class="k">Avg</div><div class="v">3.28</div></div>
+            <div><div class="k">Δ Par</div><div class="v">+0.28</div></div>
+            <div><div class="k">Wind</div><div class="v ">↘ 15</div></div>
+          </div>
+          <footer class="hole-cue-ribbon">
+            <span class="cue-label">♪ Cue</span>
+            <span class="cue-bars"><em>Bar 17–20 · pre-chorus build</em></span>
+          </footer>
+        </article>
+
+        <article class="hole-card">
+          <header class="hole-topstrip">
+            <div class="slot-left">Hole 06</div>
+            <div class="slot-center"><em>&ldquo;Into the Trees&rdquo;</em></div>
+            <div class="slot-right">Par 4 · 450y</div>
+          </header>
+          <div class="hole-main">
+            <div class="hole-par-badge">
+              <span>Par</span>
+              <span class="v">4</span>
+              <span class="dot">·</span>
+              <span class="v">450y</span>
+              <span class="dot">·</span>
+              <span>Hdcp</span>
+              <span class="v hl">3rd</span>
+            </div>
+            <div class="hole-name-display">Into the <span class="italic">Trees</span></div>
+            <div class="hole-composition">
+            <div class="hc-rule" style="top: 22%; left: 0; width: 40%;"></div>
+            <div class="hc-rule accent" style="top: 48%; left: 6%; width: 30%;"></div>
+            <div class="hc-rule" style="top: 78%; left: 26%; width: 45%;"></div>
+            <div class="hc-word mono" style="top: 4%; left: 0%;">tee <span style="color: var(--ink);">driver · left-center</span></div>
+            <div class="hc-word italic" style="top: 26%; left: 4%;">routing turns<br>inland</div>
+            <div class="hc-word plain" style="top: 50%; left: 6%;">long iron<br>below the pin <em>only</em></div>
+            <div class="hc-word mono" style="top: 62%; right: 2%; left: auto; text-align: right;">chip uphill</div>
+            <div class="hc-word mono accent" style="bottom: 2%; right: 0%; left: auto; top: auto; text-align: right;">transition hole</div>
+            </div>
+            <div class="hole-mega-num"><em>06</em></div>
+          </div>
+          <div class="hole-data-strip">
+            <div><div class="k">Avg</div><div class="v">4.42</div></div>
+            <div><div class="k">Δ Par</div><div class="v">+0.42</div></div>
+            <div><div class="k">Wind</div><div class="v ">—</div></div>
+          </div>
+          <footer class="hole-cue-ribbon">
+            <span class="cue-label">♪ Cue</span>
+            <span class="cue-bars"><em>Bar 21–24 · chorus · anchor</em></span>
+          </footer>
+        </article>
+
+        <article class="hole-card">
+          <header class="hole-topstrip">
+            <div class="slot-left">Hole 07</div>
+            <div class="slot-center"><em>&ldquo;The Narrows&rdquo;</em></div>
+            <div class="slot-right">Par 4 · 430y</div>
+          </header>
+          <div class="hole-main">
+            <div class="hole-par-badge">
+              <span>Par</span>
+              <span class="v">4</span>
+              <span class="dot">·</span>
+              <span class="v">430y</span>
+              <span class="dot">·</span>
+              <span>Hdcp</span>
+              <span class="v ">15th</span>
+            </div>
+            <div class="hole-name-display">The <span class="italic">Narrows</span></div>
+            <div class="hole-composition">
+            <div class="hc-rule" style="top: 22%; left: 0; width: 40%;"></div>
+            <div class="hc-rule accent" style="top: 48%; left: 6%; width: 30%;"></div>
+            <div class="hc-rule" style="top: 78%; left: 26%; width: 45%;"></div>
+            <div class="hc-word mono" style="top: 4%; left: 0%;">tee <span style="color: var(--ink);">fade only</span></div>
+            <div class="hc-word italic big" style="top: 26%; left: 4%;">tightest<br>corridor</div>
+            <div class="hc-word plain" style="top: 50%; left: 6%;">left = dead<br><em>right side only</em></div>
+            <div class="hc-word mono" style="top: 62%; right: 2%; left: auto; text-align: right;">mid-iron in</div>
+            <div class="hc-word mono accent" style="bottom: 2%; right: 0%; left: auto; top: auto; text-align: right;">no pine straw score</div>
+            </div>
+            <div class="hole-mega-num"><em>07</em></div>
+          </div>
+          <div class="hole-data-strip">
+            <div><div class="k">Avg</div><div class="v">4.18</div></div>
+            <div><div class="k">Δ Par</div><div class="v">+0.18</div></div>
+            <div><div class="k">Wind</div><div class="v ">—</div></div>
+          </div>
+          <footer class="hole-cue-ribbon">
+            <span class="cue-label">♪ Cue</span>
+            <span class="cue-bars"><em>Bar 25–28 · chorus sustain</em></span>
+          </footer>
+        </article>
+
+        <article class="hole-card">
+          <header class="hole-topstrip">
+            <div class="slot-left">Hole 08</div>
+            <div class="slot-center"><em>&ldquo;Elevated Green&rdquo;</em></div>
+            <div class="slot-right">Par 4 · 395y</div>
+          </header>
+          <div class="hole-main">
+            <div class="hole-par-badge">
+              <span>Par</span>
+              <span class="v">4</span>
+              <span class="dot">·</span>
+              <span class="v">395y</span>
+              <span class="dot">·</span>
+              <span>Hdcp</span>
+              <span class="v ">17th</span>
+            </div>
+            <div class="hole-name-display">Elevated <span class="italic">Green</span></div>
+            <div class="hole-composition">
+            <div class="hc-rule" style="top: 22%; left: 0; width: 40%;"></div>
+            <div class="hc-rule accent" style="top: 48%; left: 6%; width: 30%;"></div>
+            <div class="hc-rule" style="top: 78%; left: 26%; width: 45%;"></div>
+            <div class="hc-word mono" style="top: 4%; left: 0%;">tee <span style="color: var(--ink);">driver · generous</span></div>
+            <div class="hc-word italic" style="top: 26%; left: 4%;">all uphill</div>
+            <div class="hc-word plain" style="top: 50%; left: 6%;">club up <em>one</em><br>back pins <em>+1.5</em></div>
+            <div class="hc-word mono" style="top: 62%; right: 2%; left: auto; text-align: right;">green bigger</div>
+            <div class="hc-word mono accent" style="bottom: 2%; right: 0%; left: auto; top: auto; text-align: right;">than it looks</div>
+            </div>
+            <div class="hole-mega-num"><em>08</em></div>
+          </div>
+          <div class="hole-data-strip">
+            <div><div class="k">Avg</div><div class="v">4.08</div></div>
+            <div><div class="k">Δ Par</div><div class="v">+0.08</div></div>
+            <div><div class="k">Wind</div><div class="v ">—</div></div>
+          </div>
+          <footer class="hole-cue-ribbon">
+            <span class="cue-label">♪ Cue</span>
+            <span class="cue-bars"><em>Bar 29–32 · verse two</em></span>
+          </footer>
+        </article>
+
+        <article class="hole-card">
+          <header class="hole-topstrip">
+            <div class="slot-left">Hole 09</div>
+            <div class="slot-center"><em>&ldquo;Turn&rdquo;</em></div>
+            <div class="slot-right">Par 4 · 430y</div>
+          </header>
+          <div class="hole-main">
+            <div class="hole-par-badge">
+              <span>Par</span>
+              <span class="v">4</span>
+              <span class="dot">·</span>
+              <span class="v">430y</span>
+              <span class="dot">·</span>
+              <span>Hdcp</span>
+              <span class="v hl">1st</span>
+            </div>
+            <div class="hole-name-display"><span class="italic">Turn</span></div>
+            <div class="hole-composition">
+            <div class="hc-rule" style="top: 22%; left: 0; width: 40%;"></div>
+            <div class="hc-rule accent" style="top: 48%; left: 6%; width: 30%;"></div>
+            <div class="hc-rule" style="top: 78%; left: 26%; width: 45%;"></div>
+            <div class="hc-word mono" style="top: 4%; left: 0%;">tee <span style="color: var(--ink);">fade · corner</span></div>
+            <div class="hc-word italic big" style="top: 26%; left: 4%;">hardest<br>hole</div>
+            <div class="hc-word plain" style="top: 50%; left: 6%;">dogleg right<br>long iron <em>right-front</em></div>
+            <div class="hc-word mono" style="top: 62%; right: 2%; left: auto; text-align: right;">accept bail</div>
+            <div class="hc-word mono accent" style="bottom: 2%; right: 0%; left: auto; top: auto; text-align: right;">par is a win</div>
+            </div>
+            <div class="hole-mega-num"><em>09</em></div>
+          </div>
+          <div class="hole-data-strip">
+            <div><div class="k">Avg</div><div class="v">4.48</div></div>
+            <div><div class="k">Δ Par</div><div class="v">+0.48</div></div>
+            <div><div class="k">Wind</div><div class="v ">—</div></div>
+          </div>
+          <footer class="hole-cue-ribbon">
+            <span class="cue-label">♪ Cue</span>
+            <span class="cue-bars"><em>Bar 33–36 · bridge begins</em></span>
+          </footer>
+        </article>
+
+        <article class="hole-card">
+          <header class="hole-topstrip">
+            <div class="slot-left">Hole 10</div>
+            <div class="slot-center"><em>&ldquo;Open Again&rdquo;</em></div>
+            <div class="slot-right">Par 4 · 405y</div>
+          </header>
+          <div class="hole-main">
+            <div class="hole-par-badge">
+              <span>Par</span>
+              <span class="v">4</span>
+              <span class="dot">·</span>
+              <span class="v">405y</span>
+              <span class="dot">·</span>
+              <span>Hdcp</span>
+              <span class="v ">14th</span>
+            </div>
+            <div class="hole-name-display">Open <span class="italic">Again</span></div>
+            <div class="hole-composition">
+            <div class="hc-rule" style="top: 22%; left: 0; width: 40%;"></div>
+            <div class="hc-rule accent" style="top: 48%; left: 6%; width: 30%;"></div>
+            <div class="hc-rule" style="top: 78%; left: 26%; width: 45%;"></div>
+            <div class="hc-word mono" style="top: 4%; left: 0%;">tee <span style="color: var(--ink);">driver · full</span></div>
+            <div class="hc-word italic" style="top: 26%; left: 4%;">widest fairway<br>on the back</div>
+            <div class="hc-word plain" style="top: 50%; left: 6%;">mid-iron in<br><em>attack the pin</em></div>
+            <div class="hc-word mono" style="top: 62%; right: 2%; left: auto; text-align: right;">birdie reset</div>
+            <div class="hc-word mono accent" style="bottom: 2%; right: 0%; left: auto; top: auto; text-align: right;">bank the par</div>
+            </div>
+            <div class="hole-mega-num"><em>10</em></div>
+          </div>
+          <div class="hole-data-strip">
+            <div><div class="k">Avg</div><div class="v">4.15</div></div>
+            <div><div class="k">Δ Par</div><div class="v">+0.15</div></div>
+            <div><div class="k">Wind</div><div class="v ">—</div></div>
+          </div>
+          <footer class="hole-cue-ribbon">
+            <span class="cue-label">♪ Cue</span>
+            <span class="cue-bars"><em>Bar 37–40 · bridge release</em></span>
+          </footer>
+        </article>
+
+        <article class="hole-card">
+          <header class="hole-topstrip">
+            <div class="slot-left">Hole 11</div>
+            <div class="slot-center"><em>&ldquo;Dead Left&rdquo;</em></div>
+            <div class="slot-right">Par 4 · 475y</div>
+          </header>
+          <div class="hole-main">
+            <div class="hole-par-badge">
+              <span>Par</span>
+              <span class="v">4</span>
+              <span class="dot">·</span>
+              <span class="v">475y</span>
+              <span class="dot">·</span>
+              <span>Hdcp</span>
+              <span class="v hl">2nd</span>
+            </div>
+            <div class="hole-name-display">Dead <span class="italic">Left</span></div>
+            <div class="hole-composition">
+            <div class="hc-rule" style="top: 22%; left: 0; width: 40%;"></div>
+            <div class="hc-rule accent" style="top: 48%; left: 6%; width: 30%;"></div>
+            <div class="hc-rule" style="top: 78%; left: 26%; width: 45%;"></div>
+            <div class="hc-word mono" style="top: 4%; left: 0%;">tee <span style="color: var(--ink);"><em>fade</em> or bail right</span></div>
+            <div class="hc-word italic big" style="top: 26%; left: 4%;">left is<br>a dead ball</div>
+            <div class="hc-word plain" style="top: 50%; left: 6%;">long iron<br>center green</div>
+            <div class="hc-word mono" style="top: 62%; right: 2%; left: auto; text-align: right;">great par</div>
+            <div class="hc-word mono accent" style="bottom: 2%; right: 0%; left: auto; top: auto; text-align: right;">move on</div>
+            </div>
+            <div class="hole-mega-num"><em>11</em></div>
+          </div>
+          <div class="hole-data-strip">
+            <div><div class="k">Avg</div><div class="v">4.52</div></div>
+            <div><div class="k">Δ Par</div><div class="v">+0.52</div></div>
+            <div><div class="k">Wind</div><div class="v ">—</div></div>
+          </div>
+          <footer class="hole-cue-ribbon">
+            <span class="cue-label">♪ Cue</span>
+            <span class="cue-bars"><em>Bar 41–44 · chorus reprise</em></span>
+          </footer>
+        </article>
+
+        <article class="hole-card">
+          <header class="hole-topstrip">
+            <div class="slot-left">Hole 12</div>
+            <div class="slot-center"><em>&ldquo;Short Par 3&rdquo;</em></div>
+            <div class="slot-right">Par 3 · 180y</div>
+          </header>
+          <div class="hole-main">
+            <div class="hole-par-badge">
+              <span>Par</span>
+              <span class="v">3</span>
+              <span class="dot">·</span>
+              <span class="v">180y</span>
+              <span class="dot">·</span>
+              <span>Hdcp</span>
+              <span class="v ">16th</span>
+            </div>
+            <div class="hole-name-display">Short <span class="italic">Par 3</span></div>
+            <div class="hole-composition">
+            <div class="hc-rule" style="top: 22%; left: 0; width: 40%;"></div>
+            <div class="hc-rule accent" style="top: 48%; left: 6%; width: 30%;"></div>
+            <div class="hc-rule" style="top: 78%; left: 26%; width: 45%;"></div>
+            <div class="hc-word mono" style="top: 4%; left: 0%;">club <span style="color: var(--ink);">up one</span></div>
+            <div class="hc-word italic" style="top: 26%; left: 4%;">four bunkers<br>framing</div>
+            <div class="hc-word plain" style="top: 50%; left: 6%;">center green<br><em>back-left</em> toughest</div>
+            <div class="hc-word mono" style="top: 62%; right: 2%; left: auto; text-align: right;">never short</div>
+            <div class="hc-word mono accent" style="bottom: 2%; right: 0%; left: auto; top: auto; text-align: right;">birdie · protected</div>
+            </div>
+            <div class="hole-mega-num"><em>12</em></div>
+          </div>
+          <div class="hole-data-strip">
+            <div><div class="k">Avg</div><div class="v">3.09</div></div>
+            <div><div class="k">Δ Par</div><div class="v">+0.09</div></div>
+            <div><div class="k">Wind</div><div class="v ">—</div></div>
+          </div>
+          <footer class="hole-cue-ribbon">
+            <span class="cue-label">♪ Cue</span>
+            <span class="cue-bars"><em>Bar 45–48 · breakdown</em></span>
+          </footer>
+        </article>
+
+        <article class="hole-card">
+          <header class="hole-topstrip">
+            <div class="slot-left">Hole 13</div>
+            <div class="slot-center"><em>&ldquo;Five-Shot&rdquo;</em></div>
+            <div class="slot-right">Par 5 · 560y</div>
+          </header>
+          <div class="hole-main">
+            <div class="hole-par-badge">
+              <span>Par</span>
+              <span class="v">5</span>
+              <span class="dot">·</span>
+              <span class="v">560y</span>
+              <span class="dot">·</span>
+              <span>Hdcp</span>
+              <span class="v ">10th</span>
+            </div>
+            <div class="hole-name-display"><span class="italic">Five-Shot</span></div>
+            <div class="hole-composition">
+            <div class="hc-rule" style="top: 22%; left: 0; width: 40%;"></div>
+            <div class="hc-rule accent" style="top: 48%; left: 6%; width: 30%;"></div>
+            <div class="hc-rule" style="top: 78%; left: 26%; width: 45%;"></div>
+            <div class="hc-word mono" style="top: 4%; left: 0%;">tee <span style="color: var(--ink);">driver · center</span></div>
+            <div class="hc-word italic" style="top: 26%; left: 4%;">reachable<br>in two</div>
+            <div class="hc-word plain" style="top: 50%; left: 6%;">lay to <em>100y</em><br>optimal angle</div>
+            <div class="hc-word mono" style="top: 62%; right: 2%; left: auto; text-align: right;">wedge in</div>
+            <div class="hc-word mono accent" style="bottom: 2%; right: 0%; left: auto; top: auto; text-align: right;">front open</div>
+            </div>
+            <div class="hole-mega-num"><em>13</em></div>
+          </div>
+          <div class="hole-data-strip">
+            <div><div class="k">Avg</div><div class="v">4.82</div></div>
+            <div><div class="k">Δ Par</div><div class="v">−0.18</div></div>
+            <div><div class="k">Wind</div><div class="v ">—</div></div>
+          </div>
+          <footer class="hole-cue-ribbon">
+            <span class="cue-label">♪ Cue</span>
+            <span class="cue-bars"><em>Bar 49–52 · build-up</em></span>
+          </footer>
+        </article>
+
+        <article class="hole-card">
+          <header class="hole-topstrip">
+            <div class="slot-left">Hole 14</div>
+            <div class="slot-center"><em>&ldquo;The Split&rdquo;</em></div>
+            <div class="slot-right">Par 5 · 570y</div>
+          </header>
+          <div class="hole-main">
+            <div class="hole-par-badge">
+              <span>Par</span>
+              <span class="v">5</span>
+              <span class="dot">·</span>
+              <span class="v">570y</span>
+              <span class="dot">·</span>
+              <span>Hdcp</span>
+              <span class="v ">12th</span>
+            </div>
+            <div class="hole-name-display">The <span class="italic">Split</span></div>
+            <div class="hole-composition">
+            <div class="hc-rule" style="top: 22%; left: 0; width: 40%;"></div>
+            <div class="hc-rule accent" style="top: 48%; left: 6%; width: 30%;"></div>
+            <div class="hc-rule" style="top: 78%; left: 26%; width: 45%;"></div>
+            <div class="hc-word mono" style="top: 4%; left: 0%;">tee <span style="color: var(--ink);">left = shorter</span></div>
+            <div class="hc-word italic" style="top: 26%; left: 4%;">split fairway</div>
+            <div class="hc-word plain" style="top: 50%; left: 6%;">right = angle<br><em>three-shot</em> for most</div>
+            <div class="hc-word mono" style="top: 62%; right: 2%; left: auto; text-align: right;">small green</div>
+            <div class="hc-word mono accent" style="bottom: 2%; right: 0%; left: auto; top: auto; text-align: right;">hold spin</div>
+            </div>
+            <div class="hole-mega-num"><em>14</em></div>
+          </div>
+          <div class="hole-data-strip">
+            <div><div class="k">Avg</div><div class="v">4.88</div></div>
+            <div><div class="k">Δ Par</div><div class="v">−0.12</div></div>
+            <div><div class="k">Wind</div><div class="v ">—</div></div>
+          </div>
+          <footer class="hole-cue-ribbon">
+            <span class="cue-label">♪ Cue</span>
+            <span class="cue-bars"><em>Bar 53–56 · drop</em></span>
+          </footer>
+        </article>
+
+        <article class="hole-card">
+          <header class="hole-topstrip">
+            <div class="slot-left">Hole 15</div>
+            <div class="slot-center"><em>&ldquo;Slash&rdquo;</em></div>
+            <div class="slot-right">Par 4 · 420y</div>
+          </header>
+          <div class="hole-main">
+            <div class="hole-par-badge">
+              <span>Par</span>
+              <span class="v">4</span>
+              <span class="dot">·</span>
+              <span class="v">420y</span>
+              <span class="dot">·</span>
+              <span>Hdcp</span>
+              <span class="v ">6th</span>
+            </div>
+            <div class="hole-name-display"><span class="italic">Slash</span></div>
+            <div class="hole-composition">
+            <div class="hc-rule" style="top: 22%; left: 0; width: 40%;"></div>
+            <div class="hc-rule accent" style="top: 48%; left: 6%; width: 30%;"></div>
+            <div class="hc-rule" style="top: 78%; left: 26%; width: 45%;"></div>
+            <div class="hc-word mono" style="top: 4%; left: 0%;">tee <span style="color: var(--ink);">cut-drive · left edge</span></div>
+            <div class="hc-word italic" style="top: 26%; left: 4%;">slight dogleg<br>left</div>
+            <div class="hc-word plain" style="top: 50%; left: 6%;">mid-iron in<br><em>draw to back-right</em></div>
+            <div class="hc-word mono" style="top: 62%; right: 2%; left: auto; text-align: right;">shape to pin</div>
+            <div class="hc-word mono accent" style="bottom: 2%; right: 0%; left: auto; top: auto; text-align: right;">or center green</div>
+            </div>
+            <div class="hole-mega-num"><em>15</em></div>
+          </div>
+          <div class="hole-data-strip">
+            <div><div class="k">Avg</div><div class="v">4.31</div></div>
+            <div><div class="k">Δ Par</div><div class="v">+0.31</div></div>
+            <div><div class="k">Wind</div><div class="v ">—</div></div>
+          </div>
+          <footer class="hole-cue-ribbon">
+            <span class="cue-label">♪ Cue</span>
+            <span class="cue-bars"><em>Bar 57–60 · chorus final</em></span>
+          </footer>
+        </article>
+
+        <article class="hole-card">
+          <header class="hole-topstrip">
+            <div class="slot-left">Hole 16</div>
+            <div class="slot-center"><em>&ldquo;Uphill Push&rdquo;</em></div>
+            <div class="slot-right">Par 4 · 465y</div>
+          </header>
+          <div class="hole-main">
+            <div class="hole-par-badge">
+              <span>Par</span>
+              <span class="v">4</span>
+              <span class="dot">·</span>
+              <span class="v">465y</span>
+              <span class="dot">·</span>
+              <span>Hdcp</span>
+              <span class="v hl">4th</span>
+            </div>
+            <div class="hole-name-display">Uphill <span class="italic">Push</span></div>
+            <div class="hole-composition">
+            <div class="hc-rule" style="top: 22%; left: 0; width: 40%;"></div>
+            <div class="hc-rule accent" style="top: 48%; left: 6%; width: 30%;"></div>
+            <div class="hc-rule" style="top: 78%; left: 26%; width: 45%;"></div>
+            <div class="hc-word mono" style="top: 4%; left: 0%;">tee <span style="color: var(--ink);">driver · mandatory</span></div>
+            <div class="hc-word italic big" style="top: 26%; left: 4%;">all uphill</div>
+            <div class="hc-word plain" style="top: 50%; left: 6%;"><em>two clubs</em> longer<br>trust it</div>
+            <div class="hc-word mono" style="top: 62%; right: 2%; left: auto; text-align: right;">long &gt; short</div>
+            <div class="hc-word mono accent" style="bottom: 2%; right: 0%; left: auto; top: auto; text-align: right;">always</div>
+            </div>
+            <div class="hole-mega-num"><em>16</em></div>
+          </div>
+          <div class="hole-data-strip">
+            <div><div class="k">Avg</div><div class="v">4.45</div></div>
+            <div><div class="k">Δ Par</div><div class="v">+0.45</div></div>
+            <div><div class="k">Wind</div><div class="v ">—</div></div>
+          </div>
+          <footer class="hole-cue-ribbon">
+            <span class="cue-label">♪ Cue</span>
+            <span class="cue-bars"><em>Bar 61–64 · outro build</em></span>
+          </footer>
+        </article>
+
+        <article class="hole-card">
+          <header class="hole-topstrip">
+            <div class="slot-left">Hole 17</div>
+            <div class="slot-center"><em>&ldquo;Last Par 3&rdquo;</em></div>
+            <div class="slot-right">Par 3 · 175y</div>
+          </header>
+          <div class="hole-main">
+            <div class="hole-par-badge">
+              <span>Par</span>
+              <span class="v">3</span>
+              <span class="dot">·</span>
+              <span class="v">175y</span>
+              <span class="dot">·</span>
+              <span>Hdcp</span>
+              <span class="v ">8th</span>
+            </div>
+            <div class="hole-name-display">Last <span class="italic">Par 3</span></div>
+            <div class="hole-composition">
+            <div class="hc-rule" style="top: 22%; left: 0; width: 40%;"></div>
+            <div class="hc-rule accent" style="top: 48%; left: 6%; width: 30%;"></div>
+            <div class="hc-rule" style="top: 78%; left: 26%; width: 45%;"></div>
+            <div class="hc-word mono" style="top: 4%; left: 0%;">line <span style="color: var(--ink);">center default</span></div>
+            <div class="hc-word italic" style="top: 26%; left: 4%;">slopes hard<br>left to right</div>
+            <div class="hc-word plain" style="top: 50%; left: 6%;"><em>right pins</em><br>attackable only</div>
+            <div class="hc-word mono" style="top: 62%; right: 2%; left: auto; text-align: right;">high flight</div>
+            <div class="hc-word mono accent" style="bottom: 2%; right: 0%; left: auto; top: auto; text-align: right;">never leave short</div>
+            </div>
+            <div class="hole-mega-num"><em>17</em></div>
+          </div>
+          <div class="hole-data-strip">
+            <div><div class="k">Avg</div><div class="v">3.22</div></div>
+            <div><div class="k">Δ Par</div><div class="v">+0.22</div></div>
+            <div><div class="k">Wind</div><div class="v ">—</div></div>
+          </div>
+          <footer class="hole-cue-ribbon">
+            <span class="cue-label">♪ Cue</span>
+            <span class="cue-bars"><em>Bar 65–68 · outro sustain</em></span>
+          </footer>
+        </article>
+
+        <article class="hole-card">
+          <header class="hole-topstrip">
+            <div class="slot-left">Hole 18</div>
+            <div class="slot-center"><em>&ldquo;Closer&rdquo;</em></div>
+            <div class="slot-right">Par 5 · 580y</div>
+          </header>
+          <div class="hole-main">
+            <div class="hole-par-badge">
+              <span>Par</span>
+              <span class="v">5</span>
+              <span class="dot">·</span>
+              <span class="v">580y</span>
+              <span class="dot">·</span>
+              <span>Hdcp</span>
+              <span class="v ">18th</span>
+            </div>
+            <div class="hole-name-display"><span class="italic">Closer</span></div>
+            <div class="hole-composition">
+            <div class="hc-rule" style="top: 22%; left: 0; width: 40%;"></div>
+            <div class="hc-rule accent" style="top: 48%; left: 6%; width: 30%;"></div>
+            <div class="hc-rule" style="top: 78%; left: 26%; width: 45%;"></div>
+            <div class="hc-word mono" style="top: 4%; left: 0%;">tee <span style="color: var(--ink);">driver · fairway bend</span></div>
+            <div class="hc-word italic big" style="top: 26%; left: 4%;">closing<br>birdie</div>
+            <div class="hc-word plain" style="top: 50%; left: 6%;">lay to <em>90–110y</em><br>full wedge home</div>
+            <div class="hc-word mono" style="top: 62%; right: 2%; left: auto; text-align: right;">2nd-highest birdie rate</div>
+            <div class="hc-word mono accent" style="bottom: 2%; right: 0%; left: auto; top: auto; text-align: right;">finish the round</div>
+            </div>
+            <div class="hole-mega-num"><em>18</em></div>
+          </div>
+          <div class="hole-data-strip">
+            <div><div class="k">Avg</div><div class="v">4.78</div></div>
+            <div><div class="k">Δ Par</div><div class="v">−0.22</div></div>
+            <div><div class="k">Wind</div><div class="v ">—</div></div>
+          </div>
+          <footer class="hole-cue-ribbon">
+            <span class="cue-label">♪ Cue</span>
+            <span class="cue-bars"><em>Bar 69–72 · return to one</em></span>
+          </footer>
+        </article>
+
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <div class="left">
+        <span>Hole</span>
+        <span class="hole-count" id="holeCount">01</span>
+        <span>of 18</span>
+      </div>
+      <div class="hole-progress"><span id="holeProgressBar"></span></div>
+      <div class="arrows">
+        <button class="scroll-btn" id="holePrev" aria-label="Previous hole">←</button>
+        <button class="scroll-btn" id="holeNext" aria-label="Next hole">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WEATHER -->
+<section class="spread">
+  <div class="wrap">
+    <div class="spread-head">
+      <div>
+        <span class="chapter-marker"><span>09</span><span class="divider">|</span><span>Conditions</span></span>
+      </div>
+      <div>
+        <h2 class="spread-title">Four rounds, <span class="italic">four winds.</span></h2>
+        <p class="spread-dek" style="margin-top: var(--s4);">
+          Wind rotation matters more than temperature. The opener punishes anyone
+          fighting the prevailing ocean push.
+        </p>
+      </div>
+    </div>
+
+    <div class="weather-row">
+      <div class="wday">
+        <div class="round">Round 1 · Thu</div>
+        <div class="temp">54°</div>
+        <div class="cond">Fog clearing</div>
+        <div class="wind-line"><span class="arrow" style="transform: rotate(135deg); display: inline-block;">↑</span><span class="val">NW · 8mph</span></div>
+      </div>
+      <div class="wday">
+        <div class="round">Round 2 · Fri</div>
+        <div class="temp">58°</div>
+        <div class="cond">Clear, gusty</div>
+        <div class="wind-line"><span class="arrow" style="transform: rotate(180deg); display: inline-block;">↑</span><span class="val">N · 14mph</span></div>
+      </div>
+      <div class="wday">
+        <div class="round">Round 3 · Sat</div>
+        <div class="temp">56°</div>
+        <div class="cond">Partly cloudy</div>
+        <div class="wind-line"><span class="arrow" style="transform: rotate(225deg); display: inline-block;">↑</span><span class="val">SW · 10mph</span></div>
+      </div>
+      <div class="wday">
+        <div class="round">Round 4 · Sun</div>
+        <div class="temp">60°</div>
+        <div class="cond">Clear, calm</div>
+        <div class="wind-line"><span class="arrow">—</span><span class="val">Calm</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANTHEM DROP -->
+<section class="anthem-drop" id="anthem">
+  <div class="wrap">
+    <div class="anthem-drop-inner">
+      <span class="chapter-marker"><span>10</span><span class="divider">|</span><span>The Anthem</span></span>
+
+      <h2 class="anthem-drop-title">
+        Twenty-four
+        <span class="italic">writes itself.</span>
+      </h2>
+
+      <p class="anthem-drop-dek">
+        Music engineered at 112 BPM to lock a 3:1 tempo ratio across every shot on property.
+        The track isn't chosen — it's designed, frame by frame, to match the mechanics of
+        the swing.
+      </p>
+
+      <div class="meta-strip" style="margin-bottom: var(--s7);">
+        <span class="pair"><span class="k">Tool</span><span class="dash">—</span><span class="v">Anthem</span></span>
+        <span class="pair"><span class="k">Input</span><span class="dash">—</span><span class="v hl">Plain Tempo</span></span>
+        <span class="pair"><span class="k">Output</span><span class="dash">—</span><span class="v hl">Full Swing</span></span>
+      </div>
+
+      <div class="anthem-spec-grid">
+        <div class="anthem-spec-cell"><div class="num"><em>24</em></div><div class="l">frame backswing</div></div>
+        <div class="anthem-spec-cell"><div class="num"><em>8</em></div><div class="l">frame downswing</div></div>
+        <div class="anthem-spec-cell"><div class="num"><em>3:1</em></div><div class="l">tempo ratio</div></div>
+        <div class="anthem-spec-cell"><div class="num"><em>112</em></div><div class="l">BPM anchor</div></div>
+        <div class="anthem-spec-cell"><div class="num"><em>40Hz</em></div><div class="l">gamma sync</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRACK TECHNOLOGY -->
+<section class="track-tech" id="tech">
+  <div class="wrap">
+    <div class="track-tech-head">
+      <span class="chapter-marker"><span>11</span><span class="divider">|</span><span>Track Technology</span></span>
+      <h2 class="spread-title" style="margin-top: var(--s4);">The music <span class="italic">is the mechanism.</span></h2>
+      <p class="spread-dek" style="margin: var(--s4) auto 0;">
+        Every element of "Spyglass" is engineered — the tempo, the frequencies, the
+        structural intervals. What sounds like a song is actually a biofeedback instrument
+        wearing musical clothes.
+      </p>
+    </div>
+
+    <div class="tech-spec-band">
+      <div class="cell">
+        <div class="val"><em>112</em></div>
+        <div class="l">BPM Anchor</div>
+      </div>
+      <div class="cell">
+        <div class="val"><em>40</em><span class="u">Hz</span></div>
+        <div class="l">Gamma Layer</div>
+      </div>
+      <div class="cell">
+        <div class="val"><em>3:1</em></div>
+        <div class="l">Tempo Ratio</div>
+      </div>
+      <div class="cell">
+        <div class="val"><em>72</em><span class="u">bars</span></div>
+        <div class="l">Full Round Arc</div>
+      </div>
+    </div>
+
+    <div class="tech-layout">
+      <div class="tech-mechanisms">
+
+        <div class="mech-card">
+          <div class="mech-num"><em>01</em></div>
+          <div class="mech-body">
+            <h4>Basal Ganglia <span class="italic">Automation.</span></h4>
+            <div class="mech-meta">
+              <span>112 BPM</span>
+              <span class="sep">·</span>
+              <span class="freq">Motor Sequence Threshold</span>
+            </div>
+            <p>
+              At 112 BPM, the basal ganglia shift from deliberate to automatic motor
+              processing. The swing stops being <em>thought about</em> and starts being
+              <em>executed.</em> Embedded into the track as a continuous pulse — the
+              rhythm anchors every pre-shot routine.
+            </p>
+          </div>
+        </div>
+
+        <div class="mech-card">
+          <div class="mech-num"><em>02</em></div>
+          <div class="mech-body">
+            <h4>40Hz Gamma <span class="italic">Synchronization.</span></h4>
+            <div class="mech-meta">
+              <span>40Hz Layer</span>
+              <span class="sep">·</span>
+              <span class="freq">Cortical Binding</span>
+            </div>
+            <p>
+              A sub-perceptual 40Hz tone threads the arrangement. Gamma-range
+              frequencies entrain cortical oscillations tied to focused attention and
+              sensory binding. The visual-motor loop tightens — cypress shadows and
+              wind noise stop being distractions.
+            </p>
+          </div>
+        </div>
+
+        <div class="mech-card">
+          <div class="mech-num"><em>03</em></div>
+          <div class="mech-body">
+            <h4>Prefrontal <span class="italic">Suppression.</span></h4>
+            <div class="mech-meta">
+              <span>Dopamine Loop</span>
+              <span class="sep">·</span>
+              <span class="freq">Anticipation Structure</span>
+            </div>
+            <p>
+              The song structure suppresses prefrontal interference — the internal voice
+              that over-corrects mid-swing. Dopamine anticipation loops replace
+              rumination, producing the quiet mind peak performers describe as
+              <em>being in it.</em>
+            </p>
+          </div>
+        </div>
+
+        <div class="mech-card">
+          <div class="mech-num"><em>04</em></div>
+          <div class="mech-body">
+            <h4>72-Bar <span class="italic">Round Arc.</span></h4>
+            <div class="mech-meta">
+              <span>4-Bar Phrases</span>
+              <span class="sep">·</span>
+              <span class="freq">Hole-by-Hole Alignment</span>
+            </div>
+            <p>
+              The track runs 72 bars — four bars per hole. The intro carries the dunes
+              opener. The chorus hits at the routing transition. The outro recapitulates
+              the intro at the closing hole. <em>The round has a soundtrack that already
+              knows the story.</em>
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="lyric-snippets">
+        <div class="lyric-snippets-head">
+          <span>Pulled Lines</span>
+          <span class="track-title"><em>"Spyglass"</em></span>
+        </div>
+
+        <div class="snippet placeholder">
+          <div class="snippet-mark">
+            <span>Intro · Bar 1–4</span>
+            <span class="bar">◐ 112 BPM</span>
+          </div>
+          <blockquote>
+            — paste key opening line here —
+          </blockquote>
+          <div class="snippet-caption">
+            <strong>Anchor line.</strong> Sits on the first pulse — sets the tempo the
+            basal ganglia locks onto.
+          </div>
+        </div>
+
+        <div class="snippet placeholder">
+          <div class="snippet-mark">
+            <span>Chorus Hit · Bar 21</span>
+            <span class="bar">◐ Drop</span>
+          </div>
+          <blockquote>
+            — paste the chorus hook here —
+          </blockquote>
+          <div class="snippet-caption">
+            <strong>The hook.</strong> Lands as the routing turns inland. The dopamine loop
+            resolves — the brain registers a scene reset.
+          </div>
+        </div>
+
+        <div class="snippet placeholder">
+          <div class="snippet-mark">
+            <span>Outro · Bar 69–72</span>
+            <span class="bar">◐ Return</span>
+          </div>
+          <blockquote>
+            — paste the closing line here —
+          </blockquote>
+          <div class="snippet-caption">
+            <strong>Return to one.</strong> Recapitulates the intro motif — the round's
+            arc closes where it began.
+          </div>
+        </div>
+
+        <div class="snippet-note">
+          <strong>Replace 3 placeholder blockquotes</strong>
+          Drop in the three most evocative lines from "Spyglass" — intro anchor, chorus
+          hook, outro return. The rest of the track stays on Spotify.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LISTEN -->
+<section class="spread">
+  <div class="wrap">
+    <div class="spread-head">
+      <div>
+        <span class="chapter-marker"><span>12</span><span class="divider">|</span><span>Listen</span></span>
+      </div>
+      <div>
+        <h2 class="spread-title">Hear it <span class="italic">first.</span></h2>
+      </div>
+    </div>
+
+    <div class="listen-grid">
+      <div class="listen-copy">
+        <h3>Calibrate your tempo <span class="italic">before the opener.</span></h3>
+        <p>
+          The pre-shot routine for "Spyglass" is designed to be heard twice on the range,
+          once in the cart to the first tee, and looped in your head for the opening
+          stretch. By hole 6, the rhythm is internalized.
+        </p>
+        <a href="#" class="cta-link">Open in Spotify →</a>
+      </div>
+      <div class="embed-box">
+        [ Spotify Embed Placeholder ]<br><br>
+        Paste &lt;iframe&gt; from open.spotify.com/embed/track/...
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAIRING -->
+<section class="spread">
+  <div class="wrap">
+    <div class="spread-head">
+      <div>
+        <span class="chapter-marker"><span>13</span><span class="divider">|</span><span>Pairing</span></span>
+      </div>
+      <div>
+        <h2 class="spread-title">Why this track, <span class="italic">this course.</span></h2>
+      </div>
+    </div>
+
+    <div class="pairing-grid">
+      <div class="pair-cell">
+        <div class="l">Holes 1–5 · Dunes</div>
+        <h4>The intro carries the opener.</h4>
+        <p>
+          The 16-bar intro is deliberately low-arousal. Heart rate stays down through
+          the hardest stretch — rhythm anchors before any pressure builds.
+        </p>
+      </div>
+      <div class="pair-cell">
+        <div class="l">Hole 6 · Transition</div>
+        <h4>Chorus drop at the tree line.</h4>
+        <p>
+          First chorus hits as the routing turns inland. Visual change, sonic change —
+          the brain registers a scene reset and recalibrates for the forest test.
+        </p>
+      </div>
+      <div class="pair-cell">
+        <div class="l">Hole 18 · Closer</div>
+        <h4>The outro returns to one.</h4>
+        <p>
+          The track's outro recapitulates the intro melody. The round's rhythmic arc
+          closes where it began — closing birdie chance in a regulated state.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="chapter-marker" style="margin-bottom: var(--s3);">
+          <span>24/8 Anthems</span>
+          <span class="divider">·</span>
+          <span>Course Intelligence</span>
+        </div>
+        <p style="font-family: var(--font-serif); font-weight: 400; font-style: italic; font-size: 14.5px; color: var(--ink-3); max-width: 42ch; line-height: 1.55;">
+          A preview report in the style of a magazine. Produced by 24/8 Anthems with
+          Prediction Edge. Data: PGA Tour ShotLink, Data Golf, proprietary models.
+        </p>
+      </div>
+      <div>
+        <h5>Methodology</h5>
+        <ul>
+          <li>SG definitions</li>
+          <li>Green map legend</li>
+          <li>Data sources</li>
+        </ul>
+      </div>
+      <div>
+        <h5>Related</h5>
+        <ul>
+          <li>Pebble Beach</li>
+          <li>Torrey Pines</li>
+          <li>All courses</li>
+        </ul>
+      </div>
+      <div>
+        <h5>24/8 Anthems</h5>
+        <ul>
+          <li><a href="#">Listen</a></li>
+          <li><a href="#">Research</a></li>
+          <li><a href="#">Subscribe</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-meta">
+      <span>© 2026 Homeric · 24/8 Anthems</span>
+      <span>Vol. I · No. 03 · Spyglass Hill</span>
+    </div>
+  </div>
+</footer>
+
+</main>
+
+<script>
+// THEME TOGGLE — uses body.ink class. Paper is default (no class).
+(function setupTheme() {
+  const body = document.body;
+  const themeButtons = document.querySelectorAll('[data-theme-btn]');
+
+  function applyTheme(theme) {
+    if (theme === 'ink') {
+      body.classList.add('ink');
+    } else {
+      body.classList.remove('ink');
+    }
+    // Sync button active state from current theme
+    themeButtons.forEach(b => {
+      b.classList.toggle('active', b.dataset.themeBtn === theme);
+    });
+    try { localStorage.setItem('sp-theme', theme); } catch(e) {}
+  }
+
+  themeButtons.forEach(btn => {
+    btn.addEventListener('click', () => applyTheme(btn.dataset.themeBtn));
+  });
+
+  // Restore on load — default to paper
+  let saved = 'paper';
+  try {
+    const stored = localStorage.getItem('sp-theme');
+    if (stored === 'ink' || stored === 'paper') saved = stored;
+  } catch(e) {}
+  applyTheme(saved);
+})();
+
+const scroller = document.getElementById('holesScroller');
+const prevBtn = document.getElementById('holePrev');
+const nextBtn = document.getElementById('holeNext');
+const holeCount = document.getElementById('holeCount');
+const progressBar = document.getElementById('holeProgressBar');
+
+function scrollHole(dir) {
+  const card = scroller.querySelector('.hole-card');
+  if (!card) return;
+  const step = card.offsetWidth + 24;
+  scroller.scrollBy({ left: dir * step, behavior: 'smooth' });
+}
+prevBtn.addEventListener('click', () => scrollHole(-1));
+nextBtn.addEventListener('click', () => scrollHole(1));
+
+document.addEventListener('keydown', (e) => {
+  const rect = scroller.getBoundingClientRect();
+  const inView = rect.top < window.innerHeight * 0.8 && rect.bottom > window.innerHeight * 0.2;
+  if (!inView) return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); scrollHole(1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); scrollHole(-1); }
+});
+
+function updateHoleCounter() {
+  const card = scroller.querySelector('.hole-card');
+  if (!card) return;
+  const step = card.offsetWidth + 24;
+  const idx = Math.round(scroller.scrollLeft / step);
+  const total = scroller.querySelectorAll('.hole-card').length;
+  const clamped = Math.max(0, Math.min(idx, total - 1));
+  holeCount.textContent = String(clamped + 1).padStart(2, '0');
+  progressBar.style.width = (((clamped + 1) / total) * 100) + '%';
+}
+scroller.addEventListener('scroll', () => requestAnimationFrame(updateHoleCounter), { passive: true });
+window.addEventListener('resize', updateHoleCounter);
+updateHoleCounter();
+
+const revealTargets = document.querySelectorAll('.spread-head, .brief-cell, .stat-row, .mech-card, .pair-cell, .wday, .anthem-spec-cell, .snippet');
+revealTargets.forEach(el => el.classList.add('reveal'));
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('shown');
+  });
+}, { threshold: 0.12 });
+revealTargets.forEach(el => sectionObserver.observe(el));
+</script>
+
+</body>
+</html>
